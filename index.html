@@ -11,16 +11,22 @@
     <style>
         /* --- VARIABLES GLOBALES --- */
         :root {
-            --bg-dark: #0b0b0b;
-            --bg-card: #141414;
-            --bg-accent: #1e1e1e;
-            --gold: #c5a059;
-            --gold-light: #e0b86c;
-            --gold-subtle: rgba(197, 160, 89, 0.12);
-            --gold-border: rgba(197, 160, 89, 0.5); /* Borde dorado visible y fino */
+            --bg-dark: #080808;
+            --bg-card: #121212;
+            --bg-accent: #1a1a1a;
+            
+            /* Dorado brillante, vibrante y premium */
+            --gold: #fdb813;
+            --gold-light: #ffe066;
+            --gold-bright: #fff2a3;
+            --gold-subtle: rgba(253, 184, 19, 0.15);
+            --gold-border: rgba(253, 184, 19, 0.7);
+            --gold-glow: rgba(253, 184, 19, 0.35);
+            --gold-gradient: linear-gradient(135deg, #ffe066 0%, #fdb813 50%, #c98a00 100%);
+            
             --text-white: #ffffff;
-            --text-gray: #b0b0b0;
-            --text-muted: #777777;
+            --text-gray: #b5b5b5;
+            --text-muted: #808080;
         }
 
         * {
@@ -36,31 +42,31 @@
             background-color: var(--bg-dark);
             color: var(--text-white);
             margin: 0;
-            padding: 0; /* Removido padding para que pegue al ras */
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: flex-start;
         }
 
-        /* CONTENEDOR PRINCIPAL: AHORA AL 100% DE ANCHO */
+        /* CONTENEDOR PRINCIPAL: AL 100% DE ANCHO */
         .header-container {
             width: 100%;
-            max-width: 100%; /* Ocupa todo el ancho disponible */
+            max-width: 100%;
             background-color: var(--bg-card);
-            border: 1px solid var(--gold-border); /* Margen/Borde dorado delgado en todo el contorno */
+            border: 1px solid var(--gold-border);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.9), 0 0 15px rgba(197, 160, 89, 0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.95), 0 0 18px var(--gold-glow);
             transition: all 0.3s ease;
         }
 
-        /* BRANDING SUPERIOR */
+        /* BRANDING SUPERIOR RECOMPACTADO */
         .top-brand {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 14px 20px;
-            background-color: #0a0a0a;
+            padding: 8px 16px; /* Reducido para ocupar menos espacio longitudinal */
+            background-color: #070707;
             border-bottom: 1px solid var(--gold-border);
         }
 
@@ -70,15 +76,16 @@
             gap: 12px;
         }
 
+        /* Logo 10% más grande (de 38px a 42px) */
         .logo-box {
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, var(--gold) 0%, #8a6a29 100%);
+            width: 42px;
+            height: 42px;
+            background: var(--gold-gradient);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(197, 160, 89, 0.3);
+            box-shadow: 0 0 10px var(--gold-glow);
             overflow: hidden;
             padding: 2px;
             flex-shrink: 0;
@@ -89,51 +96,57 @@
             height: 100%;
             object-fit: contain;
             border-radius: 6px;
-            background-color: #0a0a0a;
+            background-color: #080808;
         }
 
+        /* Texto 10% más pequeño y alineado a la altura del logo */
         .brand-text {
-            font-size: 13px;
+            font-size: 11.5px;
             font-weight: 800;
-            letter-spacing: 1.2px;
-            color: var(--text-white);
-            text-transform: uppercase;
-            line-height: 1.1;
-        }
-
-        .brand-sub {
-            font-size: 9px;
-            color: var(--gold);
             letter-spacing: 1px;
-            font-weight: 600;
-            display: block;
-            margin-top: 2px;
-        }
-
-        .rating-badge {
+            color: var(--gold-light);
+            text-transform: uppercase;
+            line-height: 1;
             display: flex;
             align-items: center;
-            gap: 6px;
+            text-shadow: 0 0 8px rgba(253, 184, 19, 0.4);
+        }
+
+        /* Badge de Rating 20% más pequeño y ordenado en columna */
+        .rating-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
             background-color: var(--gold-subtle);
             border: 1px solid var(--gold-border);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            color: var(--gold);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 9px;
+            color: var(--gold-light);
             font-weight: 700;
+            box-shadow: 0 0 8px var(--gold-glow);
         }
 
         .rating-stars {
             display: flex;
             gap: 2px;
             color: var(--gold);
+            font-size: 8px;
+        }
+
+        .rating-text-value {
+            font-size: 9.5px;
+            color: var(--gold-bright);
+            letter-spacing: 0.5px;
         }
 
         /* HERO IMAGE WRAPPER */
         .hero-image-wrapper {
             position: relative;
             width: 100%;
-            height: 380px; /* Un poco más alto para acompañar el nuevo ancho */
+            height: 360px;
             background-color: #000;
             overflow: hidden;
             display: flex;
@@ -144,7 +157,7 @@
         .hero-img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Cambiado a cover para llenar todo el ancho elegante */
+            object-fit: cover;
             object-position: center;
             opacity: 0.95;
         }
@@ -155,13 +168,13 @@
             left: 0;
             right: 0;
             height: 120px;
-            background: linear-gradient(0deg, var(--bg-card) 0%, rgba(20,20,20,0) 100%);
+            background: linear-gradient(0deg, var(--bg-card) 0%, rgba(18,18,18,0) 100%);
             pointer-events: none;
         }
 
         /* CONTENT BODY */
         .content-body {
-            padding: 15px 24px 24px 24px;
+            padding: 18px 24px 24px 24px;
             position: relative;
             z-index: 10;
         }
@@ -180,36 +193,63 @@
             font-size: 13px;
             color: var(--text-gray);
             line-height: 1.6;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
-        /* TARJETAS DESTACADAS (SPECS GRID) */
+        /* TARJETAS CUADRADAS DE ESPECIFICACIONES (1 FILA, 3 COLUMNAS) */
         .specs-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            gap: 14px;
+            width: 100%;
         }
 
         .spec-card {
             background-color: var(--bg-accent);
             border: 1px solid var(--gold-border);
-            border-radius: 8px;
-            padding: 10px 12px;
+            border-radius: 12px;
+            aspect-ratio: 1 / 1; /* Garantiza proporciones cuadradas */
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            text-align: center;
             position: relative;
             overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .spec-card::before {
+        .spec-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--gold-light);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 0 12px var(--gold-glow);
+        }
+
+        .spec-card::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 3px;
-            height: 100%;
-            background-color: var(--gold);
+            width: 100%;
+            height: 3px;
+            background: var(--gold-gradient);
+        }
+
+        .spec-icon-box {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: var(--gold-subtle);
+            border: 1px solid var(--gold-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            color: var(--gold-light);
+            font-size: 14px;
+            box-shadow: 0 0 8px var(--gold-glow);
         }
 
         .spec-label {
@@ -218,29 +258,21 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .spec-label i {
-            color: var(--gold);
-            font-size: 10px;
+            margin-bottom: 4px;
         }
 
         .spec-value {
             font-size: 12px;
             font-weight: 800;
-            color: var(--gold-light);
+            color: var(--gold-bright);
+            line-height: 1.2;
+            text-shadow: 0 0 5px rgba(253, 184, 19, 0.3);
         }
 
         /* RESPONSIVE MÓVIL */
         @media (max-width: 650px) {
-            .specs-grid {
-                grid-template-columns: 1fr;
-            }
             .hero-image-wrapper {
-                height: 250px;
+                height: 240px;
             }
             .main-title {
                 font-size: 16px;
@@ -248,32 +280,53 @@
             .content-body {
                 padding: 15px 16px 20px 16px;
             }
+            .specs-grid {
+                gap: 8px;
+            }
+            .spec-card {
+                padding: 6px;
+            }
+            .spec-icon-box {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+                margin-bottom: 4px;
+            }
+            .spec-label {
+                font-size: 8px;
+            }
+            .spec-value {
+                font-size: 10.5px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- CONTENEDOR CON MARGEN DORADO DELGADO -->
+    <!-- CONTENEDOR CON MARGEN Y BORDE DORADO BRILLANTE -->
     <div class="header-container" id="main-header">
         
-        <!-- BRANDING SUPERIOR -->
+        <!-- BRANDING SUPERIOR RECOMPACTADO -->
         <div class="top-brand">
             <div class="brand-left">
+                <!-- Logo 10% más grande -->
                 <div class="logo-box">
                     <img 
                         src="https://i.ibb.co/SDwC5YCb/IMG-20260305-231115-415.png" 
                         alt="Logo La Biblia del Artesano"
-                        onerror="this.onerror=null; this.src='https://placehold.co/120x120/141414/c5a059?text=BA';"
+                        onerror="this.onerror=null; this.src='https://placehold.co/120x120/141414/fdb813?text=BA';"
                     />
                 </div>
                 <div>
+                    <!-- Solo el título, 10% más pequeño y alineado -->
                     <span class="brand-text">LA BIBLIA DEL ARTESANO</span>
-                    <span class="brand-sub">PLATAFORMA TÉCNICA OFICIAL</span>
                 </div>
             </div>
+            
+            <!-- Estrellas y Puntuación centradas y 20% más pequeñas -->
             <div class="rating-badge">
                 <div class="rating-stars" id="stars-container"></div>
-                <span id="rating-text">4.8 / 5</span>
+                <span class="rating-text-value" id="rating-text">4.8 / 5</span>
             </div>
         </div>
 
@@ -295,18 +348,29 @@
                 Este proyecto está concebido para optimizar y enriquecer el espacio del dormitorio principal, integrando en un solo elemento arquitectónico una majestuosa cabecera modular con dos veladores flotantes equipados con cajones deslizantes a cada lado.
             </p>
 
-            <!-- ESPECIFICACIONES -->
+            <!-- ESPECIFICACIONES (3 TARJETAS CUADRADAS EN 1 FILA) -->
             <div class="specs-grid">
                 <div class="spec-card">
-                    <span class="spec-label"><i class="fa-solid fa-gear"></i> ESPECIALIDAD</span>
+                    <div class="spec-icon-box">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                    <span class="spec-label">Especialidad</span>
                     <span class="spec-value">Carpintería en Melamina</span>
                 </div>
+                
                 <div class="spec-card">
-                    <span class="spec-label"><i class="fa-solid fa-layer-group"></i> DIFICULTAD</span>
+                    <div class="spec-icon-box">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <span class="spec-label">Dificultad</span>
                     <span class="spec-value">Intermedio</span>
                 </div>
+                
                 <div class="spec-card">
-                    <span class="spec-label"><i class="fa-regular fa-clock"></i> TIEMPO EST.</span>
+                    <div class="spec-icon-box">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <span class="spec-label">Tiempo Est.</span>
                     <span class="spec-value">6 a 8 Horas</span>
                 </div>
             </div>
@@ -315,7 +379,7 @@
     </div>
 
     <script>
-        // Estrellas fijadas alrededor de 4.8 / 5
+        // Inicialización de estrellas centradas y formateadas
         function initRating() {
             const container = document.getElementById('stars-container');
             const ratingText = document.getElementById('rating-text');
