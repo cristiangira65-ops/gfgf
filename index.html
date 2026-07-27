@@ -74,8 +74,15 @@
       opacity: 1;
     }
 
+    /* AJUSTES A LA TARJETA DE INFO PARA HACERLA MÁS PEQUEÑA (20% MENOS) Y MÁS ABAJO */
+    #part-info-card {
+      left: 50%;
+      transform-origin: bottom center;
+      transform: translateY(150%) translateX(-50%) scale(0.8);
+      opacity: 0;
+    }
     .info-card-visible {
-      transform: translateY(0) translateX(-50%) !important;
+      transform: translateY(0) translateX(-50%) scale(0.8) !important;
       opacity: 1 !important;
       pointer-events: auto !important;
     }
@@ -468,8 +475,8 @@
                 </div>
               </div>
 
-              <!-- Tarjeta de Medidas (Popup Info) -->
-              <div id="part-info-card" class="absolute bottom-3 left-1/2 -translate-x-1/2 w-11/12 max-w-[280px] bg-dark-900/95 border border-gold-500/60 rounded-xl p-2.5 shadow-2xl backdrop-blur-md transform translate-y-[150%] opacity-0 transition-all duration-400 z-10 pointer-events-none">
+              <!-- Tarjeta de Medidas (Popup Info) AJUSTADO: Más pequeño y pegado abajo -->
+              <div id="part-info-card" class="absolute bottom-1 w-11/12 max-w-[280px] bg-dark-900/95 border border-gold-500/60 rounded-xl p-2.5 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
                 
                 <!-- BOTÓN X PARA CERRAR LA TARJETA -->
                 <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1 rounded-md border border-slate-700 transition-colors z-20">
@@ -683,13 +690,13 @@
     </div>
   </main>
 
-  <!-- BOTÓN FLOTANTE DE AYUDA (DRAGGABLE) -->
-  <div id="fab-faq" class="fixed w-12 h-12 bg-red-600 rounded-full shadow-red-glow flex items-center justify-center z-40 cursor-grab active:cursor-grabbing text-white touch-none transition-transform active:scale-95" style="top: 50%; right: 16px; margin-top: -24px;">
+  <!-- BOTÓN FLOTANTE DE AYUDA FIJO -->
+  <div id="fab-faq" onclick="openFaqModal()" class="fixed w-12 h-12 bg-red-600 rounded-full shadow-red-glow flex items-center justify-center z-40 text-white cursor-pointer active:scale-95 transition-transform" style="bottom: 20%; right: 16px;">
     <i data-lucide="message-circle-question" class="w-6 h-6"></i>
   </div>
 
-  <!-- MODAL FAQ: SCROLL DEFINITIVO -->
-  <div id="faq-modal" class="fixed top-0 left-0 w-full h-full bg-dark-900/95 z-50 backdrop-blur-md hidden flex-col opacity-0 transition-opacity duration-300">
+  <!-- MODAL FAQ TIPO CHAT -->
+  <div id="faq-modal" class="fixed z-50 backdrop-blur-md hidden flex-col opacity-0 transition-opacity duration-300 w-[calc(100%-32px)] max-w-[350px] max-h-[60vh] rounded-xl border border-gold-500/50 shadow-2xl bg-dark-900/95 overflow-hidden" style="bottom: calc(20% + 60px); right: 16px;">
     
     <!-- Cabecera Fija -->
     <div class="flex-none flex items-center justify-between p-3 border-b border-slate-800 bg-dark-800/90 shadow-md">
@@ -703,7 +710,7 @@
     </div>
     
     <!-- Área de Scroll Interno -->
-    <div class="flex-1 faq-scroll p-3 space-y-2.5 pb-12">
+    <div class="flex-1 faq-scroll p-3 space-y-2.5 pb-4">
       <p class="text-[11px] text-silver-400 mb-3 font-medium text-center">Toca cualquier pregunta para ver la respuesta sobre este proyecto.</p>
       
       <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
@@ -910,14 +917,11 @@
       }
     }
 
-    // MODAL FAQ CON BLOQUEO DE SCROLL
+    // MODAL FAQ TIPO CHAT
     function openFaqModal() {
       const modal = document.getElementById('faq-modal');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
-      
-      // BLOQUEA el scroll de la página de atrás para que solo se deslice el modal
-      document.body.style.overflow = 'hidden'; 
       
       setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
       lucide.createIcons();
@@ -927,90 +931,11 @@
       const modal = document.getElementById('faq-modal');
       modal.classList.add('opacity-0');
       
-      // RESTAURA el scroll de la página
-      document.body.style.overflow = ''; 
-      
       setTimeout(() => { 
         modal.classList.add('hidden');
         modal.classList.remove('flex');
       }, 300);
     }
-
-    // FAB DRAGGABLE LÓGICA
-    const fab = document.getElementById('fab-faq');
-    let isDragging = false;
-    let startX, startY;
-    let dragDistance = 0;
-
-    fab.addEventListener('touchstart', (e) => {
-      isDragging = false;
-      dragDistance = 0;
-      startX = e.touches[0].clientX - fab.getBoundingClientRect().left;
-      startY = e.touches[0].clientY - fab.getBoundingClientRect().top;
-      fab.style.transition = 'none';
-    }, {passive: false});
-
-    fab.addEventListener('touchmove', (e) => {
-      e.preventDefault(); 
-      const touchLocation = e.targetTouches[0];
-      dragDistance += Math.abs(touchLocation.clientX - startX) + Math.abs(touchLocation.clientY - startY);
-      
-      if(dragDistance > 10) isDragging = true;
-
-      let newX = touchLocation.clientX - startX;
-      let newY = touchLocation.clientY - startY;
-
-      if (newX < 0) newX = 0;
-      if (newX > window.innerWidth - fab.offsetWidth) newX = window.innerWidth - fab.offsetWidth;
-      if (newY < 0) newY = 0;
-      if (newY > window.innerHeight - fab.offsetHeight) newY = window.innerHeight - fab.offsetHeight;
-
-      fab.style.left = newX + 'px';
-      fab.style.top = newY + 'px';
-      fab.style.bottom = 'auto';
-      fab.style.right = 'auto';
-      fab.style.marginTop = '0px'; 
-    }, {passive: false});
-
-    fab.addEventListener('touchend', (e) => {
-      fab.style.transition = 'transform 0.1s active:scale-95'; 
-      if (!isDragging) openFaqModal();
-    });
-
-    fab.addEventListener('mousedown', (e) => {
-      isDragging = false;
-      dragDistance = 0;
-      startX = e.clientX - fab.getBoundingClientRect().left;
-      startY = e.clientY - fab.getBoundingClientRect().top;
-      fab.style.transition = 'none';
-      
-      function onMouseMove(moveEvent) {
-        dragDistance += Math.abs(moveEvent.clientX - startX) + Math.abs(moveEvent.clientY - startY);
-        if(dragDistance > 5) isDragging = true;
-        let newX = moveEvent.clientX - startX;
-        let newY = moveEvent.clientY - startY;
-        
-        if (newX < 0) newX = 0;
-        if (newX > window.innerWidth - fab.offsetWidth) newX = window.innerWidth - fab.offsetWidth;
-        if (newY < 0) newY = 0;
-        if (newY > window.innerHeight - fab.offsetHeight) newY = window.innerHeight - fab.offsetHeight;
-
-        fab.style.left = newX + 'px';
-        fab.style.top = newY + 'px';
-        fab.style.bottom = 'auto';
-        fab.style.right = 'auto';
-        fab.style.marginTop = '0px';
-      }
-      
-      function onMouseUp() {
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-        fab.style.transition = 'transform 0.1s active:scale-95';
-        if (!isDragging) openFaqModal();
-      }
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
-    });
 
     // DATOS DE PIEZAS
     const partsData = {
@@ -1197,7 +1122,8 @@
           if (child.userData.partId === partId) {
             child.material = new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0x856404, roughness: 0.2 });
           } else {
-            child.material = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.15 });
+            // AJUSTADO: Se subió la opacidad de 0.15 a 0.40 para que se note más
+            child.material = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.40 });
           }
         }
       });
