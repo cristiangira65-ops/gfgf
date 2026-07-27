@@ -1,1183 +1,1183 @@
 <!DOCTYPE html>
 <html lang="es" class="h-full bg-slate-950">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>La Biblia del Artesano - Aparicio Studio</title>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            gold: { 300: '#FCE788', 400: '#F3E5AB', 500: '#D4AF37', 600: '#AA820A', 700: '#856404' },
-            silver: { 300: '#E0E0E0', 400: '#C0C0C0', 500: '#A0A0A0', 600: '#707070' },
-            dark: { 900: '#0B0C10', 800: '#12141C', 700: '#1C1F2B', 600: '#282C3D' }
-          },
-          boxShadow: {
-            'gold-glow': '0 0 12px rgba(212, 175, 55, 0.25)',
-            'silver-glow': '0 0 10px rgba(192, 192, 192, 0.2)',
-            'red-glow': '0 0 15px rgba(220, 38, 38, 0.5)'
-          }
-        }
-      }
-    }
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>La Biblia del Artesano - Aparicio Studio</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { 300: '#FCE788', 400: '#F3E5AB', 500: '#D4AF37', 600: '#AA820A', 700: '#856404' },
+            silver: { 300: '#E0E0E0', 400: '#C0C0C0', 500: '#A0A0A0', 600: '#707070' },
+            dark: { 900: '#0B0C10', 800: '#12141C', 700: '#1C1F2B', 600: '#282C3D' }
+          },
+          boxShadow: {
+            'gold-glow': '0 0 12px rgba(212, 175, 55, 0.25)',
+            'silver-glow': '0 0 10px rgba(192, 192, 192, 0.2)',
+            'red-glow': '0 0 15px rgba(220, 38, 38, 0.5)'
+          }
+        }
+      }
+    }
+  </script>
 
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Three.js + OrbitControls -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <!-- Three.js + OrbitControls -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
-  <style>
-    /* =========================================
-       ESTILOS DEL COMPONENTE INFERIOR (CÓDIGO 1)
-       ========================================= */
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-    
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
+  <style>
+    /* =========================================
+       ESTILOS DEL COMPONENTE INFERIOR (CÓDIGO 1)
+       ========================================= */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
 
-    /* Scrollbar General */
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: #0B0C10; }
-    ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+    /* Scrollbar General */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #0B0C10; }
+    ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
 
-    /* Scrollbar Exclusivo y Visible para el Modal de Ayuda */
-    .faq-scroll {
-      overflow-y: scroll;
-      -webkit-overflow-scrolling: touch;
-    }
-    .faq-scroll::-webkit-scrollbar { width: 6px; }
-    .faq-scroll::-webkit-scrollbar-track { background: #12141C; border-radius: 8px; margin: 4px 0; border: 1px solid #1C1F2B;}
-    .faq-scroll::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 8px; }
+    /* Scrollbar Exclusivo y Visible para el Modal de Ayuda */
+    .faq-scroll {
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+    }
+    .faq-scroll::-webkit-scrollbar { width: 6px; }
+    .faq-scroll::-webkit-scrollbar-track { background: #12141C; border-radius: 8px; margin: 4px 0; border: 1px solid #1C1F2B;}
+    .faq-scroll::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 8px; }
 
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-      opacity: 0;
-    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+      opacity: 0;
+    }
 
-    .accordion-content.active {
-      max-height: 2500px;
-      opacity: 1;
-    }
+    .accordion-content.active {
+      max-height: 2500px;
+      opacity: 1;
+    }
 
-    /* TARJETA DE INFO - AJUSTADA */
-    #part-info-card {
-      left: 50%;
-      transform-origin: bottom center;
-      transform: translateY(150%) translateX(-50%);
-      opacity: 0;
-    }
-    .info-card-visible {
-      transform: translateY(0) translateX(-50%) !important;
-      opacity: 1 !important;
-      pointer-events: auto !important;
-    }
-    
-    .list-panel-open {
-      display: flex !important;
-      animation: fadeInDown 0.2s ease-out forwards;
-    }
-    
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    /* TARJETA DE INFO - AJUSTADA */
+    #part-info-card {
+      left: 50%;
+      transform-origin: bottom center;
+      transform: translateY(150%) translateX(-50%);
+      opacity: 0;
+    }
+    .info-card-visible {
+      transform: translateY(0) translateX(-50%) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+    
+    .list-panel-open {
+      display: flex !important;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+    
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    details > summary { list-style: none; outline: none; }
-    details > summary::-webkit-details-marker { display: none; }
-    details[open] summary ~ * { animation: sweep .3s ease-in-out; }
-    @keyframes sweep {
-      0%    {opacity: 0; transform: translateY(-5px)}
-      100%  {opacity: 1; transform: translateY(0)}
-    }
+    details > summary { list-style: none; outline: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    details[open] summary ~ * { animation: sweep .3s ease-in-out; }
+    @keyframes sweep {
+      0%    {opacity: 0; transform: translateY(-5px)}
+      100%  {opacity: 1; transform: translateY(0)}
+    }
 
-    /* =========================================
-       ESTILOS DEL COMPONENTE SUPERIOR (CÓDIGO 2)
-       ========================================= */
-    :root {
-        --bg-dark: #080808;
-        --bg-card: #121212;
-        --bg-accent: #1a1a1a;
-        
-        --gold: #fdb813;
-        --gold-light: #ffe066;
-        --gold-bright: #fff2a3;
-        --gold-subtle: rgba(253, 184, 19, 0.15);
-        --gold-border: rgba(253, 184, 19, 0.7);
-        --gold-glow: rgba(253, 184, 19, 0.35);
-        --gold-gradient: linear-gradient(135deg, #ffe066 0%, #fdb813 50%, #c98a00 100%);
-        
-        --text-white: #ffffff;
-        --text-gray: #b5b5b5;
-        --text-muted: #808080;
-    }
+    /* =========================================
+       ESTILOS DEL COMPONENTE SUPERIOR (CÓDIGO 2)
+       ========================================= */
+    :root {
+        --bg-dark: #080808;
+        --bg-card: #121212;
+        --bg-accent: #1a1a1a;
+        
+        --gold: #fdb813;
+        --gold-light: #ffe066;
+        --gold-bright: #fff2a3;
+        --gold-subtle: rgba(253, 184, 19, 0.15);
+        --gold-border: rgba(253, 184, 19, 0.7);
+        --gold-glow: rgba(253, 184, 19, 0.35);
+        --gold-gradient: linear-gradient(135deg, #ffe066 0%, #fdb813 50%, #c98a00 100%);
+        
+        --text-white: #ffffff;
+        --text-gray: #b5b5b5;
+        --text-muted: #808080;
+    }
 
-    .header-container {
-        width: 100%;
-        max-width: 100%;
-        background-color: var(--bg-card);
-        border: 1px solid var(--gold-border);
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.95), 0 0 18px var(--gold-glow);
-        transition: all 0.3s ease;
-        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-    }
+    .header-container {
+        width: 100%;
+        max-width: 100%;
+        background-color: var(--bg-card);
+        border: 1px solid var(--gold-border);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.95), 0 0 18px var(--gold-glow);
+        transition: all 0.3s ease;
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
 
-    .top-brand {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 16px;
-        background-color: #070707;
-        border-bottom: 1px solid var(--gold-border);
-    }
+    .top-brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 16px;
+        background-color: #070707;
+        border-bottom: 1px solid var(--gold-border);
+    }
 
-    .brand-left {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
+    .brand-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-    .logo-box {
-        width: 42px;
-        height: 42px;
-        background: var(--gold-gradient);
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 0 10px var(--gold-glow);
-        overflow: hidden;
-        padding: 2px;
-        flex-shrink: 0;
-    }
+    .logo-box {
+        width: 42px;
+        height: 42px;
+        background: var(--gold-gradient);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 10px var(--gold-glow);
+        overflow: hidden;
+        padding: 2px;
+        flex-shrink: 0;
+    }
 
-    .logo-box img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 6px;
-        background-color: #080808;
-    }
+    .logo-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 6px;
+        background-color: #080808;
+    }
 
-    .brand-text {
-        font-size: 11.5px;
-        font-weight: 800;
-        letter-spacing: 1px;
-        color: var(--gold-light);
-        text-transform: uppercase;
-        line-height: 1;
-        display: flex;
-        align-items: center;
-        text-shadow: 0 0 8px rgba(253, 184, 19, 0.4);
-    }
+    .brand-text {
+        font-size: 11.5px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: var(--gold-light);
+        text-transform: uppercase;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        text-shadow: 0 0 8px rgba(253, 184, 19, 0.4);
+    }
 
-    .rating-badge {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2px;
-        background-color: var(--gold-subtle);
-        border: 1px solid var(--gold-border);
-        padding: 4px 10px;
-        border-radius: 8px;
-        font-size: 9px;
-        color: var(--gold-light);
-        font-weight: 700;
-        box-shadow: 0 0 8px var(--gold-glow);
-    }
+    .rating-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        background-color: var(--gold-subtle);
+        border: 1px solid var(--gold-border);
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 9px;
+        color: var(--gold-light);
+        font-weight: 700;
+        box-shadow: 0 0 8px var(--gold-glow);
+    }
 
-    .rating-stars {
-        display: flex;
-        gap: 2px;
-        color: var(--gold);
-        font-size: 8px;
-    }
+    .rating-stars {
+        display: flex;
+        gap: 2px;
+        color: var(--gold);
+        font-size: 8px;
+    }
 
-    .rating-text-value {
-        font-size: 9.5px;
-        color: var(--gold-bright);
-        letter-spacing: 0.5px;
-    }
+    .rating-text-value {
+        font-size: 9.5px;
+        color: var(--gold-bright);
+        letter-spacing: 0.5px;
+    }
 
-    .hero-image-wrapper {
-        position: relative;
-        width: 100%;
-        height: 360px;
-        background-color: #000;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    .hero-image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 360px;
+        background-color: #000;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-    .hero-img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        opacity: 0.95;
-    }
+    .hero-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        opacity: 0.95;
+    }
 
-    .hero-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 120px;
-        background: linear-gradient(0deg, var(--bg-card) 0%, rgba(18,18,18,0) 100%);
-        pointer-events: none;
-    }
+    .hero-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 120px;
+        background: linear-gradient(0deg, var(--bg-card) 0%, rgba(18,18,18,0) 100%);
+        pointer-events: none;
+    }
 
-    .content-body {
-        padding: 18px 24px 24px 24px;
-        position: relative;
-        z-index: 10;
-    }
+    .content-body {
+        padding: 18px 24px 24px 24px;
+        position: relative;
+        z-index: 10;
+    }
 
-    .main-title {
-        font-size: 20px;
-        font-weight: 800;
-        color: var(--text-white);
-        line-height: 1.3;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
+    .main-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--text-white);
+        line-height: 1.3;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-    .main-description {
-        font-size: 13px;
-        color: var(--text-gray);
-        line-height: 1.6;
-        margin-bottom: 22px;
-    }
+    .main-description {
+        font-size: 13px;
+        color: var(--text-gray);
+        line-height: 1.6;
+        margin-bottom: 22px;
+    }
 
-    .specs-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-        width: 100%;
-    }
+    .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        width: 100%;
+    }
 
-    .spec-card {
-        background-color: var(--bg-accent);
-        border: 1px solid var(--gold-border);
-        border-radius: 12px;
-        aspect-ratio: 1 / 1; 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 10px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
-        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    }
+    .spec-card {
+        background-color: var(--bg-accent);
+        border: 1px solid var(--gold-border);
+        border-radius: 12px;
+        aspect-ratio: 1 / 1; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
 
-    .spec-card:hover {
-        transform: translateY(-2px);
-        border-color: var(--gold-light);
-        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 0 12px var(--gold-glow);
-    }
+    .spec-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--gold-light);
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 0 12px var(--gold-glow);
+    }
 
-    .spec-card::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: var(--gold-gradient);
-    }
+    .spec-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: var(--gold-gradient);
+    }
 
-    .spec-icon-box {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background-color: var(--gold-subtle);
-        border: 1px solid var(--gold-border);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 8px;
-        color: var(--gold-light);
-        font-size: 14px;
-        box-shadow: 0 0 8px var(--gold-glow);
-    }
+    .spec-icon-box {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background-color: var(--gold-subtle);
+        border: 1px solid var(--gold-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        color: var(--gold-light);
+        font-size: 14px;
+        box-shadow: 0 0 8px var(--gold-glow);
+    }
 
-    .spec-label {
-        font-size: 9px;
-        color: var(--text-muted);
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 4px;
-    }
+    .spec-label {
+        font-size: 9px;
+        color: var(--text-muted);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+    }
 
-    .spec-value {
-        font-size: 12px;
-        font-weight: 800;
-        color: var(--gold-bright);
-        line-height: 1.2;
-        text-shadow: 0 0 5px rgba(253, 184, 19, 0.3);
-    }
+    .spec-value {
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--gold-bright);
+        line-height: 1.2;
+        text-shadow: 0 0 5px rgba(253, 184, 19, 0.3);
+    }
 
-    @media (max-width: 650px) {
-        .hero-image-wrapper { height: 240px; }
-        .main-title { font-size: 16px; }
-        .content-body { padding: 15px 16px 20px 16px; }
-        .specs-grid { gap: 8px; }
-        .spec-card { padding: 6px; }
-        .spec-icon-box { width: 28px; height: 28px; font-size: 12px; margin-bottom: 4px; }
-        .spec-label { font-size: 8px; }
-        .spec-value { font-size: 10.5px; }
-    }
-  </style>
+    @media (max-width: 650px) {
+        .hero-image-wrapper { height: 240px; }
+        .main-title { font-size: 16px; }
+        .content-body { padding: 15px 16px 20px 16px; }
+        .specs-grid { gap: 8px; }
+        .spec-card { padding: 6px; }
+        .spec-icon-box { width: 28px; height: 28px; font-size: 12px; margin-bottom: 4px; }
+        .spec-label { font-size: 8px; }
+        .spec-value { font-size: 10.5px; }
+    }
+  </style>
 </head>
 <body class="bg-dark-900 text-slate-100 min-h-screen flex flex-col justify-start items-center selection:bg-gold-500 selection:text-black pb-8 pt-2 relative">
 
-  <!-- ==================== SECCIÓN SUPERIOR: PRESENTACIÓN ==================== -->
-  <div class="w-full max-w-7xl mx-auto px-2 lg:px-4 mb-4 mt-2">
-      <div class="header-container" id="main-header">
-          
-          <div class="top-brand">
-              <div class="brand-left">
-                  <div class="logo-box">
-                      <img 
-                          src="https://i.ibb.co/SDwC5YCb/IMG-20260305-231115-415.png" 
-                          alt="Logo La Biblia del Artesano"
-                          onerror="this.onerror=null; this.src='https://placehold.co/120x120/141414/fdb813?text=BA';"
-                      />
-                  </div>
-                  <div>
-                      <span class="brand-text">LA BIBLIA DEL ARTESANO</span>
-                  </div>
-              </div>
-              
-              <div class="rating-badge">
-                  <div class="rating-stars" id="stars-container"></div>
-                  <span class="rating-text-value" id="rating-text">4.8 / 5</span>
-              </div>
-          </div>
-
-          <div class="hero-image-wrapper">
-              <img 
-                  src="https://i.ibb.co/v6knQvqj/163d095f-b5b7-4ec6-bf35-38c76de76178.jpg" 
-                  alt="Cabecera con Veladores Integrados" 
-                  class="hero-img"
-                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80';"
-              />
-              <div class="hero-overlay"></div>
-          </div>
-
-          <div class="content-body">
-              <h1 class="main-title">CABECERA DE CAMA DE 2 PLAZAS CON VELADORES Y CAJONES</h1>
-              <p class="main-description">
-                  Este proyecto está concebido para optimizar y enriquecer el espacio del dormitorio principal, integrando en un solo elemento arquitectónico una majestuosa cabecera modular con dos veladores flotantes equipados con cajones deslizantes a cada lado.
-              </p>
-
-              <div class="specs-grid">
-                  <div class="spec-card">
-                      <div class="spec-icon-box">
-                          <i class="fa-solid fa-gear"></i>
-                      </div>
-                      <span class="spec-label">Especialidad</span>
-                      <span class="spec-value">Carpintería en Melamina</span>
-                  </div>
-                  
-                  <div class="spec-card">
-                      <div class="spec-icon-box">
-                          <i class="fa-solid fa-layer-group"></i>
-                      </div>
-                      <span class="spec-label">Dificultad</span>
-                      <span class="spec-value">Intermedio</span>
-                  </div>
-                  
-                  <div class="spec-card">
-                      <div class="spec-icon-box">
-                          <i class="fa-regular fa-clock"></i>
-                      </div>
-                      <span class="spec-label">Tiempo Est.</span>
-                      <span class="spec-value">6 a 8 Horas</span>
-                  </div>
-              </div>
-          </div>
-
-      </div>
-  </div>
-
-  <!-- ==================== SECCIÓN INFERIOR: PLANO INTERACTIVO Y DESPIECE ==================== -->
-  <main class="w-full max-w-7xl mx-auto px-2 lg:px-4 flex flex-col lg:flex-row gap-3 relative">
-
-    <!-- COLUMNA IZQUIERDA -->
-    <div class="w-full lg:w-3/5 flex-shrink-0">
-      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-lg transition-all duration-300">
-        <button onclick="toggleAccordion('acc-plano')" class="w-full p-2.5 flex items-center justify-between bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-left active:scale-[0.99] transition-transform">
-          <div class="flex items-center space-x-2.5">
-            <div class="p-1.5 rounded-lg bg-gold-500/10 border border-gold-500/30 text-gold-400">
-              <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i>
-            </div>
-            <div>
-              <h2 class="text-xs font-bold text-slate-100 flex items-center gap-1.5">
-                Proyecto Completo
-              </h2>
-              <span class="text-[10px] text-gold-500 font-medium block">Plano Interactivo 3D</span>
-            </div>
-          </div>
-          <i id="icon-acc-plano" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
-        </button>
-
-        <div id="acc-plano" class="accordion-content active">
-          <div class="p-2 space-y-2">
-            <!-- 3D Canvas Wrapper -->
-            <div class="relative w-full h-[380px] lg:h-[580px] bg-slate-950 rounded-lg overflow-hidden border border-slate-800 shadow-inner group">
-              <div id="canvas-container" class="w-full h-full relative cursor-pointer active:cursor-grabbing"></div>
-              
-              <div class="absolute top-2 left-2 flex flex-col gap-1.5 z-10">
-                <button onclick="reset3DView()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
-                </button>
-                <button id="btn-explode" onclick="toggleExplodedView()" class="bg-dark-800/90 hover:bg-dark-700 text-slate-200 border border-silver-500/40 px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="move-3d" class="w-3.5 h-3.5 text-gold-400"></i> Desarmar
-                </button>
-              </div>
-
-              <div class="absolute top-2 right-2 z-20 flex flex-col items-end gap-1.5">
-                <button onclick="togglePartsList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/50 px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="list-tree" class="w-3.5 h-3.5"></i> Piezas
-                </button>
-                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-lg shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto w-[180px]">
-                  <div class="text-[8px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1">Selecciona una pieza:</div>
-                  <div id="parts-list-container" class="flex flex-col gap-0.5"></div>
-                </div>
-              </div>
-
-              <!-- TARJETA DE MEDIDAS (AJUSTADA: Más ancha y chata, 4 columnas) -->
-              <div id="part-info-card" class="absolute bottom-2 left-1/2 w-[96%] max-w-[450px] bg-dark-900/95 border border-gold-500/60 rounded-xl p-2 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
-                
-                <button onclick="resetSelection()" class="absolute top-1.5 right-1.5 text-silver-400 hover:text-white bg-dark-800 p-1 rounded-md border border-slate-700 transition-colors z-20">
-                  <i data-lucide="x" class="w-3 h-3"></i>
-                </button>
-
-                <div class="flex justify-between items-center mb-1.5 border-b border-slate-800 pb-1 pr-6">
-                  <div class="flex items-center gap-1.5">
-                    <span id="info-id-badge" class="w-4 h-4 rounded bg-gold-500 text-dark-900 font-black flex items-center justify-center text-[9px]">1</span>
-                    <h3 id="info-name" class="text-[11px] font-black text-gold-400 leading-tight">Nombre</h3>
-                  </div>
-                  <div class="text-right">
-                    <span id="info-qty" class="text-[10px] bg-gold-500/20 text-gold-300 px-1.5 py-0.5 rounded border border-gold-500/30 font-bold inline-block">x2</span>
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-4 gap-1 text-center">
-                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50">
-                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Largo</span>
-                    <span id="info-l" class="font-mono text-[11px] text-slate-100 font-black">0</span>
-                  </div>
-                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50">
-                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Ancho</span>
-                    <span id="info-a" class="font-mono text-[11px] text-slate-100 font-black">0</span>
-                  </div>
-                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50">
-                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Grosor</span>
-                    <span id="info-e" class="font-mono text-[11px] text-slate-100 font-black">18</span>
-                  </div>
-                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50 flex flex-col justify-center items-center">
-                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Tapas</span>
-                    <strong id="info-tap" class="text-[9px] text-gold-400 truncate w-full">G D D D</strong>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- COLUMNA DERECHA -->
-    <div class="w-full lg:w-2/5 flex flex-col gap-2.5">
-      
-      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
-        <button onclick="toggleAccordion('acc-accesorios')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2">
-            <div class="p-1 rounded-md bg-gold-500/10 text-gold-400"><i data-lucide="package" class="w-3.5 h-3.5"></i></div>
-            <h2 class="text-[11px] font-bold text-slate-100 uppercase tracking-wide">Accesorios</h2>
-          </div>
-          <i id="icon-acc-accesorios" data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-400 transition-transform duration-300"></i>
-        </button>
-        <div id="acc-accesorios" class="accordion-content">
-          <div class="p-2 space-y-1.5">
-            <div class="flex items-center p-1.5 rounded-md bg-dark-900 border border-slate-700">
-              <div class="w-6 h-6 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-2 shrink-0"><i data-lucide="sliders-horizontal" class="w-3 h-3"></i></div>
-              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Correderas Telescópicas</span><span class="text-[9px] text-silver-400">350 mm</span></div>
-              <span class="text-[9px] bg-gold-500/10 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-gold-500/30">2 PARES</span>
-            </div>
-            <div class="flex items-center p-1.5 rounded-md bg-dark-900 border border-slate-700">
-              <div class="w-6 h-6 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-2 shrink-0"><i data-lucide="grip-horizontal" class="w-3 h-3"></i></div>
-              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Jalador Frontal</span><span class="text-[9px] text-silver-400">Metálico</span></div>
-              <span class="text-[9px] bg-gold-500/10 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-gold-500/30">2 UNIDS</span>
-            </div>
-            <div class="flex items-center p-1.5 rounded-md bg-dark-900 border border-slate-700">
-              <div class="w-6 h-6 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-2 shrink-0"><i data-lucide="circle-dot" class="w-3 h-3"></i></div>
-              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Tornillos 4 x 50</span><span class="text-[9px] text-silver-400">Para ensamble</span></div>
-              <span class="text-[9px] bg-slate-800 text-silver-300 font-bold px-1.5 py-0.5 rounded border border-slate-600">100 UNIDS</span>
-            </div>
-            <div class="flex items-center p-1.5 rounded-md bg-dark-900 border border-slate-700">
-              <div class="w-6 h-6 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-2 shrink-0"><i data-lucide="disc" class="w-3 h-3"></i></div>
-              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Tornillos 4 x 30</span><span class="text-[9px] text-silver-400">Para accesorios</span></div>
-              <span class="text-[9px] bg-slate-800 text-silver-300 font-bold px-1.5 py-0.5 rounded border border-slate-600">20 UNIDS</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
-        <button onclick="toggleAccordion('acc-herramientas')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2">
-            <div class="p-1 rounded-md bg-gold-500/10 text-gold-400"><i data-lucide="wrench" class="w-3.5 h-3.5"></i></div>
-            <h2 class="text-[11px] font-bold text-slate-100 uppercase tracking-wide">Herramientas</h2>
-          </div>
-          <i id="icon-acc-herramientas" data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-400 transition-transform duration-300"></i>
-        </button>
-        <div id="acc-herramientas" class="accordion-content">
-          <div class="p-2 grid grid-cols-2 gap-1.5">
-            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex flex-col items-center text-center gap-1.5">
-              <div class="w-8 h-8 rounded-full bg-slate-800 text-gold-400 flex items-center justify-center"><i data-lucide="drill" class="w-4 h-4"></i></div>
-              <span class="text-[10px] font-bold text-slate-100 leading-tight">Atornillador Inalámbrico</span>
-            </div>
-            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex flex-col items-center text-center gap-1.5">
-              <div class="w-8 h-8 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="pen-tool" class="w-4 h-4"></i></div>
-              <span class="text-[10px] font-bold text-slate-100 leading-tight">Puntilla<br>Pz2</span>
-            </div>
-            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex flex-col items-center text-center gap-1.5">
-              <div class="w-8 h-8 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="magnet" class="w-4 h-4"></i></div>
-              <span class="text-[10px] font-bold text-slate-100 leading-tight">Extensión Imantada</span>
-            </div>
-            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex flex-col items-center text-center gap-1.5">
-              <div class="w-8 h-8 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="ruler" class="w-4 h-4"></i></div>
-              <span class="text-[10px] font-bold text-slate-100 leading-tight">Wincha y Esquadra</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
-        <button onclick="toggleAccordion('acc-simbolos')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2">
-            <div class="p-1 rounded-md bg-gold-500/10 text-gold-400"><i data-lucide="shapes" class="w-3.5 h-3.5"></i></div>
-            <h2 class="text-[11px] font-bold text-slate-100 uppercase tracking-wide">Símbolos</h2>
-          </div>
-          <i id="icon-acc-simbolos" data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-400 transition-transform duration-300"></i>
-        </button>
-        <div id="acc-simbolos" class="accordion-content">
-          <div class="p-2 grid grid-cols-1 gap-1.5">
-            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex items-center gap-3">
-              <span class="w-6 h-6 rounded bg-slate-800 text-silver-300 font-black flex justify-center items-center text-xs">D</span>
-              <div class="flex flex-col">
-                <span class="text-[10px] font-bold text-slate-100">TAPACANTO DELGADO</span>
-                <span class="text-[9px] text-silver-400">Bordes internos</span>
-              </div>
-            </div>
-            <div class="bg-dark-900 border border-gold-500/50 p-2 rounded-md flex items-center gap-3">
-              <span class="w-6 h-6 rounded bg-gold-500 text-dark-900 font-black flex justify-center items-center text-xs">G</span>
-              <div class="flex flex-col">
-                <span class="text-[10px] font-bold text-gold-400">TAPACANTO GRUESO</span>
-                <span class="text-[9px] text-silver-400">Frentes principales</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
-        <button onclick="toggleAccordion('acc-ranuras')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2">
-            <div class="p-1 rounded-md bg-gold-500/10 text-gold-400"><i data-lucide="align-vertical-space-between" class="w-3.5 h-3.5"></i></div>
-            <h2 class="text-[11px] font-bold text-slate-100 uppercase tracking-wide">Ranuras</h2>
-          </div>
-          <i id="icon-acc-ranuras" data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-400 transition-transform duration-300"></i>
-        </button>
-        <div id="acc-ranuras" class="accordion-content">
-          <div class="p-2 grid grid-cols-1 gap-1.5 text-[11px] font-mono text-silver-300">
-            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-1.5 rounded-md">
-              <div class="flex items-center gap-1.5">
-                <i data-lucide="arrow-right-to-line" class="w-3.5 h-3.5 text-silver-400"></i><span class="font-bold text-slate-100">D : DISTANCIA</span>
-              </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-1.5 py-0.5 rounded border border-gold-500/20">= 18 mm</strong>
-            </div>
-            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-1.5 rounded-md">
-              <div class="flex items-center gap-1.5">
-                <i data-lucide="minimize-2" class="w-3.5 h-3.5 text-silver-400"></i><span class="font-bold text-slate-100">E : ESPESOR</span>
-              </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-1.5 py-0.5 rounded border border-gold-500/20">= 4 mm</strong>
-            </div>
-            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-1.5 rounded-md">
-              <div class="flex items-center gap-1.5">
-                <i data-lucide="arrow-down-to-line" class="w-3.5 h-3.5 text-silver-400"></i><span class="font-bold text-slate-100">P : PROFUNDIDAD</span>
-              </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-1.5 py-0.5 rounded border border-gold-500/20">= 8 mm</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md mb-4">
-        <button onclick="toggleAccordion('acc-materiales')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2">
-            <div class="p-1 rounded-md bg-gold-500/10 text-gold-400"><i data-lucide="layers" class="w-3.5 h-3.5"></i></div>
-            <h2 class="text-[11px] font-bold text-slate-100 uppercase tracking-wide">Materiales</h2>
-          </div>
-          <i id="icon-acc-materiales" data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-400 transition-transform duration-300"></i>
-        </button>
-        <div id="acc-materiales" class="accordion-content">
-          <div class="p-2 grid grid-cols-1 gap-1.5">
-            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex items-center justify-between">
-              <div class="flex items-center gap-2.5">
-                <div class="w-5 h-5 rounded-sm bg-[#b59e24] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="file" class="w-2.5 h-2.5 text-dark-900"></i></div>
-                <span class="text-[10px] font-bold text-slate-100 uppercase">MDF</span>
-              </div>
-              <span class="text-[9px] bg-slate-800 text-silver-300 font-bold px-1.5 py-0.5 rounded border border-slate-600">3 mm</span>
-            </div>
-            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex items-center justify-between">
-              <div class="flex items-center gap-2.5">
-                <div class="w-5 h-5 rounded-sm bg-[#e5e5e5] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-2.5 h-2.5 text-dark-900"></i></div>
-                <span class="text-[10px] font-bold text-slate-100 uppercase">MELAMINA</span>
-              </div>
-              <span class="text-[9px] bg-gold-500/10 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-gold-500/30">18 mm</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </main>
-
-  <!-- BOTÓN FLOTANTE DE AYUDA FIJO A LA PANTALLA -->
-  <div id="fab-faq" onclick="openFaqModal()" class="fixed w-12 h-12 bg-red-600 rounded-full shadow-red-glow flex items-center justify-center z-[60] text-white cursor-pointer active:scale-95 transition-transform" style="bottom: 80px; right: 16px;">
-    <i data-lucide="message-circle-question" class="w-6 h-6"></i>
-  </div>
-
-  <!-- MODAL FAQ TIPO CHAT (Más estrecho y más alto, anclado a la derecha) -->
-  <div id="faq-modal" class="fixed z-[60] backdrop-blur-md hidden flex-col opacity-0 transition-opacity duration-300 w-[280px] sm:w-[320px] max-h-[55vh] rounded-xl border border-gold-500/50 shadow-2xl bg-dark-900/95 overflow-hidden" style="bottom: 140px; right: 16px;">
-    
-    <div class="flex-none flex items-center justify-between p-3 border-b border-slate-800 bg-dark-800/90 shadow-md">
-      <div class="flex items-center gap-2 text-red-500">
-        <i data-lucide="message-circle-question" class="w-5 h-5"></i>
-        <h2 class="text-base font-black tracking-wide text-slate-100">Guía y Ayuda</h2>
-      </div>
-      <button onclick="closeFaqModal()" class="p-1.5 bg-dark-700 hover:bg-red-600/20 text-silver-300 hover:text-red-500 rounded-full transition-colors">
-        <i data-lucide="x" class="w-4 h-4"></i>
-      </button>
-    </div>
-    
-    <div class="flex-1 faq-scroll p-3 space-y-2.5 pb-4">
-      <p class="text-[11px] text-silver-400 mb-3 font-medium text-center">Toca cualquier pregunta para ver la respuesta sobre este proyecto.</p>
-      
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Qué significa 'G' y 'D' en la columna de Tapacantos?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          'D' se refiere al Tapacanto Delgado (0.45mm) usado para bordes ocultos o de menor desgaste. 'G' es el Tapacanto Grueso (3mm) que se coloca en frentes y cubiertas para mayor resistencia y mejor acabado estético.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Qué significan los valores de Ranura (D:18, E:4, P:8)?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          Indican cómo hacer el canal para el fondo del cajón. D: 18mm es la Distancia desde el borde inferior; E: 4mm es el Espesor de la ranura; P: 8mm es la Profundidad del corte.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Cuánto espacio queda exactamente para la cama?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          El diseño estructural deja un espacio libre de 1350 mm (1.35 metros) exactos entre los dos cajoneros laterales, diseñado para encajar una cama estándar de 2 plazas.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Por qué la pieza 9 (Fondo) es de un material distinto?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          La pieza 9 se fabrica en MDF de 3mm porque funciona exclusivamente como base ligera del cajón. Usar melamina de 18mm la haría innecesariamente pesada.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Para qué sirven los tornillos 4x50 y los 4x30?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          Los de 4x50 son para unir las placas de melamina de 18mm. Los de 4x30 se usan para fijar las correderas a la madera sin traspasarla.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Qué función cumplen los 'Amarres' (Pieza 5)?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          Son tiras de melamina de 414x80mm en la parte superior. Mantienen los laterales paralelos y a escuadra, dando firmeza a la estructura antes de colocar la tapa.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Por qué necesito una extensión imantada?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          Los cajoneros tienen espacios internos estrechos. La extensión evita que el tornillo se caiga y te permite atornillar las correderas al fondo sin que estorbe el taladro.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿De qué tamaño son las correderas telescópicas?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          El proyecto exige correderas de 350 mm. Esta medida es perfecta ya que los laterales del cajón (Pieza 7) miden exactamente 350 mm de profundidad.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Cómo se fija el frente exterior (Pieza 8)?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          Se fija desde ADENTRO hacia afuera. Primero armas el cajón interno; luego acomodas el frente exterior y metes tornillos de 4x30 atravesando el frente interno.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Por qué el cajonero mide 650mm si el lateral mide 632mm?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          El lateral (Pieza 3) tiene 632mm. A esto se le suma el espesor de la tapa superior que es de 18mm de melamina (632 + 18 = 650mm).
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Qué es la Puntilla Pz2 de la lista de herramientas?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          Es la punta de destornillador tipo Pozidriv tamaño 2. Es la punta con el encaje perfecto para los tornillos negros de ensamble de 4x50.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Cómo aseguro que los cajones estén a 90 grados?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          Antes de deslizar y fijar el fondo, utiliza tu wincha para medir las dos diagonales internas. Si ambas son idénticas, tu cajón está escuadrado.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Para qué sirven los zócalos (Pieza 4)?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          Elevan el primer piso del cajonero evitando que la puerta o cajón inferior roce el piso al abrir, y protegen la estructura de la humedad o escobazos.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Cuándo se pega el tapacanto?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          El proceso de canteado debe realizarse en todas las piezas indicadas por la tabla de despiece ANTES de comenzar a perforar o ensamblar.
-        </div>
-      </details>
-
-      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
-          ¿Cómo se une todo el respaldo?
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
-        </summary>
-        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-          La Pieza 2 (Respaldo Horizontal) se apoya y atornilla desde atrás contra las dos Piezas 1 (Verticales). Mides los 1350mm de separación baja, y fijas.
-        </div>
-      </details>
-    </div>
-  </div>
-
-  <!-- ==================== SCRIPTS COMBINADOS ==================== -->
-  <script>
-    function initRating() {
-      const container = document.getElementById('stars-container');
-      const ratingText = document.getElementById('rating-text');
-      
-      const randomScore = (Math.random() * (4.9 - 4.6) + 4.6).toFixed(1);
-      if(ratingText) ratingText.textContent = `${randomScore} / 5`;
-      
-      if(container) {
-          container.innerHTML = '';
-          const fullStars = Math.floor(randomScore);
-          const hasHalf = (randomScore - fullStars) >= 0.5;
-
-          for (let i = 1; i <= 5; i++) {
-            const star = document.createElement('i');
-            if (i <= fullStars) {
-                star.className = 'fa-solid fa-star';
-            } else if (i === fullStars + 1 && hasHalf) {
-                star.className = 'fa-solid fa-star-half-stroke';
-            } else {
-                star.className = 'fa-regular fa-star';
-            }
-            container.appendChild(star);
-          }
-      }
-    }
-    window.addEventListener('DOMContentLoaded', initRating);
-
-    function toggleAccordion(id) {
-      const targetContent = document.getElementById(id);
-      const targetIcon = document.getElementById('icon-' + id);
-      const isOpen = targetContent.classList.contains('active');
-
-      if (window.innerWidth < 1024) {
-        document.querySelectorAll('.accordion-content').forEach(content => content.classList.remove('active'));
-        document.querySelectorAll('[id^="icon-acc-"]').forEach(icon => icon.style.transform = 'rotate(0deg)');
-      }
-
-      if (!isOpen) {
-        targetContent.classList.add('active');
-        if (targetIcon) targetIcon.style.transform = 'rotate(180deg)';
-        if (id === 'acc-plano') setTimeout(() => onWindowResize(), 100);
-      } else if (window.innerWidth >= 1024) {
-         targetContent.classList.remove('active');
-         if (targetIcon) targetIcon.style.transform = 'rotate(0deg)';
-      }
-    }
-
-    function openFaqModal() {
-      const modal = document.getElementById('faq-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      
-      setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
-      lucide.createIcons();
-    }
-
-    function closeFaqModal() {
-      const modal = document.getElementById('faq-modal');
-      modal.classList.add('opacity-0');
-      
-      setTimeout(() => { 
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }, 300);
-    }
-
-    const partsData = {
-      1: { id: 1, name: "RESPALDO VERTICAL", l: 1150, a: 550, cant: 2, tap: "G D D D", esp: 18 },
-      2: { id: 2, name: "RESPALDO HORIZONTAL", l: 1550, a: 400, cant: 1, tap: "G G D D", esp: 18 },
-      3: { id: 3, name: "LATERAL DE CAJONERO", l: 632, a: 400, cant: 4, tap: "D - - -", esp: 18 },
-      4: { id: 4, name: "ZOCALOS", l: 414, a: 80, cant: 4, tap: "- - - -", esp: 18 },
-      5: { id: 5, name: "AMARRES", l: 414, a: 80, cant: 4, tap: "D - - -", esp: 18 },
-      6: { id: 6, name: "FRENTE DE CAJON", l: 352, a: 100, cant: 4, tap: "D - - - (R: 18x4)", esp: 18 },
-      7: { id: 7, name: "LATERAL DE CAJON", l: 350, a: 100, cant: 4, tap: "D - - - (R: 18x4)", esp: 18 },
-      8: { id: 8, name: "FRENTE EXTERIOR", l: 444, a: 150, cant: 2, tap: "G G G G", esp: 18 },
-      9: { id: 9, name: "FONDO DE CAJON", l: 366, a: 328, cant: 2, tap: "MDF 3mm", esp: 3 }
-    };
-
-    let scene, camera, renderer, controls;
-    let headboardGroup;
-    let isExploded = false;
-    let targetLookAt = new THREE.Vector3(0, 0.5, 0); 
-    let raycaster = new THREE.Raycaster();
-    let mouse = new THREE.Vector2();
-
-    window.onload = function() {
-      lucide.createIcons();
-      buildPartsListUI();
-      init3D();
-    };
-
-    function togglePartsList() {
-      const panel = document.getElementById('parts-list-panel');
-      panel.classList.toggle('list-panel-open');
-    }
-
-    function buildPartsListUI() {
-      const container = document.getElementById('parts-list-container');
-      container.innerHTML = '';
-      
-      Object.values(partsData).forEach(part => {
-        const btn = document.createElement('button');
-        btn.className = "flex items-center gap-1.5 w-full text-left p-1 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group";
-        
-        const badgeColor = part.id === 9 ? "bg-amber-500 text-dark-900" : "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
-        const textColor = part.id === 9 ? "text-amber-400" : "text-silver-300 group-hover:text-gold-300";
-        
-        btn.innerHTML = `
-          <span class="w-4 h-4 shrink-0 rounded flex items-center justify-center text-[8px] font-black transition-colors ${badgeColor}">${part.id}</span>
-          <span class="text-[9px] font-bold truncate ${textColor}">${part.name}</span>
-        `;
-        btn.onclick = () => selectPartFromList(part.id);
-        container.appendChild(btn);
-      });
-    }
-
-    function selectPartFromList(partId) {
-      let targetMesh = null;
-      headboardGroup.traverse((child) => {
-        if (child.isMesh && child.userData.partId === partId && !targetMesh) {
-          targetMesh = child;
-        }
-      });
-      if (targetMesh) {
-        selectPart(partId, targetMesh);
-        document.getElementById('parts-list-panel').classList.remove('list-panel-open');
-      }
-    }
-
-    function init3D() {
-      const container = document.getElementById('canvas-container');
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-
-      scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x0a0b0e);
-
-      camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
-      camera.position.set(0, 1.8, 5.5);
-
-      renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setSize(width, height);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-      container.appendChild(renderer.domElement);
-
-      controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-      controls.dampingFactor = 0.05;
-      controls.maxPolarAngle = Math.PI / 2 + 0.05;
-      controls.minDistance = 1.0;
-      controls.maxDistance = 10;
-      controls.target.set(0, 0.5, 0);
-
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-      scene.add(ambientLight);
-      const dirLight = new THREE.DirectionalLight(0xfff5e6, 1.2);
-      dirLight.position.set(3, 5, 4);
-      dirLight.castShadow = true;
-      scene.add(dirLight);
-
-      const gridHelper = new THREE.GridHelper(6, 20, 0xd4af37, 0x222633);
-      gridHelper.position.y = 0;
-      scene.add(gridHelper);
-
-      buildFurnitureModel();
-
-      window.addEventListener('resize', onWindowResize);
-      container.addEventListener('pointerdown', onCanvasClick);
-
-      animate();
-    }
-
-    function buildFurnitureModel() {
-      headboardGroup = new THREE.Group();
-      scene.add(headboardGroup);
-
-      const melaminaLightMat = new THREE.MeshStandardMaterial({ color: 0xc8a27a, roughness: 0.4 });
-      const melaminaDarkMat = new THREE.MeshStandardMaterial({ color: 0x2c1f18, roughness: 0.3 });
-
-      function createBox(w, h, d, x, y, z, mat, partId) {
-        const geo = new THREE.BoxGeometry(w, h, d);
-        const mesh = new THREE.Mesh(geo, mat);
-        mesh.position.set(x, y, z);
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        mesh.userData = { partId: partId, origPos: new THREE.Vector3(x, y, z), defaultMat: mat };
-        return mesh;
-      }
-
-      const xOffset = 0.90; 
-
-      headboardGroup.add(createBox(0.55, 1.15, 0.018, -xOffset, 1.15 / 2, -0.2, melaminaLightMat, 1));
-      headboardGroup.add(createBox(0.55, 1.15, 0.018, xOffset, 1.15 / 2, -0.2, melaminaLightMat, 1));
-      headboardGroup.add(createBox(1.55, 0.40, 0.018, 0, 0.95, -0.19, melaminaLightMat, 2));
-
-      function buildCajonero(xPos) {
-        const group = new THREE.Group();
-        group.add(createBox(0.018, 0.632, 0.40, xPos - 0.21, 0.632 / 2, 0, melaminaLightMat, 3));
-        group.add(createBox(0.018, 0.632, 0.40, xPos + 0.21, 0.632 / 2, 0, melaminaLightMat, 3));
-        group.add(createBox(0.45, 0.018, 0.42, xPos, 0.64, 0, melaminaLightMat, 3));
-
-        group.add(createBox(0.414, 0.08, 0.018, xPos, 0.04, 0.18, melaminaLightMat, 4));
-        group.add(createBox(0.414, 0.018, 0.08, xPos, 0.62, 0.15, melaminaLightMat, 5));
-
-        group.add(createBox(0.444, 0.15, 0.018, xPos, 0.50, 0.20, melaminaDarkMat, 8));
-        group.add(createBox(0.12, 0.015, 0.02, xPos, 0.50, 0.215, new THREE.MeshStandardMaterial({ color: 0xe0e0e0, metalness: 0.9 }), 0)); 
-        
-        group.add(createBox(0.352, 0.10, 0.018, xPos, 0.48, 0.17, melaminaLightMat, 6));
-        group.add(createBox(0.018, 0.10, 0.35, xPos - 0.17, 0.48, 0, melaminaLightMat, 7));
-        group.add(createBox(0.018, 0.10, 0.35, xPos + 0.17, 0.48, 0, melaminaLightMat, 7));
-        
-        group.add(createBox(0.366, 0.003, 0.328, xPos, 0.435, 0, new THREE.MeshStandardMaterial({ color: 0xffd700 }), 9));
-        return group;
-      }
-
-      headboardGroup.add(buildCajonero(-xOffset));
-      headboardGroup.add(buildCajonero(xOffset));
-    }
-
-    function onCanvasClick(event) {
-      const listPanel = document.getElementById('parts-list-panel');
-      if(listPanel.classList.contains('list-panel-open') && event.clientY > 100) {
-          listPanel.classList.remove('list-panel-open');
-      }
-
-      const container = document.getElementById('canvas-container');
-      const rect = renderer.domElement.getBoundingClientRect();
-      
-      mouse.x = ( (event.clientX - rect.left) / rect.width ) * 2 - 1;
-      mouse.y = - ( (event.clientY - rect.top) / rect.height ) * 2 + 1;
-      
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(headboardGroup.children, true);
-      
-      if (intersects.length > 0) {
-        const object = intersects[0].object;
-        const partId = object.userData.partId;
-        if(partId && partId > 0) selectPart(partId, object);
-      } 
-    }
-
-    function selectPart(partId, clickedMesh) {
-      headboardGroup.traverse((child) => {
-        if (child.isMesh && child.userData.defaultMat) {
-          if (child.userData.partId === partId) {
-            child.material = new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0x856404, roughness: 0.2 });
-          } else {
-            child.material = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.40 });
-          }
-        }
-      });
-
-      const data = partsData[partId];
-      if (data) {
-        document.getElementById('info-id-badge').innerText = data.id;
-        document.getElementById('info-name').innerText = data.name;
-        document.getElementById('info-qty').innerText = "x" + data.cant;
-        document.getElementById('info-l').innerText = data.l;
-        document.getElementById('info-a').innerText = data.a;
-        document.getElementById('info-e').innerText = data.esp;
-        document.getElementById('info-tap').innerText = data.tap;
-        document.getElementById('part-info-card').classList.add('info-card-visible');
-      }
-
-      const bbox = new THREE.Box3().setFromObject(clickedMesh);
-      const center = new THREE.Vector3();
-      bbox.getCenter(center);
-      targetLookAt.copy(center);
-    }
-
-    function resetSelection() {
-      headboardGroup.traverse((child) => {
-        if (child.isMesh && child.userData.defaultMat) {
-          child.material = child.userData.defaultMat;
-          child.material.opacity = 1.0;
-          child.material.transparent = false;
-        }
-      });
-      document.getElementById('part-info-card').classList.remove('info-card-visible');
-      targetLookAt.set(0, 0.5, 0);
-    }
-
-    function reset3DView() {
-      resetSelection();
-      camera.position.set(0, 1.8, 5.5);
-      document.getElementById('parts-list-panel').classList.remove('list-panel-open');
-      if (isExploded) toggleExplodedView();
-    }
-
-    function animate() {
-      requestAnimationFrame(animate);
-      controls.target.lerp(targetLookAt, 0.08);
-      controls.update();
-      renderer.render(scene, camera);
-    }
-
-    function onWindowResize() {
-      const container = document.getElementById('canvas-container');
-      if (!container) return;
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-    }
-
-    function toggleExplodedView() {
-      isExploded = !isExploded;
-      const btn = document.getElementById('btn-explode');
-      btn.classList.toggle('bg-gold-500', isExploded);
-      btn.classList.toggle('text-dark-900', isExploded);
-      resetSelection();
-
-      headboardGroup.traverse((child) => {
-        if (child.isMesh && child.userData.origPos) {
-          const orig = child.userData.origPos;
-          if (isExploded) {
-            const pId = child.userData.partId;
-            let offset = new THREE.Vector3(0, 0, 0);
-            if (pId === 1) offset.set(0, 0, -0.2);
-            if (pId === 2) offset.set(0, 0.25, -0.3);
-            if (pId === 8 || pId === 6 || pId === 7 || pId === 9) offset.set(0, 0, 0.25);
-            if (pId === 4) offset.set(0, -0.1, 0);
-            child.position.set(orig.x + offset.x, orig.y + offset.y, orig.z + offset.z);
-          } else {
-            child.position.copy(orig);
-          }
-        }
-      });
-    }
-  </script>
+  <!-- ==================== SECCIÓN SUPERIOR: PRESENTACIÓN ==================== -->
+  <div class="w-full max-w-7xl mx-auto px-2 lg:px-4 mb-4 mt-2">
+      <div class="header-container" id="main-header">
+          
+          <div class="top-brand">
+              <div class="brand-left">
+                  <div class="logo-box">
+                      <img 
+                          src="https://i.ibb.co/SDwC5YCb/IMG-20260305-231115-415.png" 
+                          alt="Logo La Biblia del Artesano"
+                          onerror="this.onerror=null; this.src='https://placehold.co/120x120/141414/fdb813?text=BA';"
+                      />
+                  </div>
+                  <div>
+                      <span class="brand-text">LA BIBLIA DEL ARTESANO</span>
+                  </div>
+              </div>
+              
+              <div class="rating-badge">
+                  <div class="rating-stars" id="stars-container"></div>
+                  <span class="rating-text-value" id="rating-text">4.8 / 5</span>
+              </div>
+          </div>
+
+          <div class="hero-image-wrapper">
+              <img 
+                  src="https://i.ibb.co/v6knQvqj/163d095f-b5b7-4ec6-bf35-38c76de76178.jpg" 
+                  alt="Cabecera con Veladores Integrados" 
+                  class="hero-img"
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80';"
+              />
+              <div class="hero-overlay"></div>
+          </div>
+
+          <div class="content-body">
+              <h1 class="main-title">CABECERA DE CAMA DE 2 PLAZAS CON VELADORES Y CAJONES</h1>
+              <p class="main-description">
+                  Este proyecto está concebido para optimizar y enriquecer el espacio del dormitorio principal, integrando en un solo elemento arquitectónico una majestuosa cabecera modular con dos veladores flotantes equipados con cajones deslizantes a cada lado.
+              </p>
+
+              <div class="specs-grid">
+                  <div class="spec-card">
+                      <div class="spec-icon-box">
+                          <i class="fa-solid fa-gear"></i>
+                      </div>
+                      <span class="spec-label">Especialidad</span>
+                      <span class="spec-value">Carpintería en Melamina</span>
+                  </div>
+                  
+                  <div class="spec-card">
+                      <div class="spec-icon-box">
+                          <i class="fa-solid fa-layer-group"></i>
+                      </div>
+                      <span class="spec-label">Dificultad</span>
+                      <span class="spec-value">Intermedio</span>
+                  </div>
+                  
+                  <div class="spec-card">
+                      <div class="spec-icon-box">
+                          <i class="fa-regular fa-clock"></i>
+                      </div>
+                      <span class="spec-label">Tiempo Est.</span>
+                      <span class="spec-value">6 a 8 Horas</span>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+  </div>
+
+  <!-- ==================== SECCIÓN INFERIOR: PLANO INTERACTIVO Y DESPIECE ==================== -->
+  <main class="w-full max-w-7xl mx-auto px-2 lg:px-4 flex flex-col lg:flex-row gap-3 relative">
+
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="w-full lg:w-3/5 flex-shrink-0">
+      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-lg transition-all duration-300">
+        <button onclick="toggleAccordion('acc-plano')" class="w-full p-2.5 flex items-center justify-between bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-left active:scale-[0.99] transition-transform">
+          <div class="flex items-center space-x-2.5">
+            <div class="p-1.5 rounded-lg bg-gold-500/10 border border-gold-500/30 text-gold-400">
+              <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h2 class="text-xs font-bold text-slate-100 flex items-center gap-1.5">
+                Proyecto Completo
+              </h2>
+              <span class="text-[10px] text-gold-500 font-medium block">Plano Interactivo 3D</span>
+            </div>
+          </div>
+          <i id="icon-acc-plano" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
+        </button>
+
+        <div id="acc-plano" class="accordion-content active">
+          <div class="p-2 space-y-2">
+            <!-- 3D Canvas Wrapper -->
+            <div class="relative w-full h-[380px] lg:h-[580px] bg-slate-950 rounded-lg overflow-hidden border border-slate-800 shadow-inner group">
+              <div id="canvas-container" class="w-full h-full relative cursor-pointer active:cursor-grabbing"></div>
+              
+              <div class="absolute top-2 left-2 flex flex-col gap-1.5 z-10">
+                <button onclick="reset3DView()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+                </button>
+                <button id="btn-explode" onclick="toggleExplodedView()" class="bg-dark-800/90 hover:bg-dark-700 text-slate-200 border border-silver-500/40 px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="move-3d" class="w-3.5 h-3.5 text-gold-400"></i> Desarmar
+                </button>
+              </div>
+
+              <div class="absolute top-2 right-2 z-20 flex flex-col items-end gap-1.5">
+                <button onclick="togglePartsList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/50 px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="list-tree" class="w-3.5 h-3.5"></i> Piezas
+                </button>
+                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-lg shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto w-[180px]">
+                  <div class="text-[8px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1">Selecciona una pieza:</div>
+                  <div id="parts-list-container" class="flex flex-col gap-0.5"></div>
+                </div>
+              </div>
+
+              <!-- TARJETA DE MEDIDAS (AJUSTADA: Más ancha y chata, 4 columnas) -->
+              <div id="part-info-card" class="absolute bottom-2 left-1/2 w-[96%] max-w-[450px] bg-dark-900/95 border border-gold-500/60 rounded-xl p-2 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
+                
+                <button onclick="resetSelection()" class="absolute top-1.5 right-1.5 text-silver-400 hover:text-white bg-dark-800 p-1 rounded-md border border-slate-700 transition-colors z-20">
+                  <i data-lucide="x" class="w-3 h-3"></i>
+                </button>
+
+                <div class="flex justify-between items-center mb-1.5 border-b border-slate-800 pb-1 pr-6">
+                  <div class="flex items-center gap-1.5">
+                    <span id="info-id-badge" class="w-4 h-4 rounded bg-gold-500 text-dark-900 font-black flex items-center justify-center text-[9px]">1</span>
+                    <h3 id="info-name" class="text-[11px] font-black text-gold-400 leading-tight">Nombre</h3>
+                  </div>
+                  <div class="text-right">
+                    <span id="info-qty" class="text-[10px] bg-gold-500/20 text-gold-300 px-1.5 py-0.5 rounded border border-gold-500/30 font-bold inline-block">x2</span>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-1 text-center">
+                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50">
+                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Largo</span>
+                    <span id="info-l" class="font-mono text-[11px] text-slate-100 font-black">0</span>
+                  </div>
+                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50">
+                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Ancho</span>
+                    <span id="info-a" class="font-mono text-[11px] text-slate-100 font-black">0</span>
+                  </div>
+                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50">
+                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Grosor</span>
+                    <span id="info-e" class="font-mono text-[11px] text-slate-100 font-black">18</span>
+                  </div>
+                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50 flex flex-col justify-center items-center">
+                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Tapas</span>
+                    <strong id="info-tap" class="text-[9px] text-gold-400 truncate w-full">G D D D</strong>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA -->
+    <div class="w-full lg:w-2/5 flex flex-col gap-2.5">
+      
+      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
+        <button onclick="toggleAccordion('acc-accesorios')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-2">
+            <div class="p-1 rounded-md bg-gold-500/10 text-gold-400"><i data-lucide="package" class="w-3.5 h-3.5"></i></div>
+            <h2 class="text-[11px] font-bold text-slate-100 uppercase tracking-wide">Accesorios</h2>
+          </div>
+          <i id="icon-acc-accesorios" data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-accesorios" class="accordion-content">
+          <div class="p-2 space-y-1.5">
+            <div class="flex items-center p-1.5 rounded-md bg-dark-900 border border-slate-700">
+              <div class="w-6 h-6 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-2 shrink-0"><i data-lucide="sliders-horizontal" class="w-3 h-3"></i></div>
+              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Correderas Telescópicas</span><span class="text-[9px] text-silver-400">350 mm</span></div>
+              <span class="text-[9px] bg-gold-500/10 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-gold-500/30">2 PARES</span>
+            </div>
+            <div class="flex items-center p-1.5 rounded-md bg-dark-900 border border-slate-700">
+              <div class="w-6 h-6 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-2 shrink-0"><i data-lucide="grip-horizontal" class="w-3 h-3"></i></div>
+              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Jalador Frontal</span><span class="text-[9px] text-silver-400">Metálico</span></div>
+              <span class="text-[9px] bg-gold-500/10 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-gold-500/30">2 UNIDS</span>
+            </div>
+            <div class="flex items-center p-1.5 rounded-md bg-dark-900 border border-slate-700">
+              <div class="w-6 h-6 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-2 shrink-0"><i data-lucide="circle-dot" class="w-3 h-3"></i></div>
+              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Tornillos 4 x 50</span><span class="text-[9px] text-silver-400">Para ensamble</span></div>
+              <span class="text-[9px] bg-slate-800 text-silver-300 font-bold px-1.5 py-0.5 rounded border border-slate-600">100 UNIDS</span>
+            </div>
+            <div class="flex items-center p-1.5 rounded-md bg-dark-900 border border-slate-700">
+              <div class="w-6 h-6 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-2 shrink-0"><i data-lucide="disc" class="w-3 h-3"></i></div>
+              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Tornillos 4 x 30</span><span class="text-[9px] text-silver-400">Para accesorios</span></div>
+              <span class="text-[9px] bg-slate-800 text-silver-300 font-bold px-1.5 py-0.5 rounded border border-slate-600">20 UNIDS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
+        <button onclick="toggleAccordion('acc-herramientas')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-2">
+            <div class="p-1 rounded-md bg-gold-500/10 text-gold-400"><i data-lucide="wrench" class="w-3.5 h-3.5"></i></div>
+            <h2 class="text-[11px] font-bold text-slate-100 uppercase tracking-wide">Herramientas</h2>
+          </div>
+          <i id="icon-acc-herramientas" data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-herramientas" class="accordion-content">
+          <div class="p-2 grid grid-cols-2 gap-1.5">
+            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex flex-col items-center text-center gap-1.5">
+              <div class="w-8 h-8 rounded-full bg-slate-800 text-gold-400 flex items-center justify-center"><i data-lucide="drill" class="w-4 h-4"></i></div>
+              <span class="text-[10px] font-bold text-slate-100 leading-tight">Atornillador Inalámbrico</span>
+            </div>
+            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex flex-col items-center text-center gap-1.5">
+              <div class="w-8 h-8 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="pen-tool" class="w-4 h-4"></i></div>
+              <span class="text-[10px] font-bold text-slate-100 leading-tight">Puntilla<br>Pz2</span>
+            </div>
+            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex flex-col items-center text-center gap-1.5">
+              <div class="w-8 h-8 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="magnet" class="w-4 h-4"></i></div>
+              <span class="text-[10px] font-bold text-slate-100 leading-tight">Extensión Imantada</span>
+            </div>
+            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex flex-col items-center text-center gap-1.5">
+              <div class="w-8 h-8 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="ruler" class="w-4 h-4"></i></div>
+              <span class="text-[10px] font-bold text-slate-100 leading-tight">Wincha y Esquadra</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
+        <button onclick="toggleAccordion('acc-simbolos')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-2">
+            <div class="p-1 rounded-md bg-gold-500/10 text-gold-400"><i data-lucide="shapes" class="w-3.5 h-3.5"></i></div>
+            <h2 class="text-[11px] font-bold text-slate-100 uppercase tracking-wide">Símbolos</h2>
+          </div>
+          <i id="icon-acc-simbolos" data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-simbolos" class="accordion-content">
+          <div class="p-2 grid grid-cols-1 gap-1.5">
+            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex items-center gap-3">
+              <span class="w-6 h-6 rounded bg-slate-800 text-silver-300 font-black flex justify-center items-center text-xs">D</span>
+              <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-slate-100">TAPACANTO DELGADO</span>
+                <span class="text-[9px] text-silver-400">Bordes internos</span>
+              </div>
+            </div>
+            <div class="bg-dark-900 border border-gold-500/50 p-2 rounded-md flex items-center gap-3">
+              <span class="w-6 h-6 rounded bg-gold-500 text-dark-900 font-black flex justify-center items-center text-xs">G</span>
+              <div class="flex flex-col">
+                <span class="text-[10px] font-bold text-gold-400">TAPACANTO GRUESO</span>
+                <span class="text-[9px] text-silver-400">Frentes principales</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
+        <button onclick="toggleAccordion('acc-ranuras')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-2">
+            <div class="p-1 rounded-md bg-gold-500/10 text-gold-400"><i data-lucide="align-vertical-space-between" class="w-3.5 h-3.5"></i></div>
+            <h2 class="text-[11px] font-bold text-slate-100 uppercase tracking-wide">Ranuras</h2>
+          </div>
+          <i id="icon-acc-ranuras" data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-ranuras" class="accordion-content">
+          <div class="p-2 grid grid-cols-1 gap-1.5 text-[11px] font-mono text-silver-300">
+            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-1.5 rounded-md">
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="arrow-right-to-line" class="w-3.5 h-3.5 text-silver-400"></i><span class="font-bold text-slate-100">D : DISTANCIA</span>
+              </div>
+              <strong class="text-gold-400 bg-gold-500/10 px-1.5 py-0.5 rounded border border-gold-500/20">= 18 mm</strong>
+            </div>
+            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-1.5 rounded-md">
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="minimize-2" class="w-3.5 h-3.5 text-silver-400"></i><span class="font-bold text-slate-100">E : ESPESOR</span>
+              </div>
+              <strong class="text-gold-400 bg-gold-500/10 px-1.5 py-0.5 rounded border border-gold-500/20">= 4 mm</strong>
+            </div>
+            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-1.5 rounded-md">
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="arrow-down-to-line" class="w-3.5 h-3.5 text-silver-400"></i><span class="font-bold text-slate-100">P : PROFUNDIDAD</span>
+              </div>
+              <strong class="text-gold-400 bg-gold-500/10 px-1.5 py-0.5 rounded border border-gold-500/20">= 8 mm</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md mb-4">
+        <button onclick="toggleAccordion('acc-materiales')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-2">
+            <div class="p-1 rounded-md bg-gold-500/10 text-gold-400"><i data-lucide="layers" class="w-3.5 h-3.5"></i></div>
+            <h2 class="text-[11px] font-bold text-slate-100 uppercase tracking-wide">Materiales</h2>
+          </div>
+          <i id="icon-acc-materiales" data-lucide="chevron-down" class="w-3.5 h-3.5 text-gold-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-materiales" class="accordion-content">
+          <div class="p-2 grid grid-cols-1 gap-1.5">
+            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-5 h-5 rounded-sm bg-[#b59e24] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="file" class="w-2.5 h-2.5 text-dark-900"></i></div>
+                <span class="text-[10px] font-bold text-slate-100 uppercase">MDF</span>
+              </div>
+              <span class="text-[9px] bg-slate-800 text-silver-300 font-bold px-1.5 py-0.5 rounded border border-slate-600">3 mm</span>
+            </div>
+            <div class="bg-dark-900 border border-slate-700 p-2 rounded-md flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <div class="w-5 h-5 rounded-sm bg-[#e5e5e5] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-2.5 h-2.5 text-dark-900"></i></div>
+                <span class="text-[10px] font-bold text-slate-100 uppercase">MELAMINA</span>
+              </div>
+              <span class="text-[9px] bg-gold-500/10 text-gold-400 font-bold px-1.5 py-0.5 rounded border border-gold-500/30">18 mm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- BOTÓN FLOTANTE DE AYUDA FIJO A LA PANTALLA -->
+  <div id="fab-faq" onclick="openFaqModal()" class="fixed w-12 h-12 bg-red-600 rounded-full shadow-red-glow flex items-center justify-center z-[60] text-white cursor-pointer active:scale-95 transition-transform" style="bottom: 80px; right: 16px;">
+    <i data-lucide="message-circle-question" class="w-6 h-6"></i>
+  </div>
+
+  <!-- MODAL FAQ TIPO CHAT (Más estrecho y más alto, anclado a la derecha) -->
+  <div id="faq-modal" class="fixed z-[60] backdrop-blur-md hidden flex-col opacity-0 transition-opacity duration-300 w-[280px] sm:w-[320px] max-h-[55vh] rounded-xl border border-gold-500/50 shadow-2xl bg-dark-900/95 overflow-hidden" style="bottom: 140px; right: 16px;">
+    
+    <div class="flex-none flex items-center justify-between p-3 border-b border-slate-800 bg-dark-800/90 shadow-md">
+      <div class="flex items-center gap-2 text-red-500">
+        <i data-lucide="message-circle-question" class="w-5 h-5"></i>
+        <h2 class="text-base font-black tracking-wide text-slate-100">Guía y Ayuda</h2>
+      </div>
+      <button onclick="closeFaqModal()" class="p-1.5 bg-dark-700 hover:bg-red-600/20 text-silver-300 hover:text-red-500 rounded-full transition-colors">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    
+    <div class="flex-1 faq-scroll p-3 space-y-2.5 pb-4">
+      <p class="text-[11px] text-silver-400 mb-3 font-medium text-center">Toca cualquier pregunta para ver la respuesta sobre este proyecto.</p>
+      
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Qué significa 'G' y 'D' en la columna de Tapacantos?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          'D' se refiere al Tapacanto Delgado (0.45mm) usado para bordes ocultos o de menor desgaste. 'G' es el Tapacanto Grueso (3mm) que se coloca en frentes y cubiertas para mayor resistencia y mejor acabado estético.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Qué significan los valores de Ranura (D:18, E:4, P:8)?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          Indican cómo hacer el canal para el fondo del cajón. D: 18mm es la Distancia desde el borde inferior; E: 4mm es el Espesor de la ranura; P: 8mm es la Profundidad del corte.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Cuánto espacio queda exactamente para la cama?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          El diseño estructural deja un espacio libre de 1350 mm (1.35 metros) exactos entre los dos cajoneros laterales, diseñado para encajar una cama estándar de 2 plazas.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Por qué la pieza 9 (Fondo) es de un material distinto?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          La pieza 9 se fabrica en MDF de 3mm porque funciona exclusivamente como base ligera del cajón. Usar melamina de 18mm la haría innecesariamente pesada.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Para qué sirven los tornillos 4x50 y los 4x30?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          Los de 4x50 son para unir las placas de melamina de 18mm. Los de 4x30 se usan para fijar las correderas a la madera sin traspasarla.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Qué función cumplen los 'Amarres' (Pieza 5)?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          Son tiras de melamina de 414x80mm en la parte superior. Mantienen los laterales paralelos y a escuadra, dando firmeza a la estructura antes de colocar la tapa.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Por qué necesito una extensión imantada?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          Los cajoneros tienen espacios internos estrechos. La extensión evita que el tornillo se caiga y te permite atornillar las correderas al fondo sin que estorbe el taladro.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿De qué tamaño son las correderas telescópicas?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          El proyecto exige correderas de 350 mm. Esta medida es perfecta ya que los laterales del cajón (Pieza 7) miden exactamente 350 mm de profundidad.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Cómo se fija el frente exterior (Pieza 8)?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          Se fija desde ADENTRO hacia afuera. Primero armas el cajón interno; luego acomodas el frente exterior y metes tornillos de 4x30 atravesando el frente interno.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Por qué el cajonero mide 650mm si el lateral mide 632mm?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          El lateral (Pieza 3) tiene 632mm. A esto se le suma el espesor de la tapa superior que es de 18mm de melamina (632 + 18 = 650mm).
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Qué es la Puntilla Pz2 de la lista de herramientas?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          Es la punta de destornillador tipo Pozidriv tamaño 2. Es la punta con el encaje perfecto para los tornillos negros de ensamble de 4x50.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Cómo aseguro que los cajones estén a 90 grados?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          Antes de deslizar y fijar el fondo, utiliza tu wincha para medir las dos diagonales internas. Si ambas son idénticas, tu cajón está escuadrado.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Para qué sirven los zócalos (Pieza 4)?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          Elevan el primer piso del cajonero evitando que la puerta o cajón inferior roce el piso al abrir, y protegen la estructura de la humedad o escobazos.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Cuándo se pega el tapacanto?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          El proceso de canteado debe realizarse en todas las piezas indicadas por la tabla de despiece ANTES de comenzar a perforar o ensamblar.
+        </div>
+      </details>
+
+      <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+        <summary class="flex items-center justify-between p-2.5 font-bold text-[11px] text-gold-400 cursor-pointer outline-none">
+          ¿Cómo se une todo el respaldo?
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-2"></i>
+        </summary>
+        <div class="p-2.5 pt-0 text-[10px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+          La Pieza 2 (Respaldo Horizontal) se apoya y atornilla desde atrás contra las dos Piezas 1 (Verticales). Mides los 1350mm de separación baja, y fijas.
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- ==================== SCRIPTS COMBINADOS ==================== -->
+  <script>
+    function initRating() {
+      const container = document.getElementById('stars-container');
+      const ratingText = document.getElementById('rating-text');
+      
+      const randomScore = (Math.random() * (4.9 - 4.6) + 4.6).toFixed(1);
+      if(ratingText) ratingText.textContent = `${randomScore} / 5`;
+      
+      if(container) {
+          container.innerHTML = '';
+          const fullStars = Math.floor(randomScore);
+          const hasHalf = (randomScore - fullStars) >= 0.5;
+
+          for (let i = 1; i <= 5; i++) {
+            const star = document.createElement('i');
+            if (i <= fullStars) {
+                star.className = 'fa-solid fa-star';
+            } else if (i === fullStars + 1 && hasHalf) {
+                star.className = 'fa-solid fa-star-half-stroke';
+            } else {
+                star.className = 'fa-regular fa-star';
+            }
+            container.appendChild(star);
+          }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', initRating);
+
+    function toggleAccordion(id) {
+      const targetContent = document.getElementById(id);
+      const targetIcon = document.getElementById('icon-' + id);
+      const isOpen = targetContent.classList.contains('active');
+
+      if (window.innerWidth < 1024) {
+        document.querySelectorAll('.accordion-content').forEach(content => content.classList.remove('active'));
+        document.querySelectorAll('[id^="icon-acc-"]').forEach(icon => icon.style.transform = 'rotate(0deg)');
+      }
+
+      if (!isOpen) {
+        targetContent.classList.add('active');
+        if (targetIcon) targetIcon.style.transform = 'rotate(180deg)';
+        if (id === 'acc-plano') setTimeout(() => onWindowResize(), 100);
+      } else if (window.innerWidth >= 1024) {
+         targetContent.classList.remove('active');
+         if (targetIcon) targetIcon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function openFaqModal() {
+      const modal = document.getElementById('faq-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      
+      setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
+      lucide.createIcons();
+    }
+
+    function closeFaqModal() {
+      const modal = document.getElementById('faq-modal');
+      modal.classList.add('opacity-0');
+      
+      setTimeout(() => { 
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 300);
+    }
+
+    const partsData = {
+      1: { id: 1, name: "RESPALDO VERTICAL", l: 1150, a: 550, cant: 2, tap: "G D D D", esp: 18 },
+      2: { id: 2, name: "RESPALDO HORIZONTAL", l: 1550, a: 400, cant: 1, tap: "G G D D", esp: 18 },
+      3: { id: 3, name: "LATERAL DE CAJONERO", l: 632, a: 400, cant: 4, tap: "D - - -", esp: 18 },
+      4: { id: 4, name: "ZOCALOS", l: 414, a: 80, cant: 4, tap: "- - - -", esp: 18 },
+      5: { id: 5, name: "AMARRES", l: 414, a: 80, cant: 4, tap: "D - - -", esp: 18 },
+      6: { id: 6, name: "FRENTE DE CAJON", l: 352, a: 100, cant: 4, tap: "D - - - (R: 18x4)", esp: 18 },
+      7: { id: 7, name: "LATERAL DE CAJON", l: 350, a: 100, cant: 4, tap: "D - - - (R: 18x4)", esp: 18 },
+      8: { id: 8, name: "FRENTE EXTERIOR", l: 444, a: 150, cant: 2, tap: "G G G G", esp: 18 },
+      9: { id: 9, name: "FONDO DE CAJON", l: 366, a: 328, cant: 2, tap: "MDF 3mm", esp: 3 }
+    };
+
+    let scene, camera, renderer, controls;
+    let headboardGroup;
+    let isExploded = false;
+    let targetLookAt = new THREE.Vector3(0, 0.5, 0); 
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+
+    window.onload = function() {
+      lucide.createIcons();
+      buildPartsListUI();
+      init3D();
+    };
+
+    function togglePartsList() {
+      const panel = document.getElementById('parts-list-panel');
+      panel.classList.toggle('list-panel-open');
+    }
+
+    function buildPartsListUI() {
+      const container = document.getElementById('parts-list-container');
+      container.innerHTML = '';
+      
+      Object.values(partsData).forEach(part => {
+        const btn = document.createElement('button');
+        btn.className = "flex items-center gap-1.5 w-full text-left p-1 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group";
+        
+        const badgeColor = part.id === 9 ? "bg-amber-500 text-dark-900" : "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
+        const textColor = part.id === 9 ? "text-amber-400" : "text-silver-300 group-hover:text-gold-300";
+        
+        btn.innerHTML = `
+          <span class="w-4 h-4 shrink-0 rounded flex items-center justify-center text-[8px] font-black transition-colors ${badgeColor}">${part.id}</span>
+          <span class="text-[9px] font-bold truncate ${textColor}">${part.name}</span>
+        `;
+        btn.onclick = () => selectPartFromList(part.id);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectPartFromList(partId) {
+      let targetMesh = null;
+      headboardGroup.traverse((child) => {
+        if (child.isMesh && child.userData.partId === partId && !targetMesh) {
+          targetMesh = child;
+        }
+      });
+      if (targetMesh) {
+        selectPart(partId, targetMesh);
+        document.getElementById('parts-list-panel').classList.remove('list-panel-open');
+      }
+    }
+
+    function init3D() {
+      const container = document.getElementById('canvas-container');
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0a0b0e);
+
+      camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+      camera.position.set(0, 1.8, 5.5);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.maxPolarAngle = Math.PI / 2 + 0.05;
+      controls.minDistance = 1.0;
+      controls.maxDistance = 10;
+      controls.target.set(0, 0.5, 0);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      scene.add(ambientLight);
+      const dirLight = new THREE.DirectionalLight(0xfff5e6, 1.2);
+      dirLight.position.set(3, 5, 4);
+      dirLight.castShadow = true;
+      scene.add(dirLight);
+
+      const gridHelper = new THREE.GridHelper(6, 20, 0xd4af37, 0x222633);
+      gridHelper.position.y = 0;
+      scene.add(gridHelper);
+
+      buildFurnitureModel();
+
+      window.addEventListener('resize', onWindowResize);
+      container.addEventListener('pointerdown', onCanvasClick);
+
+      animate();
+    }
+
+    function buildFurnitureModel() {
+      headboardGroup = new THREE.Group();
+      scene.add(headboardGroup);
+
+      const melaminaLightMat = new THREE.MeshStandardMaterial({ color: 0xc8a27a, roughness: 0.4 });
+      const melaminaDarkMat = new THREE.MeshStandardMaterial({ color: 0x2c1f18, roughness: 0.3 });
+
+      function createBox(w, h, d, x, y, z, mat, partId) {
+        const geo = new THREE.BoxGeometry(w, h, d);
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(x, y, z);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.userData = { partId: partId, origPos: new THREE.Vector3(x, y, z), defaultMat: mat };
+        return mesh;
+      }
+
+      const xOffset = 0.90; 
+
+      headboardGroup.add(createBox(0.55, 1.15, 0.018, -xOffset, 1.15 / 2, -0.2, melaminaLightMat, 1));
+      headboardGroup.add(createBox(0.55, 1.15, 0.018, xOffset, 1.15 / 2, -0.2, melaminaLightMat, 1));
+      headboardGroup.add(createBox(1.55, 0.40, 0.018, 0, 0.95, -0.19, melaminaLightMat, 2));
+
+      function buildCajonero(xPos) {
+        const group = new THREE.Group();
+        group.add(createBox(0.018, 0.632, 0.40, xPos - 0.21, 0.632 / 2, 0, melaminaLightMat, 3));
+        group.add(createBox(0.018, 0.632, 0.40, xPos + 0.21, 0.632 / 2, 0, melaminaLightMat, 3));
+        group.add(createBox(0.45, 0.018, 0.42, xPos, 0.64, 0, melaminaLightMat, 3));
+
+        group.add(createBox(0.414, 0.08, 0.018, xPos, 0.04, 0.18, melaminaLightMat, 4));
+        group.add(createBox(0.414, 0.018, 0.08, xPos, 0.62, 0.15, melaminaLightMat, 5));
+
+        group.add(createBox(0.444, 0.15, 0.018, xPos, 0.50, 0.20, melaminaDarkMat, 8));
+        group.add(createBox(0.12, 0.015, 0.02, xPos, 0.50, 0.215, new THREE.MeshStandardMaterial({ color: 0xe0e0e0, metalness: 0.9 }), 0)); 
+        
+        group.add(createBox(0.352, 0.10, 0.018, xPos, 0.48, 0.17, melaminaLightMat, 6));
+        group.add(createBox(0.018, 0.10, 0.35, xPos - 0.17, 0.48, 0, melaminaLightMat, 7));
+        group.add(createBox(0.018, 0.10, 0.35, xPos + 0.17, 0.48, 0, melaminaLightMat, 7));
+        
+        group.add(createBox(0.366, 0.003, 0.328, xPos, 0.435, 0, new THREE.MeshStandardMaterial({ color: 0xffd700 }), 9));
+        return group;
+      }
+
+      headboardGroup.add(buildCajonero(-xOffset));
+      headboardGroup.add(buildCajonero(xOffset));
+    }
+
+    function onCanvasClick(event) {
+      const listPanel = document.getElementById('parts-list-panel');
+      if(listPanel.classList.contains('list-panel-open') && event.clientY > 100) {
+          listPanel.classList.remove('list-panel-open');
+      }
+
+      const container = document.getElementById('canvas-container');
+      const rect = renderer.domElement.getBoundingClientRect();
+      
+      mouse.x = ( (event.clientX - rect.left) / rect.width ) * 2 - 1;
+      mouse.y = - ( (event.clientY - rect.top) / rect.height ) * 2 + 1;
+      
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(headboardGroup.children, true);
+      
+      if (intersects.length > 0) {
+        const object = intersects[0].object;
+        const partId = object.userData.partId;
+        if(partId && partId > 0) selectPart(partId, object);
+      } 
+    }
+
+    function selectPart(partId, clickedMesh) {
+      headboardGroup.traverse((child) => {
+        if (child.isMesh && child.userData.defaultMat) {
+          if (child.userData.partId === partId) {
+            child.material = new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0x856404, roughness: 0.2 });
+          } else {
+            child.material = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.40 });
+          }
+        }
+      });
+
+      const data = partsData[partId];
+      if (data) {
+        document.getElementById('info-id-badge').innerText = data.id;
+        document.getElementById('info-name').innerText = data.name;
+        document.getElementById('info-qty').innerText = "x" + data.cant;
+        document.getElementById('info-l').innerText = data.l;
+        document.getElementById('info-a').innerText = data.a;
+        document.getElementById('info-e').innerText = data.esp;
+        document.getElementById('info-tap').innerText = data.tap;
+        document.getElementById('part-info-card').classList.add('info-card-visible');
+      }
+
+      const bbox = new THREE.Box3().setFromObject(clickedMesh);
+      const center = new THREE.Vector3();
+      bbox.getCenter(center);
+      targetLookAt.copy(center);
+    }
+
+    function resetSelection() {
+      headboardGroup.traverse((child) => {
+        if (child.isMesh && child.userData.defaultMat) {
+          child.material = child.userData.defaultMat;
+          child.material.opacity = 1.0;
+          child.material.transparent = false;
+        }
+      });
+      document.getElementById('part-info-card').classList.remove('info-card-visible');
+      targetLookAt.set(0, 0.5, 0);
+    }
+
+    function reset3DView() {
+      resetSelection();
+      camera.position.set(0, 1.8, 5.5);
+      document.getElementById('parts-list-panel').classList.remove('list-panel-open');
+      if (isExploded) toggleExplodedView();
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.target.lerp(targetLookAt, 0.08);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('canvas-container');
+      if (!container) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+
+    function toggleExplodedView() {
+      isExploded = !isExploded;
+      const btn = document.getElementById('btn-explode');
+      btn.classList.toggle('bg-gold-500', isExploded);
+      btn.classList.toggle('text-dark-900', isExploded);
+      resetSelection();
+
+      headboardGroup.traverse((child) => {
+        if (child.isMesh && child.userData.origPos) {
+          const orig = child.userData.origPos;
+          if (isExploded) {
+            const pId = child.userData.partId;
+            let offset = new THREE.Vector3(0, 0, 0);
+            if (pId === 1) offset.set(0, 0, -0.2);
+            if (pId === 2) offset.set(0, 0.25, -0.3);
+            if (pId === 8 || pId === 6 || pId === 7 || pId === 9) offset.set(0, 0, 0.25);
+            if (pId === 4) offset.set(0, -0.1, 0);
+            child.position.set(orig.x + offset.x, orig.y + offset.y, orig.z + offset.z);
+          } else {
+            child.position.copy(orig);
+          }
+        }
+      });
+    }
+  </script>
 </body>
 </html>
