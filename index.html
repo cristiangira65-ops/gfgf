@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Plano Interactivo 3D - Aparicio Studio</title>
+  <title>La Biblia del Artesano - Aparicio Studio</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -26,6 +26,9 @@
     }
   </script>
 
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -34,6 +37,9 @@
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
   <style>
+    /* =========================================
+       ESTILOS DEL COMPONENTE INFERIOR (CÓDIGO 1)
+       ========================================= */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
     body {
@@ -49,7 +55,7 @@
 
     /* Scrollbar Exclusivo y Visible para el Modal de Ayuda */
     .faq-scroll {
-      overflow-y: scroll; /* Fuerza la barra */
+      overflow-y: scroll;
       -webkit-overflow-scrolling: touch;
     }
     .faq-scroll::-webkit-scrollbar { width: 6px; }
@@ -91,11 +97,330 @@
       0%    {opacity: 0; transform: translateY(-5px)}
       100%  {opacity: 1; transform: translateY(0)}
     }
+
+    /* =========================================
+       ESTILOS DEL COMPONENTE SUPERIOR (CÓDIGO 2)
+       ========================================= */
+    :root {
+        --bg-dark: #080808;
+        --bg-card: #121212;
+        --bg-accent: #1a1a1a;
+        
+        --gold: #fdb813;
+        --gold-light: #ffe066;
+        --gold-bright: #fff2a3;
+        --gold-subtle: rgba(253, 184, 19, 0.15);
+        --gold-border: rgba(253, 184, 19, 0.7);
+        --gold-glow: rgba(253, 184, 19, 0.35);
+        --gold-gradient: linear-gradient(135deg, #ffe066 0%, #fdb813 50%, #c98a00 100%);
+        
+        --text-white: #ffffff;
+        --text-gray: #b5b5b5;
+        --text-muted: #808080;
+    }
+
+    .header-container {
+        width: 100%;
+        max-width: 100%;
+        background-color: var(--bg-card);
+        border: 1px solid var(--gold-border);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.95), 0 0 18px var(--gold-glow);
+        transition: all 0.3s ease;
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    .top-brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 16px;
+        background-color: #070707;
+        border-bottom: 1px solid var(--gold-border);
+    }
+
+    .brand-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo-box {
+        width: 42px;
+        height: 42px;
+        background: var(--gold-gradient);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 10px var(--gold-glow);
+        overflow: hidden;
+        padding: 2px;
+        flex-shrink: 0;
+    }
+
+    .logo-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 6px;
+        background-color: #080808;
+    }
+
+    .brand-text {
+        font-size: 11.5px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: var(--gold-light);
+        text-transform: uppercase;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        text-shadow: 0 0 8px rgba(253, 184, 19, 0.4);
+    }
+
+    .rating-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        background-color: var(--gold-subtle);
+        border: 1px solid var(--gold-border);
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 9px;
+        color: var(--gold-light);
+        font-weight: 700;
+        box-shadow: 0 0 8px var(--gold-glow);
+    }
+
+    .rating-stars {
+        display: flex;
+        gap: 2px;
+        color: var(--gold);
+        font-size: 8px;
+    }
+
+    .rating-text-value {
+        font-size: 9.5px;
+        color: var(--gold-bright);
+        letter-spacing: 0.5px;
+    }
+
+    .hero-image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 360px;
+        background-color: #000;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        opacity: 0.95;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 120px;
+        background: linear-gradient(0deg, var(--bg-card) 0%, rgba(18,18,18,0) 100%);
+        pointer-events: none;
+    }
+
+    .content-body {
+        padding: 18px 24px 24px 24px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .main-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--text-white);
+        line-height: 1.3;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .main-description {
+        font-size: 13px;
+        color: var(--text-gray);
+        line-height: 1.6;
+        margin-bottom: 22px;
+    }
+
+    .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        width: 100%;
+    }
+
+    .spec-card {
+        background-color: var(--bg-accent);
+        border: 1px solid var(--gold-border);
+        border-radius: 12px;
+        aspect-ratio: 1 / 1; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .spec-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--gold-light);
+        box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 0 12px var(--gold-glow);
+    }
+
+    .spec-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: var(--gold-gradient);
+    }
+
+    .spec-icon-box {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background-color: var(--gold-subtle);
+        border: 1px solid var(--gold-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        color: var(--gold-light);
+        font-size: 14px;
+        box-shadow: 0 0 8px var(--gold-glow);
+    }
+
+    .spec-label {
+        font-size: 9px;
+        color: var(--text-muted);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+    }
+
+    .spec-value {
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--gold-bright);
+        line-height: 1.2;
+        text-shadow: 0 0 5px rgba(253, 184, 19, 0.3);
+    }
+
+    @media (max-width: 650px) {
+        .hero-image-wrapper { height: 240px; }
+        .main-title { font-size: 16px; }
+        .content-body { padding: 15px 16px 20px 16px; }
+        .specs-grid { gap: 8px; }
+        .spec-card { padding: 6px; }
+        .spec-icon-box { width: 28px; height: 28px; font-size: 12px; margin-bottom: 4px; }
+        .spec-label { font-size: 8px; }
+        .spec-value { font-size: 10.5px; }
+    }
   </style>
 </head>
 <body class="bg-dark-900 text-slate-100 min-h-screen flex flex-col justify-start items-center selection:bg-gold-500 selection:text-black pb-8 pt-2">
 
-  <!-- Responsive Grid Container -->
+  <!-- ==================== SECCIÓN SUPERIOR: PRESENTACIÓN ==================== -->
+  <div class="w-full max-w-7xl mx-auto px-2 lg:px-4 mb-4 mt-2">
+      <div class="header-container" id="main-header">
+          
+          <!-- BRANDING SUPERIOR RECOMPACTADO -->
+          <div class="top-brand">
+              <div class="brand-left">
+                  <div class="logo-box">
+                      <img 
+                          src="https://i.ibb.co/SDwC5YCb/IMG-20260305-231115-415.png" 
+                          alt="Logo La Biblia del Artesano"
+                          onerror="this.onerror=null; this.src='https://placehold.co/120x120/141414/fdb813?text=BA';"
+                      />
+                  </div>
+                  <div>
+                      <span class="brand-text">LA BIBLIA DEL ARTESANO</span>
+                  </div>
+              </div>
+              
+              <div class="rating-badge">
+                  <div class="rating-stars" id="stars-container"></div>
+                  <span class="rating-text-value" id="rating-text">4.8 / 5</span>
+              </div>
+          </div>
+
+          <!-- FOTO PRINCIPAL -->
+          <div class="hero-image-wrapper">
+              <img 
+                  src="https://i.ibb.co/v6knQvqj/163d095f-b5b7-4ec6-bf35-38c76de76178.jpg" 
+                  alt="Cabecera con Veladores Integrados" 
+                  class="hero-img"
+                  onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80';"
+              />
+              <div class="hero-overlay"></div>
+          </div>
+
+          <!-- DATOS Y TÍTULO DEL PROYECTO -->
+          <div class="content-body">
+              <h1 class="main-title">CABECERA DE CAMA DE 2 PLAZAS CON VELADORES Y CAJONES</h1>
+              <p class="main-description">
+                  Este proyecto está concebido para optimizar y enriquecer el espacio del dormitorio principal, integrando en un solo elemento arquitectónico una majestuosa cabecera modular con dos veladores flotantes equipados con cajones deslizantes a cada lado.
+              </p>
+
+              <div class="specs-grid">
+                  <div class="spec-card">
+                      <div class="spec-icon-box">
+                          <i class="fa-solid fa-gear"></i>
+                      </div>
+                      <span class="spec-label">Especialidad</span>
+                      <span class="spec-value">Carpintería en Melamina</span>
+                  </div>
+                  
+                  <div class="spec-card">
+                      <div class="spec-icon-box">
+                          <i class="fa-solid fa-layer-group"></i>
+                      </div>
+                      <span class="spec-label">Dificultad</span>
+                      <span class="spec-value">Intermedio</span>
+                  </div>
+                  
+                  <div class="spec-card">
+                      <div class="spec-icon-box">
+                          <i class="fa-regular fa-clock"></i>
+                      </div>
+                      <span class="spec-label">Tiempo Est.</span>
+                      <span class="spec-value">6 a 8 Horas</span>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+  </div>
+
+  <!-- ==================== SECCIÓN INFERIOR: PLANO INTERACTIVO Y DESPIECE ==================== -->
   <main class="w-full max-w-7xl mx-auto px-2 lg:px-4 flex flex-col lg:flex-row gap-3 relative">
 
     <!-- COLUMNA IZQUIERDA (Para PC) / ARRIBA (Para Móvil) : PLANO 3D -->
@@ -358,13 +683,12 @@
     </div>
   </main>
 
-  <!-- BOTÓN FLOTANTE DE AYUDA (DRAGGABLE). -->
+  <!-- BOTÓN FLOTANTE DE AYUDA (DRAGGABLE) -->
   <div id="fab-faq" class="fixed w-12 h-12 bg-red-600 rounded-full shadow-red-glow flex items-center justify-center z-40 cursor-grab active:cursor-grabbing text-white touch-none transition-transform active:scale-95" style="top: 50%; right: 16px; margin-top: -24px;">
     <i data-lucide="message-circle-question" class="w-6 h-6"></i>
   </div>
 
   <!-- MODAL FAQ: SCROLL DEFINITIVO -->
-  <!-- Modificado: hidden a flex en JS, altura y ancho fijos para asegurar el contenedor -->
   <div id="faq-modal" class="fixed top-0 left-0 w-full h-full bg-dark-900/95 z-50 backdrop-blur-md hidden flex-col opacity-0 transition-opacity duration-300">
     
     <!-- Cabecera Fija -->
@@ -378,7 +702,7 @@
       </button>
     </div>
     
-    <!-- Área de Scroll Interno (Clase faq-scroll forzada en CSS) -->
+    <!-- Área de Scroll Interno -->
     <div class="flex-1 faq-scroll p-3 space-y-2.5 pb-12">
       <p class="text-[11px] text-silver-400 mb-3 font-medium text-center">Toca cualquier pregunta para ver la respuesta sobre este proyecto.</p>
       
@@ -534,7 +858,37 @@
     </div>
   </div>
 
+  <!-- ==================== SCRIPTS COMBINADOS ==================== -->
   <script>
+    // --- LÓGICA DE ESTRELLAS (CÓDIGO 2) ---
+    function initRating() {
+      const container = document.getElementById('stars-container');
+      const ratingText = document.getElementById('rating-text');
+      
+      const randomScore = (Math.random() * (4.9 - 4.6) + 4.6).toFixed(1);
+      if(ratingText) ratingText.textContent = `${randomScore} / 5`;
+      
+      if(container) {
+          container.innerHTML = '';
+          const fullStars = Math.floor(randomScore);
+          const hasHalf = (randomScore - fullStars) >= 0.5;
+
+          for (let i = 1; i <= 5; i++) {
+            const star = document.createElement('i');
+            if (i <= fullStars) {
+                star.className = 'fa-solid fa-star';
+            } else if (i === fullStars + 1 && hasHalf) {
+                star.className = 'fa-solid fa-star-half-stroke';
+            } else {
+                star.className = 'fa-regular fa-star';
+            }
+            container.appendChild(star);
+          }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', initRating);
+
+    // --- LÓGICA DE INTERFAZ Y 3D (CÓDIGO 1) ---
     // ACCORDIONS
     function toggleAccordion(id) {
       const targetContent = document.getElementById(id);
