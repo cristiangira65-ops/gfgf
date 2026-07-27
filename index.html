@@ -74,15 +74,15 @@
       opacity: 1;
     }
 
-    /* AJUSTES A LA TARJETA DE INFO PARA HACERLA MÁS PEQUEÑA (20% MENOS) Y MÁS ABAJO */
+    /* TARJETA DE INFO - AJUSTADA */
     #part-info-card {
       left: 50%;
       transform-origin: bottom center;
-      transform: translateY(150%) translateX(-50%) scale(0.8);
+      transform: translateY(150%) translateX(-50%);
       opacity: 0;
     }
     .info-card-visible {
-      transform: translateY(0) translateX(-50%) scale(0.8) !important;
+      transform: translateY(0) translateX(-50%) !important;
       opacity: 1 !important;
       pointer-events: auto !important;
     }
@@ -352,13 +352,12 @@
     }
   </style>
 </head>
-<body class="bg-dark-900 text-slate-100 min-h-screen flex flex-col justify-start items-center selection:bg-gold-500 selection:text-black pb-8 pt-2">
+<body class="bg-dark-900 text-slate-100 min-h-screen flex flex-col justify-start items-center selection:bg-gold-500 selection:text-black pb-8 pt-2 relative">
 
   <!-- ==================== SECCIÓN SUPERIOR: PRESENTACIÓN ==================== -->
   <div class="w-full max-w-7xl mx-auto px-2 lg:px-4 mb-4 mt-2">
       <div class="header-container" id="main-header">
           
-          <!-- BRANDING SUPERIOR RECOMPACTADO -->
           <div class="top-brand">
               <div class="brand-left">
                   <div class="logo-box">
@@ -379,7 +378,6 @@
               </div>
           </div>
 
-          <!-- FOTO PRINCIPAL -->
           <div class="hero-image-wrapper">
               <img 
                   src="https://i.ibb.co/v6knQvqj/163d095f-b5b7-4ec6-bf35-38c76de76178.jpg" 
@@ -390,7 +388,6 @@
               <div class="hero-overlay"></div>
           </div>
 
-          <!-- DATOS Y TÍTULO DEL PROYECTO -->
           <div class="content-body">
               <h1 class="main-title">CABECERA DE CAMA DE 2 PLAZAS CON VELADORES Y CAJONES</h1>
               <p class="main-description">
@@ -430,7 +427,7 @@
   <!-- ==================== SECCIÓN INFERIOR: PLANO INTERACTIVO Y DESPIECE ==================== -->
   <main class="w-full max-w-7xl mx-auto px-2 lg:px-4 flex flex-col lg:flex-row gap-3 relative">
 
-    <!-- COLUMNA IZQUIERDA (Para PC) / ARRIBA (Para Móvil) : PLANO 3D -->
+    <!-- COLUMNA IZQUIERDA -->
     <div class="w-full lg:w-3/5 flex-shrink-0">
       <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-lg transition-all duration-300">
         <button onclick="toggleAccordion('acc-plano')" class="w-full p-2.5 flex items-center justify-between bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-left active:scale-[0.99] transition-transform">
@@ -454,7 +451,6 @@
             <div class="relative w-full h-[380px] lg:h-[580px] bg-slate-950 rounded-lg overflow-hidden border border-slate-800 shadow-inner group">
               <div id="canvas-container" class="w-full h-full relative cursor-pointer active:cursor-grabbing"></div>
               
-              <!-- Controles Izquierda -->
               <div class="absolute top-2 left-2 flex flex-col gap-1.5 z-10">
                 <button onclick="reset3DView()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1 shadow-md backdrop-blur transition-colors">
                   <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
@@ -464,7 +460,6 @@
                 </button>
               </div>
 
-              <!-- Menú Piezas Derecha -->
               <div class="absolute top-2 right-2 z-20 flex flex-col items-end gap-1.5">
                 <button onclick="togglePartsList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/50 px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1 shadow-md backdrop-blur transition-colors">
                   <i data-lucide="list-tree" class="w-3.5 h-3.5"></i> Piezas
@@ -475,49 +470,40 @@
                 </div>
               </div>
 
-              <!-- Tarjeta de Medidas (Popup Info) AJUSTADO: Más pequeño y pegado abajo -->
-              <div id="part-info-card" class="absolute bottom-1 w-11/12 max-w-[280px] bg-dark-900/95 border border-gold-500/60 rounded-xl p-2.5 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
+              <!-- TARJETA DE MEDIDAS (AJUSTADA: Más ancha y chata, 4 columnas) -->
+              <div id="part-info-card" class="absolute bottom-2 left-1/2 w-[96%] max-w-[450px] bg-dark-900/95 border border-gold-500/60 rounded-xl p-2 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
                 
-                <!-- BOTÓN X PARA CERRAR LA TARJETA -->
-                <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1 rounded-md border border-slate-700 transition-colors z-20">
+                <button onclick="resetSelection()" class="absolute top-1.5 right-1.5 text-silver-400 hover:text-white bg-dark-800 p-1 rounded-md border border-slate-700 transition-colors z-20">
                   <i data-lucide="x" class="w-3 h-3"></i>
                 </button>
 
-                <div class="flex justify-between items-start mb-2 border-b border-slate-800 pb-1.5 pr-6">
-                  <div>
-                    <div class="flex items-center gap-1 mb-0.5">
-                      <span id="info-id-badge" class="w-3.5 h-3.5 rounded bg-gold-500 text-dark-900 font-black flex items-center justify-center text-[8px]">1</span>
-                      <span class="text-[8px] text-silver-400 uppercase tracking-widest font-bold block">Seleccionado</span>
-                    </div>
+                <div class="flex justify-between items-center mb-1.5 border-b border-slate-800 pb-1 pr-6">
+                  <div class="flex items-center gap-1.5">
+                    <span id="info-id-badge" class="w-4 h-4 rounded bg-gold-500 text-dark-900 font-black flex items-center justify-center text-[9px]">1</span>
                     <h3 id="info-name" class="text-[11px] font-black text-gold-400 leading-tight">Nombre</h3>
                   </div>
                   <div class="text-right">
-                    <span class="text-[8px] text-silver-400 uppercase tracking-widest font-bold block mb-0.5">Cant.</span>
                     <span id="info-qty" class="text-[10px] bg-gold-500/20 text-gold-300 px-1.5 py-0.5 rounded border border-gold-500/30 font-bold inline-block">x2</span>
                   </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-1.5 text-center">
-                  <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50">
-                    <i data-lucide="arrow-left-right" class="w-2.5 h-2.5 text-silver-400 mx-auto mb-0.5"></i>
-                    <span class="text-[8px] text-silver-400 block uppercase font-bold">Largo</span>
+                <div class="grid grid-cols-4 gap-1 text-center">
+                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50">
+                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Largo</span>
                     <span id="info-l" class="font-mono text-[11px] text-slate-100 font-black">0</span>
                   </div>
-                  <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50">
-                    <i data-lucide="arrow-up-down" class="w-2.5 h-2.5 text-silver-400 mx-auto mb-0.5"></i>
-                    <span class="text-[8px] text-silver-400 block uppercase font-bold">Ancho</span>
+                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50">
+                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Ancho</span>
                     <span id="info-a" class="font-mono text-[11px] text-slate-100 font-black">0</span>
                   </div>
-                  <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50">
-                    <i data-lucide="layers" class="w-2.5 h-2.5 text-silver-400 mx-auto mb-0.5"></i>
-                    <span class="text-[8px] text-silver-400 block uppercase font-bold">Grosor</span>
+                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50">
+                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Grosor</span>
                     <span id="info-e" class="font-mono text-[11px] text-slate-100 font-black">18</span>
                   </div>
-                </div>
-                
-                <div class="mt-1.5 text-center bg-dark-800/50 py-1 rounded text-[9px] text-silver-300 border border-slate-800 flex justify-center items-center gap-1.5">
-                  <span>Tapacantos:</span>
-                  <strong id="info-tap" class="text-gold-400 bg-dark-900 px-1.5 py-0.5 rounded border border-gold-500/20">G D D D</strong>
+                  <div class="bg-dark-800/80 rounded p-1 border border-slate-700/50 flex flex-col justify-center items-center">
+                    <span class="text-[7px] text-silver-400 block uppercase font-bold mb-0.5">Tapas</span>
+                    <strong id="info-tap" class="text-[9px] text-gold-400 truncate w-full">G D D D</strong>
+                  </div>
                 </div>
               </div>
 
@@ -527,10 +513,9 @@
       </div>
     </div>
 
-    <!-- COLUMNA DERECHA (Para PC) / ABAJO (Para Móvil) : LISTAS -->
+    <!-- COLUMNA DERECHA -->
     <div class="w-full lg:w-2/5 flex flex-col gap-2.5">
       
-      <!-- ACCESORIOS -->
       <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
         <button onclick="toggleAccordion('acc-accesorios')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
           <div class="flex items-center gap-2">
@@ -565,7 +550,6 @@
         </div>
       </div>
 
-      <!-- HERRAMIENTAS -->
       <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
         <button onclick="toggleAccordion('acc-herramientas')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
           <div class="flex items-center gap-2">
@@ -596,7 +580,6 @@
         </div>
       </div>
 
-      <!-- SÍMBOLOS -->
       <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
         <button onclick="toggleAccordion('acc-simbolos')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
           <div class="flex items-center gap-2">
@@ -625,7 +608,6 @@
         </div>
       </div>
 
-      <!-- RANURAS -->
       <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md">
         <button onclick="toggleAccordion('acc-ranuras')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
           <div class="flex items-center gap-2">
@@ -658,7 +640,6 @@
         </div>
       </div>
 
-      <!-- MATERIALES -->
       <div class="border border-gold-500/30 rounded-xl bg-dark-800/80 overflow-hidden shadow-md mb-4">
         <button onclick="toggleAccordion('acc-materiales')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
           <div class="flex items-center gap-2">
@@ -690,15 +671,14 @@
     </div>
   </main>
 
-  <!-- BOTÓN FLOTANTE DE AYUDA FIJO -->
-  <div id="fab-faq" onclick="openFaqModal()" class="fixed w-12 h-12 bg-red-600 rounded-full shadow-red-glow flex items-center justify-center z-40 text-white cursor-pointer active:scale-95 transition-transform" style="bottom: 20%; right: 16px;">
+  <!-- BOTÓN FLOTANTE DE AYUDA FIJO A LA PANTALLA -->
+  <div id="fab-faq" onclick="openFaqModal()" class="fixed w-12 h-12 bg-red-600 rounded-full shadow-red-glow flex items-center justify-center z-[60] text-white cursor-pointer active:scale-95 transition-transform" style="bottom: 80px; right: 16px;">
     <i data-lucide="message-circle-question" class="w-6 h-6"></i>
   </div>
 
-  <!-- MODAL FAQ TIPO CHAT -->
-  <div id="faq-modal" class="fixed z-50 backdrop-blur-md hidden flex-col opacity-0 transition-opacity duration-300 w-[calc(100%-32px)] max-w-[350px] max-h-[60vh] rounded-xl border border-gold-500/50 shadow-2xl bg-dark-900/95 overflow-hidden" style="bottom: calc(20% + 60px); right: 16px;">
+  <!-- MODAL FAQ TIPO CHAT (Más estrecho y más alto, anclado a la derecha) -->
+  <div id="faq-modal" class="fixed z-[60] backdrop-blur-md hidden flex-col opacity-0 transition-opacity duration-300 w-[280px] sm:w-[320px] max-h-[55vh] rounded-xl border border-gold-500/50 shadow-2xl bg-dark-900/95 overflow-hidden" style="bottom: 140px; right: 16px;">
     
-    <!-- Cabecera Fija -->
     <div class="flex-none flex items-center justify-between p-3 border-b border-slate-800 bg-dark-800/90 shadow-md">
       <div class="flex items-center gap-2 text-red-500">
         <i data-lucide="message-circle-question" class="w-5 h-5"></i>
@@ -709,7 +689,6 @@
       </button>
     </div>
     
-    <!-- Área de Scroll Interno -->
     <div class="flex-1 faq-scroll p-3 space-y-2.5 pb-4">
       <p class="text-[11px] text-silver-400 mb-3 font-medium text-center">Toca cualquier pregunta para ver la respuesta sobre este proyecto.</p>
       
@@ -867,7 +846,6 @@
 
   <!-- ==================== SCRIPTS COMBINADOS ==================== -->
   <script>
-    // --- LÓGICA DE ESTRELLAS (CÓDIGO 2) ---
     function initRating() {
       const container = document.getElementById('stars-container');
       const ratingText = document.getElementById('rating-text');
@@ -895,8 +873,6 @@
     }
     window.addEventListener('DOMContentLoaded', initRating);
 
-    // --- LÓGICA DE INTERFAZ Y 3D (CÓDIGO 1) ---
-    // ACCORDIONS
     function toggleAccordion(id) {
       const targetContent = document.getElementById(id);
       const targetIcon = document.getElementById('icon-' + id);
@@ -917,7 +893,6 @@
       }
     }
 
-    // MODAL FAQ TIPO CHAT
     function openFaqModal() {
       const modal = document.getElementById('faq-modal');
       modal.classList.remove('hidden');
@@ -937,7 +912,6 @@
       }, 300);
     }
 
-    // DATOS DE PIEZAS
     const partsData = {
       1: { id: 1, name: "RESPALDO VERTICAL", l: 1150, a: 550, cant: 2, tap: "G D D D", esp: 18 },
       2: { id: 2, name: "RESPALDO HORIZONTAL", l: 1550, a: 400, cant: 1, tap: "G G D D", esp: 18 },
@@ -1001,7 +975,6 @@
       }
     }
 
-    // INICIALIZACIÓN 3D
     function init3D() {
       const container = document.getElementById('canvas-container');
       const width = container.clientWidth;
@@ -1122,7 +1095,6 @@
           if (child.userData.partId === partId) {
             child.material = new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0x856404, roughness: 0.2 });
           } else {
-            // AJUSTADO: Se subió la opacidad de 0.15 a 0.40 para que se note más
             child.material = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.40 });
           }
         }
