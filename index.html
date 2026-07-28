@@ -96,10 +96,10 @@
     details > summary { list-style: none; outline: none; }
     details > summary::-webkit-details-marker { display: none; }
     
-    /* ANIMACIONES ESTILO NETFLIX (Solo 1 vez) */
+    /* ANIMACIONES ESTILO NETFLIX (Direccionales) */
     .animate-on-scroll {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
       transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, transform;
     }
@@ -143,29 +143,29 @@
 
     .top-brand {
         display: flex; align-items: center; justify-content: space-between;
-        padding: 8px 14px; background-color: #070707; border-bottom: 1px solid var(--gold-border);
+        padding: 10px 16px; background-color: #070707; border-bottom: 1px solid var(--gold-border);
     }
 
     .logo-box {
-        width: 36px; height: 36px; background: var(--gold-gradient); border-radius: 6px;
+        width: 38px; height: 38px; background: var(--gold-gradient); border-radius: 6px;
         display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px var(--gold-glow);
         padding: 2px; flex-shrink: 0;
     }
 
     .brand-text {
-        font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: var(--gold-light);
+        font-size: 11.5px; font-weight: 800; letter-spacing: 0.5px; color: var(--gold-light);
         text-transform: uppercase; text-shadow: 0 0 6px rgba(253, 184, 19, 0.4);
     }
 
-    .hero-image-wrapper { position: relative; width: 100%; height: 280px; background-color: #000; display: flex; align-items: center; justify-content: center; }
+    .hero-image-wrapper { position: relative; width: 100%; height: 290px; background-color: #000; display: flex; align-items: center; justify-content: center; }
     .hero-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.95; }
     .hero-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(0deg, var(--bg-card) 0%, rgba(18,18,18,0) 100%); pointer-events: none; }
-    .content-body { padding: 16px 18px 20px 18px; position: relative; z-index: 10; }
+    .content-body { padding: 18px 20px 22px 20px; position: relative; z-index: 10; }
     
     .spec-card {
         background-color: var(--bg-accent); border: 1px solid var(--gold-border); border-radius: 10px;
         aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-        padding: 6px; text-align: center; position: relative; overflow: hidden;
+        padding: 8px; text-align: center; position: relative; overflow: hidden;
         box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4), 0 3px 8px rgba(0, 0, 0, 0.3);
         transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
@@ -173,8 +173,8 @@
     .spec-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: var(--gold-gradient); }
 
     @media (max-width: 650px) {
-        .hero-image-wrapper { height: 200px; }
-        .spec-card { padding: 5px; }
+        .hero-image-wrapper { height: 220px; }
+        .spec-card { padding: 6px; }
     }
   </style>
 </head>
@@ -182,10 +182,11 @@
 
   <!-- ==================== SECCIÓN SUPERIOR ==================== -->
   <div class="w-full max-w-[1400px] mx-auto px-1 sm:px-2 lg:px-4 mb-4 mt-1">
-      <div class="header-container animate-on-scroll" id="main-header">
+      <!-- BLOQUE PRINCIPAL SIN ANIMACIÓN (Siempre visible al entrar) -->
+      <div class="header-container" id="main-header">
           
           <div class="top-brand">
-              <div class="brand-left gap-2.5">
+              <div class="brand-left gap-3">
                   <div class="logo-box">
                       <img src="https://i.ibb.co/SDwC5YCb/IMG-20260305-231115-415.png" alt="Logo La Biblia del Artesano" onerror="this.onerror=null; this.src='https://placehold.co/120x120/141414/fdb813?text=BA';"/>
                   </div>
@@ -193,9 +194,9 @@
                       <span class="brand-text">LA BIBLIA DEL ARTESANO</span>
                   </div>
               </div>
-              <div class="flex flex-col items-center justify-center gap-1 bg-gold-500/15 border border-gold-500/70 py-1 px-2.5 rounded-lg shadow-gold-glow">
-                  <div class="flex gap-0.5 text-gold-500 text-[8px]" id="stars-container"></div>
-                  <span class="text-[9px] text-gold-300 font-bold tracking-wide" id="rating-text">4.8 / 5</span>
+              <div class="flex flex-col items-center justify-center gap-1 bg-gold-500/15 border border-gold-500/70 py-1.5 px-3 rounded-lg shadow-gold-glow">
+                  <div class="flex gap-0.5 text-gold-500 text-[9px]" id="stars-container"></div>
+                  <span class="text-[10px] text-gold-300 font-bold tracking-wide" id="rating-text">4.8 / 5</span>
               </div>
           </div>
 
@@ -205,32 +206,32 @@
           </div>
 
           <div class="content-body">
-              <h1 class="text-lg md:text-2xl font-extrabold text-white leading-tight mb-2 uppercase tracking-wide">CABECERA DE CAMA DE 2 PLAZAS CON VELADORES Y CAJONES</h1>
-              <p class="text-[12.5px] text-gray-400 leading-relaxed mb-5">
+              <h1 class="text-xl md:text-2xl font-extrabold text-white leading-tight mb-2.5 uppercase tracking-wide">CABECERA DE CAMA DE 2 PLAZAS CON VELADORES Y CAJONES</h1>
+              <p class="text-[13px] text-gray-400 leading-relaxed mb-6">
                   Este proyecto optimiza el espacio del dormitorio, integrando en un solo elemento una cabecera modular con dos veladores flotantes equipados con cajones deslizantes.
               </p>
 
-              <div class="grid grid-cols-3 gap-2 w-full">
+              <div class="grid grid-cols-3 gap-2.5 w-full">
                   <div class="spec-card">
-                      <div class="w-7 h-7 rounded-full bg-gold-500/15 border border-gold-500/70 flex items-center justify-center mb-1.5 text-gold-400 text-[11px] shadow-gold-glow">
+                      <div class="w-8 h-8 rounded-full bg-gold-500/15 border border-gold-500/70 flex items-center justify-center mb-1.5 text-gold-400 text-[12px] shadow-gold-glow">
                           <i class="fa-solid fa-gear"></i>
                       </div>
-                      <span class="text-[7.5px] sm:text-[8.5px] text-gray-500 font-bold uppercase tracking-wide mb-1">Especialidad</span>
-                      <span class="text-[9px] sm:text-[10px] md:text-[11px] font-extrabold text-gold-300 leading-tight drop-shadow-md">Carpintería Melamina</span>
+                      <span class="text-[8px] sm:text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Especialidad</span>
+                      <span class="text-[10px] sm:text-[11px] md:text-[12px] font-extrabold text-gold-300 leading-tight drop-shadow-md">Carpintería Melamina</span>
                   </div>
-                  <div class="spec-card" style="transition-delay: 100ms;">
-                      <div class="w-7 h-7 rounded-full bg-gold-500/15 border border-gold-500/70 flex items-center justify-center mb-1.5 text-gold-400 text-[11px] shadow-gold-glow">
+                  <div class="spec-card">
+                      <div class="w-8 h-8 rounded-full bg-gold-500/15 border border-gold-500/70 flex items-center justify-center mb-1.5 text-gold-400 text-[12px] shadow-gold-glow">
                           <i class="fa-solid fa-layer-group"></i>
                       </div>
-                      <span class="text-[7.5px] sm:text-[8.5px] text-gray-500 font-bold uppercase tracking-wide mb-1">Dificultad</span>
-                      <span class="text-[9px] sm:text-[10px] md:text-[11px] font-extrabold text-gold-300 leading-tight drop-shadow-md">Intermedio</span>
+                      <span class="text-[8px] sm:text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Dificultad</span>
+                      <span class="text-[10px] sm:text-[11px] md:text-[12px] font-extrabold text-gold-300 leading-tight drop-shadow-md">Intermedio</span>
                   </div>
-                  <div class="spec-card" style="transition-delay: 200ms;">
-                      <div class="w-7 h-7 rounded-full bg-gold-500/15 border border-gold-500/70 flex items-center justify-center mb-1.5 text-gold-400 text-[11px] shadow-gold-glow">
+                  <div class="spec-card">
+                      <div class="w-8 h-8 rounded-full bg-gold-500/15 border border-gold-500/70 flex items-center justify-center mb-1.5 text-gold-400 text-[12px] shadow-gold-glow">
                           <i class="fa-regular fa-clock"></i>
                       </div>
-                      <span class="text-[7.5px] sm:text-[8.5px] text-gray-500 font-bold uppercase tracking-wide mb-1">Tiempo Est.</span>
-                      <span class="text-[9px] sm:text-[10px] md:text-[11px] font-extrabold text-gold-300 leading-tight drop-shadow-md">6 a 8 Horas</span>
+                      <span class="text-[8px] sm:text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Tiempo Est.</span>
+                      <span class="text-[10px] sm:text-[11px] md:text-[12px] font-extrabold text-gold-300 leading-tight drop-shadow-md">6 a 8 Horas</span>
                   </div>
               </div>
           </div>
@@ -238,26 +239,26 @@
   </div>
 
   <!-- ==================== SECCIÓN INFERIOR ==================== -->
-  <main class="w-full max-w-[1400px] mx-auto px-1 sm:px-2 lg:px-4 flex flex-col lg:flex-row gap-3.5 relative">
+  <main class="w-full max-w-[1400px] mx-auto px-1 sm:px-2 lg:px-4 flex flex-col lg:flex-row gap-4 relative">
 
     <!-- COLUMNA IZQUIERDA (Solo 3D) -->
-    <div class="w-full lg:w-3/5 flex-shrink-0 space-y-3.5">
+    <div class="w-full lg:w-3/5 flex-shrink-0 space-y-4">
       
       <!-- ACORDEÓN 1: PLANO 3D -->
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-lg animate-on-scroll">
-        <button onclick="toggleAccordion('acc-plano')" class="w-full p-3 flex items-center justify-between bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-left active:scale-[0.99] transition-transform">
-          <div class="flex items-center space-x-3">
+        <button onclick="toggleAccordion('acc-plano')" class="w-full p-3.5 flex items-center justify-between bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-left active:scale-[0.99] transition-transform">
+          <div class="flex items-center space-x-3.5">
             <div class="p-2 rounded-lg bg-gold-500/10 border border-gold-500/30 text-gold-400">
-              <i data-lucide="mouse-pointer-click" class="w-4.5 h-4.5"></i>
+              <i data-lucide="mouse-pointer-click" class="w-5 h-5"></i>
             </div>
             <div>
-              <h2 class="text-[13px] font-extrabold text-slate-100 flex items-center gap-1.5 uppercase tracking-wide">
+              <h2 class="text-sm font-extrabold text-slate-100 flex items-center gap-1.5 uppercase tracking-wide">
                 Proyecto Completo
               </h2>
-              <span class="text-[10px] text-gold-500 font-medium block">Plano Interactivo 3D <span class="text-[8px] text-silver-400 ml-1 font-normal">(Mantén presionado para detalles)</span></span>
+              <span class="text-[11px] text-gold-500 font-medium block">Plano Interactivo 3D</span>
             </div>
           </div>
-          <i id="icon-acc-plano" data-lucide="chevron-down" class="w-4.5 h-4.5 text-gold-400 transition-transform duration-300"></i>
+          <i id="icon-acc-plano" data-lucide="chevron-down" class="w-5 h-5 text-gold-400 transition-transform duration-300"></i>
         </button>
 
         <div id="acc-plano" class="accordion-content active">
@@ -266,60 +267,59 @@
               <div id="canvas-container" class="w-full h-full relative cursor-pointer"></div>
               
               <div class="absolute top-2 left-2 flex flex-col gap-1.5 z-20">
-                <button onclick="reset3DView()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-2.5 py-1.5 rounded text-[10px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset
+                <button onclick="reset3DView()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reset
                 </button>
-                <button onclick="togglePasosList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-2.5 py-1.5 rounded text-[10px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="footprints" class="w-3.5 h-3.5"></i> Pasos
+                <button onclick="togglePasosList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="footprints" class="w-4 h-4"></i> Pasos
                 </button>
-                <div id="pasos-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[220px] overflow-y-auto w-[140px]">
-                  <div class="text-[8px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1">Animación:</div>
+                <div id="pasos-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto w-[150px]">
                   <div id="pasos-list-container" class="flex flex-col gap-1"></div>
                 </div>
               </div>
 
               <div class="absolute top-2 right-2 z-20 flex flex-col items-end gap-1.5">
-                <button id="btn-explode" onclick="toggleExplodedView()" class="bg-dark-800/90 hover:bg-dark-700 text-slate-200 border border-silver-500/40 px-2.5 py-1.5 rounded text-[10px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="move-3d" class="w-3.5 h-3.5 text-gold-400"></i> Desarmar
+                <button id="btn-explode" onclick="toggleExplodedView()" class="bg-dark-800/90 hover:bg-dark-700 text-slate-200 border border-silver-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="move-3d" class="w-4 h-4 text-gold-400"></i> Desarmar
                 </button>
-                <button onclick="togglePartsList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/50 px-2.5 py-1.5 rounded text-[10px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="list-tree" class="w-3.5 h-3.5"></i> Piezas
+                <button onclick="togglePartsList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/50 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="list-tree" class="w-4 h-4"></i> Piezas
                 </button>
-                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[220px] overflow-y-auto w-[170px]">
+                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto w-[180px]">
                   <div class="text-[8px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1">Selecciona una pieza:</div>
                   <div id="parts-list-container" class="flex flex-col gap-1"></div>
                 </div>
               </div>
 
-              <div id="part-info-card" class="absolute bottom-2.5 left-1/2 w-[94%] max-w-[420px] bg-dark-900/95 border border-gold-500/60 rounded-lg p-2.5 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
-                <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1 rounded-md border border-slate-700 transition-colors z-20">
-                  <i data-lucide="x" class="w-3.5 h-3.5"></i>
+              <div id="part-info-card" class="absolute bottom-2.5 left-1/2 w-[94%] max-w-[420px] bg-dark-900/95 border border-gold-500/60 rounded-lg p-3 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
+                <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1.5 rounded-md border border-slate-700 transition-colors z-20">
+                  <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
-                <div class="flex justify-between items-center mb-2 border-b border-slate-800 pb-1.5 pr-6">
-                  <div class="flex items-center gap-2">
-                    <span id="info-id-badge" class="w-4.5 h-4.5 rounded bg-gold-500 text-dark-900 font-black flex items-center justify-center text-[10px]">1</span>
-                    <h3 id="info-name" class="text-[11px] font-black text-gold-400 leading-tight">Nombre</h3>
+                <div class="flex justify-between items-center mb-2.5 border-b border-slate-800 pb-2 pr-6">
+                  <div class="flex items-center gap-2.5">
+                    <span id="info-id-badge" class="w-5 h-5 rounded bg-gold-500 text-dark-900 font-black flex items-center justify-center text-[11px]">1</span>
+                    <h3 id="info-name" class="text-xs font-black text-gold-400 leading-tight">Nombre</h3>
                   </div>
                   <div class="text-right">
-                    <span id="info-qty" class="text-[10px] bg-gold-500/20 text-gold-300 px-1.5 py-0.5 rounded border border-gold-500/30 font-bold inline-block">x2</span>
+                    <span id="info-qty" class="text-[11px] bg-gold-500/20 text-gold-300 px-2 py-0.5 rounded border border-gold-500/30 font-bold inline-block">x2</span>
                   </div>
                 </div>
-                <div class="grid grid-cols-4 gap-1.5 text-center">
+                <div class="grid grid-cols-4 gap-2 text-center">
                   <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50">
-                    <span class="text-[8px] text-silver-400 block uppercase font-bold mb-0.5">Largo</span>
-                    <span id="info-l" class="font-mono text-[10px] text-slate-100 font-black">0</span>
+                    <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Largo</span>
+                    <span id="info-l" class="font-mono text-[11px] text-slate-100 font-black">0</span>
                   </div>
                   <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50">
-                    <span class="text-[8px] text-silver-400 block uppercase font-bold mb-0.5">Ancho</span>
-                    <span id="info-a" class="font-mono text-[10px] text-slate-100 font-black">0</span>
+                    <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Ancho</span>
+                    <span id="info-a" class="font-mono text-[11px] text-slate-100 font-black">0</span>
                   </div>
                   <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50">
-                    <span class="text-[8px] text-silver-400 block uppercase font-bold mb-0.5">Grosor</span>
-                    <span id="info-e" class="font-mono text-[10px] text-slate-100 font-black">18</span>
+                    <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Grosor</span>
+                    <span id="info-e" class="font-mono text-[11px] text-slate-100 font-black">18</span>
                   </div>
                   <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50 flex flex-col justify-center items-center">
-                    <span class="text-[8px] text-silver-400 block uppercase font-bold mb-0.5">Tapa</span>
-                    <strong id="info-tap" class="text-[9px] text-gold-400 truncate w-full">G D D D</strong>
+                    <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Tapa</span>
+                    <strong id="info-tap" class="text-[10px] text-gold-400 truncate w-full">G D D D</strong>
                   </div>
                 </div>
               </div>
@@ -331,94 +331,94 @@
     </div>
 
     <!-- COLUMNA DERECHA LISTAS -->
-    <div class="w-full lg:w-2/5 flex flex-col gap-3 pb-8">
+    <div class="w-full lg:w-2/5 flex flex-col gap-3.5 pb-8">
       
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-sm animate-on-scroll" style="transition-delay: 50ms;">
-        <button onclick="toggleAccordion('acc-accesorios')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2.5">
+        <button onclick="toggleAccordion('acc-accesorios')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
             <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="package" class="w-4 h-4"></i></div>
-            <h2 class="text-xs font-bold text-slate-100 uppercase tracking-wide">Accesorios</h2>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Accesorios</h2>
           </div>
           <i id="icon-acc-accesorios" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
         </button>
         <div id="acc-accesorios" class="accordion-content">
-          <div class="p-2.5 space-y-2">
-            <div class="flex items-center p-2 rounded bg-dark-900 border border-slate-700">
-              <div class="w-7 h-7 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-2.5 shrink-0"><i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i></div>
-              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Correderas Telescópicas</span><span class="text-[9px] text-silver-400">350 mm</span></div>
-              <span class="text-[9px] bg-gold-500/10 text-gold-400 font-bold px-2 py-1 rounded border border-gold-500/30">2 PARES</span>
+          <div class="p-3 space-y-2">
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+              <div class="w-8 h-8 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-3 shrink-0"><i data-lucide="sliders-horizontal" class="w-4 h-4"></i></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Correderas Telescópicas</span><span class="text-[10px] text-silver-400">350 mm</span></div>
+              <span class="text-[10px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">2 PARES</span>
             </div>
-            <div class="flex items-center p-2 rounded bg-dark-900 border border-slate-700">
-              <div class="w-7 h-7 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-2.5 shrink-0"><i data-lucide="grip-horizontal" class="w-3.5 h-3.5"></i></div>
-              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Jalador Frontal</span><span class="text-[9px] text-silver-400">Metálico</span></div>
-              <span class="text-[9px] bg-gold-500/10 text-gold-400 font-bold px-2 py-1 rounded border border-gold-500/30">2 UNIDS</span>
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+              <div class="w-8 h-8 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-3 shrink-0"><i data-lucide="grip-horizontal" class="w-4 h-4"></i></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Jalador Frontal</span><span class="text-[10px] text-silver-400">Metálico</span></div>
+              <span class="text-[10px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">2 UNIDS</span>
             </div>
-            <div class="flex items-center p-2 rounded bg-dark-900 border border-slate-700">
-              <div class="w-7 h-7 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-2.5 shrink-0"><i data-lucide="circle-dot" class="w-3.5 h-3.5"></i></div>
-              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Tornillos 4 x 50</span><span class="text-[9px] text-silver-400">Para ensamble</span></div>
-              <span class="text-[9px] bg-slate-800 text-silver-300 font-bold px-2 py-1 rounded border border-slate-600">100 U.</span>
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+              <div class="w-8 h-8 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-3 shrink-0"><i data-lucide="circle-dot" class="w-4 h-4"></i></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos 4 x 50</span><span class="text-[10px] text-silver-400">Para ensamble</span></div>
+              <span class="text-[10px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">100 U.</span>
             </div>
-            <div class="flex items-center p-2 rounded bg-dark-900 border border-slate-700">
-              <div class="w-7 h-7 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-2.5 shrink-0"><i data-lucide="disc" class="w-3.5 h-3.5"></i></div>
-              <div class="flex-1"><span class="text-[11px] font-bold text-slate-100 block">Tornillos 4 x 30</span><span class="text-[9px] text-silver-400">Para accesorios</span></div>
-              <span class="text-[9px] bg-slate-800 text-silver-300 font-bold px-2 py-1 rounded border border-slate-600">20 U.</span>
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+              <div class="w-8 h-8 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-3 shrink-0"><i data-lucide="disc" class="w-4 h-4"></i></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos 4 x 30</span><span class="text-[10px] text-silver-400">Para accesorios</span></div>
+              <span class="text-[10px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">20 U.</span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-md animate-on-scroll" style="transition-delay: 100ms;">
-        <button onclick="toggleAccordion('acc-herramientas')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2.5">
+        <button onclick="toggleAccordion('acc-herramientas')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
             <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="wrench" class="w-4 h-4"></i></div>
-            <h2 class="text-xs font-bold text-slate-100 uppercase tracking-wide">Herramientas</h2>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Herramientas</h2>
           </div>
           <i id="icon-acc-herramientas" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
         </button>
         <div id="acc-herramientas" class="accordion-content">
-          <div class="p-2.5 grid grid-cols-2 gap-2">
-            <div class="bg-dark-900 border border-slate-700 p-2.5 rounded flex flex-col items-center text-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-slate-800 text-gold-400 flex items-center justify-center"><i data-lucide="drill" class="w-4 h-4"></i></div>
-              <span class="text-[10px] font-bold text-slate-100 leading-tight">Atornillador Inal.</span>
+          <div class="p-3 grid grid-cols-2 gap-2">
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex flex-col items-center text-center gap-2">
+              <div class="w-9 h-9 rounded-full bg-slate-800 text-gold-400 flex items-center justify-center"><i data-lucide="drill" class="w-4.5 h-4.5"></i></div>
+              <span class="text-[11px] font-bold text-slate-100 leading-tight">Atornillador Inal.</span>
             </div>
-            <div class="bg-dark-900 border border-slate-700 p-2.5 rounded flex flex-col items-center text-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="pen-tool" class="w-4 h-4"></i></div>
-              <span class="text-[10px] font-bold text-slate-100 leading-tight">Puntilla Pz2</span>
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex flex-col items-center text-center gap-2">
+              <div class="w-9 h-9 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="pen-tool" class="w-4.5 h-4.5"></i></div>
+              <span class="text-[11px] font-bold text-slate-100 leading-tight">Puntilla Pz2</span>
             </div>
-            <div class="bg-dark-900 border border-slate-700 p-2.5 rounded flex flex-col items-center text-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="magnet" class="w-4 h-4"></i></div>
-              <span class="text-[10px] font-bold text-slate-100 leading-tight">Extensión Imant.</span>
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex flex-col items-center text-center gap-2">
+              <div class="w-9 h-9 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="magnet" class="w-4.5 h-4.5"></i></div>
+              <span class="text-[11px] font-bold text-slate-100 leading-tight">Extensión Imant.</span>
             </div>
-            <div class="bg-dark-900 border border-slate-700 p-2.5 rounded flex flex-col items-center text-center gap-2">
-              <div class="w-8 h-8 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="ruler" class="w-4 h-4"></i></div>
-              <span class="text-[10px] font-bold text-slate-100 leading-tight">Wincha / Esquad.</span>
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex flex-col items-center text-center gap-2">
+              <div class="w-9 h-9 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="ruler" class="w-4.5 h-4.5"></i></div>
+              <span class="text-[11px] font-bold text-slate-100 leading-tight">Wincha / Esquad.</span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-md animate-on-scroll" style="transition-delay: 150ms;">
-        <button onclick="toggleAccordion('acc-simbolos')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2.5">
+        <button onclick="toggleAccordion('acc-simbolos')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
             <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="shapes" class="w-4 h-4"></i></div>
-            <h2 class="text-xs font-bold text-slate-100 uppercase tracking-wide">Símbolos</h2>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Símbolos</h2>
           </div>
           <i id="icon-acc-simbolos" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
         </button>
         <div id="acc-simbolos" class="accordion-content">
-          <div class="p-2.5 grid grid-cols-1 gap-2">
-            <div class="bg-dark-900 border border-slate-700 p-2.5 rounded flex items-center gap-3">
-              <span class="w-7 h-7 rounded bg-slate-800 text-silver-300 font-black flex justify-center items-center text-[11px]">D</span>
+          <div class="p-3 grid grid-cols-1 gap-2.5">
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex items-center gap-3.5">
+              <span class="w-8 h-8 rounded bg-slate-800 text-silver-300 font-black flex justify-center items-center text-xs">D</span>
               <div class="flex flex-col">
-                <span class="text-[11px] font-bold text-slate-100">TAPACANTO DELGADO</span>
-                <span class="text-[9px] text-silver-400">Bordes internos</span>
+                <span class="text-xs font-bold text-slate-100">TAPACANTO DELGADO</span>
+                <span class="text-[10px] text-silver-400">Bordes internos</span>
               </div>
             </div>
-            <div class="bg-dark-900 border border-gold-500/50 p-2.5 rounded flex items-center gap-3 shadow-[0_0_10px_rgba(212,175,55,0.1)]">
-              <span class="w-7 h-7 rounded bg-gold-500 text-dark-900 font-black flex justify-center items-center text-[11px]">G</span>
+            <div class="bg-dark-900 border border-gold-500/50 p-3 rounded flex items-center gap-3.5 shadow-[0_0_10px_rgba(212,175,55,0.1)]">
+              <span class="w-8 h-8 rounded bg-gold-500 text-dark-900 font-black flex justify-center items-center text-xs">G</span>
               <div class="flex flex-col">
-                <span class="text-[11px] font-bold text-gold-400">TAPACANTO GRUESO</span>
-                <span class="text-[9px] text-silver-400">Frentes principales</span>
+                <span class="text-xs font-bold text-gold-400">TAPACANTO GRUESO</span>
+                <span class="text-[10px] text-silver-400">Frentes principales</span>
               </div>
             </div>
           </div>
@@ -426,255 +426,255 @@
       </div>
 
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-md animate-on-scroll" style="transition-delay: 200ms;">
-        <button onclick="toggleAccordion('acc-ranuras')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2.5">
+        <button onclick="toggleAccordion('acc-ranuras')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
             <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="align-vertical-space-between" class="w-4 h-4"></i></div>
-            <h2 class="text-xs font-bold text-slate-100 uppercase tracking-wide">Ranuras</h2>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Ranuras</h2>
           </div>
           <i id="icon-acc-ranuras" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
         </button>
         <div id="acc-ranuras" class="accordion-content">
-          <div class="p-2.5 grid grid-cols-1 gap-2 text-[11px] font-mono text-silver-300">
-            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-2 rounded">
+          <div class="p-3 grid grid-cols-1 gap-2 text-xs font-mono text-silver-300">
+            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-2.5 rounded">
               <div class="flex items-center gap-2">
                 <i data-lucide="arrow-right-to-line" class="w-4 h-4 text-silver-400"></i><span class="font-bold text-slate-100">D : DISTANCIA</span>
               </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-2 py-0.5 rounded border border-gold-500/20">= 18 mm</strong>
+              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20">= 18 mm</strong>
             </div>
-            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-2 rounded">
+            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-2.5 rounded">
               <div class="flex items-center gap-2">
                 <i data-lucide="minimize-2" class="w-4 h-4 text-silver-400"></i><span class="font-bold text-slate-100">E : ESPESOR</span>
               </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-2 py-0.5 rounded border border-gold-500/20">= 4 mm</strong>
+              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20">= 4 mm</strong>
             </div>
-            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-2 rounded">
+            <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-2.5 rounded">
               <div class="flex items-center gap-2">
                 <i data-lucide="arrow-down-to-line" class="w-4 h-4 text-silver-400"></i><span class="font-bold text-slate-100">P : PROFUNDIDAD</span>
               </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-2 py-0.5 rounded border border-gold-500/20">= 8 mm</strong>
+              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20">= 8 mm</strong>
             </div>
           </div>
         </div>
       </div>
 
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-md animate-on-scroll" style="transition-delay: 250ms;">
-        <button onclick="toggleAccordion('acc-materiales')" class="w-full p-2.5 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2.5">
+        <button onclick="toggleAccordion('acc-materiales')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
             <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="layers" class="w-4 h-4"></i></div>
-            <h2 class="text-xs font-bold text-slate-100 uppercase tracking-wide">Materiales</h2>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Materiales</h2>
           </div>
           <i id="icon-acc-materiales" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
         </button>
         <div id="acc-materiales" class="accordion-content">
-          <div class="p-2.5 grid grid-cols-1 gap-2">
-            <div class="bg-dark-900 border border-slate-700 p-2.5 rounded flex items-center justify-between">
-              <div class="flex items-center gap-2.5">
-                <div class="w-6 h-6 rounded-sm bg-[#b59e24] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="file" class="w-3 h-3 text-dark-900"></i></div>
-                <span class="text-[11px] font-bold text-slate-100 uppercase">MDF</span>
+          <div class="p-3 grid grid-cols-1 gap-2.5">
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex items-center justify-between">
+              <div class="flex items-center gap-3.5">
+                <div class="w-7 h-7 rounded-sm bg-[#b59e24] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="file" class="w-3.5 h-3.5 text-dark-900"></i></div>
+                <span class="text-xs font-bold text-slate-100 uppercase">MDF</span>
               </div>
-              <span class="text-[10px] bg-slate-800 text-silver-300 font-bold px-2 py-1 rounded border border-slate-600">3 mm</span>
+              <span class="text-[11px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">3 mm</span>
             </div>
-            <div class="bg-dark-900 border border-slate-700 p-2.5 rounded flex items-center justify-between">
-              <div class="flex items-center gap-2.5">
-                <div class="w-6 h-6 rounded-sm bg-[#e5e5e5] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-3 h-3 text-dark-900"></i></div>
-                <span class="text-[11px] font-bold text-slate-100 uppercase">MELAMINA</span>
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex items-center justify-between">
+              <div class="flex items-center gap-3.5">
+                <div class="w-7 h-7 rounded-sm bg-[#e5e5e5] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-3.5 h-3.5 text-dark-900"></i></div>
+                <span class="text-xs font-bold text-slate-100 uppercase">MELAMINA</span>
               </div>
-              <span class="text-[10px] bg-gold-500/10 text-gold-400 font-bold px-2 py-1 rounded border border-gold-500/30">18 mm</span>
+              <span class="text-[11px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">18 mm</span>
             </div>
           </div>
         </div>
       </div>
 
       <!-- ACORDEÓN: PREGUNTAS FRECUENTES -->
-      <div class="border border-red-500/40 rounded-lg bg-dark-800/80 overflow-hidden shadow-[0_0_12px_rgba(220,38,38,0.15)] animate-on-scroll mt-1.5" style="transition-delay: 300ms;">
-        <button onclick="toggleAccordion('acc-faq')" class="w-full p-2.5 flex items-center justify-between bg-gradient-to-r from-dark-800 to-red-950/20 border-b border-red-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-2.5">
+      <div class="border border-red-500/40 rounded-lg bg-dark-800/80 overflow-hidden shadow-[0_0_12px_rgba(220,38,38,0.15)] animate-on-scroll mt-2" style="transition-delay: 300ms;">
+        <button onclick="toggleAccordion('acc-faq')" class="w-full p-3 flex items-center justify-between bg-gradient-to-r from-dark-800 to-red-950/20 border-b border-red-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
             <div class="p-1.5 rounded bg-red-500/20 text-red-500 border border-red-500/30"><i data-lucide="message-circle-question" class="w-4 h-4"></i></div>
             <div>
-              <h2 class="text-[12px] font-bold text-slate-100 uppercase tracking-wide">Preguntas Frecuentes</h2>
-              <span class="text-[9px] text-silver-400 font-medium">Guía y Ayuda del Proyecto</span>
+              <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Preguntas Frecuentes</h2>
+              <span class="text-[10px] text-silver-400 font-medium">Guía y Ayuda del Proyecto</span>
             </div>
           </div>
           <i id="icon-acc-faq" data-lucide="chevron-down" class="w-4 h-4 text-red-400 transition-transform duration-300"></i>
         </button>
         <div id="acc-faq" class="accordion-content">
-          <div class="p-2.5 bg-dark-900/50 space-y-2.5 faq-scroll" style="max-height: 420px;">
+          <div class="p-3 bg-dark-900/50 space-y-3 faq-scroll" style="max-height: 400px;">
             
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Qué significa 'G' y 'D' en Tapacantos?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   <strong>'D'</strong> se refiere al Tapacanto Delgado (0.45mm) usado para bordes ocultos o de menor desgaste. <strong>'G'</strong> es el Tapacanto Grueso (3mm) que se coloca en frentes y cubiertas para mayor resistencia y mejor acabado estético.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Qué significan (D:18, E:4, P:8)?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   Indican cómo hacer el canal para el fondo del cajón. <strong>D: 18mm</strong> es la Distancia desde el borde inferior; <strong>E: 4mm</strong> es el Espesor de la ranura; <strong>P: 8mm</strong> es la Profundidad del corte.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Cuánto espacio queda para la cama?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   El diseño estructural deja un espacio libre de <strong>1350 mm (1.35 metros) exactos</strong> entre los dos cajoneros laterales, diseñado para encajar una cama estándar de 2 plazas.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Por qué el Fondo es distinto?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   La pieza 9 se fabrica en <strong>MDF de 3mm</strong> porque funciona exclusivamente como base ligera del cajón. Usar melamina de 18mm la haría innecesariamente pesada.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Para qué sirven los tornillos 4x50 y 4x30?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   Los de 4x50 son para unir las placas de melamina de 18mm. Los de 4x30 se usan para fijar las correderas a la madera sin traspasarla.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Qué función cumplen los 'Amarres'?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   Son tiras de melamina de 414x80mm en la parte superior. Mantienen los laterales paralelos y a escuadra, dando firmeza a la estructura antes de colocar la tapa.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Por qué necesito extensión imantada?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   Los cajoneros tienen espacios internos estrechos. La extensión evita que el tornillo se caiga y te permite atornillar las correderas al fondo sin que estorbe el taladro.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿De qué tamaño son las correderas?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   El proyecto exige correderas de 350 mm. Esta medida es perfecta ya que los laterales del cajón (Pieza 7) miden exactamente 350 mm de profundidad.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Cómo se fija el frente exterior?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   Se fija desde ADENTRO hacia afuera. Primero armas el cajón interno; luego acomodas el frente exterior y metes tornillos de 4x30 atravesando el frente interno.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Por qué el cajonero mide 650mm?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   El lateral (Pieza 3) tiene 632mm. A esto se le suma el espesor de la tapa superior que es de 18mm de melamina (632 + 18 = 650mm).
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Qué es la Puntilla Pz2?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   Es la punta de destornillador tipo Pozidriv tamaño 2. Es la punta con el encaje perfecto para los tornillos negros de ensamble de 4x50.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Cómo aseguro los 90 grados?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   Antes de deslizar y fijar el fondo, utiliza tu wincha para medir las dos diagonales internas. Si ambas son idénticas, tu cajón está escuadrado.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Para qué sirven los zócalos?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   Elevan el primer piso del cajonero evitando que la puerta o cajón inferior roce el piso al abrir, y protegen la estructura de la humedad o escobazos.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Cuándo se pega el tapacanto?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   El proceso de canteado debe realizarse en todas las piezas indicadas por la tabla de despiece <strong>ANTES</strong> de comenzar a perforar o ensamblar.
                 </p>
               </div>
             </details>
 
             <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-[11px] font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
                 ¿Cómo se une todo el respaldo?
                 <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
               </summary>
               <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11px] font-medium text-silver-300 leading-relaxed">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
                   La Pieza 2 (Respaldo Horizontal) se apoya y atornilla desde atrás contra las dos Piezas 1 (Verticales). Mides los 1350mm de separación baja, y fijas.
                 </p>
               </div>
@@ -689,7 +689,6 @@
 
   <!-- ==================== SCRIPTS COMBINADOS ==================== -->
   <script>
-    // Configuración Inicial
     window.onload = function() {
       lucide.createIcons();
       buildPartsListUI();
@@ -698,14 +697,19 @@
       initScrollAnimations();
     };
 
-    // Animaciones Estilo Netflix (Solo 1 vez al entrar en pantalla)
+    // Animaciones Estilo Netflix (Activa solo al bajar, mantiene al subir)
     function initScrollAnimations() {
-      const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
-      const observer = new IntersectionObserver((entries, observer) => {
+      const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+      const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target); // Detiene la observación, asegurando que solo ocurra una vez
+          } else {
+            // Si el elemento sale por ABAJO de la pantalla (porque hemos subido el scroll), le quitamos la clase.
+            // Si sale por ARRIBA, no se la quitamos, así ya está visible cuando subimos.
+            if (entry.boundingClientRect.top > window.innerHeight * 0.7) {
+              entry.target.classList.remove('is-visible');
+            }
           }
         });
       }, observerOptions);
@@ -742,7 +746,6 @@
       const targetIcon = document.getElementById('icon-' + id);
       const wasOpen = targetContent.classList.contains('active');
 
-      // 1. Cerramos todos los demás acordeones, EXCEPTO el 3D ('acc-plano')
       document.querySelectorAll('.accordion-content').forEach(content => {
         if (content.id !== 'acc-plano' && content.id !== id) {
           content.classList.remove('active');
@@ -751,7 +754,6 @@
         }
       });
 
-      // 2. Abrimos o Cerramos el que clickeamos
       if (!wasOpen) {
         targetContent.classList.add('active');
         if (targetIcon) targetIcon.style.transform = 'rotate(180deg)';
@@ -811,7 +813,7 @@
         btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group";
         const badgeColor = part.id === 9 ? "bg-amber-500 text-dark-900" : "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
         const textColor = part.id === 9 ? "text-amber-400" : "text-silver-300 group-hover:text-gold-300";
-        btn.innerHTML = `<span class="w-5 h-5 shrink-0 rounded flex items-center justify-center text-[9px] font-black transition-colors ${badgeColor}">${part.id}</span><span class="text-[10px] font-bold truncate ${textColor}">${part.name}</span>`;
+        btn.innerHTML = `<span class="w-5 h-5 shrink-0 rounded flex items-center justify-center text-[10px] font-black transition-colors ${badgeColor}">${part.id}</span><span class="text-[11px] font-bold truncate ${textColor}">${part.name}</span>`;
         btn.onclick = () => selectPartFromList(part.id);
         container.appendChild(btn);
       });
@@ -822,7 +824,7 @@
       container.innerHTML = '';
       assemblySteps.forEach((step, idx) => {
         const btn = document.createElement('button');
-        btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 text-silver-300 font-bold text-[9px] transition-colors";
+        btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 text-silver-300 font-bold text-[10px] transition-colors";
         btn.innerHTML = `<span class="w-5 h-5 rounded bg-dark-700 text-gold-400 flex justify-center items-center shrink-0 border border-gold-500/30">${step.id}</span> ${step.name}`;
         btn.onclick = () => playStep(idx);
         container.appendChild(btn);
@@ -838,7 +840,6 @@
       });
       
       if (targetMesh) {
-        // Si la pieza estaba invisible (oculta por algún paso de animación), la forzamos a aparecer
         if (!targetMesh.visible) {
             targetMesh.visible = true;
             if (targetMesh.userData.origPos) {
@@ -944,14 +945,13 @@
         mouse.x = ( (e.clientX - rect.left) / rect.width ) * 2 - 1;
         mouse.y = - ( (e.clientY - rect.top) / rect.height ) * 2 + 1;
 
-        // Inicia el temporizador de 800ms
+        // Inicia el temporizador de 0.5s (500ms)
         pressTimer = setTimeout(() => {
             if (isPressing) executeRaycast();
-        }, 800); 
+        }, 500); 
       });
 
       container.addEventListener('pointermove', () => {
-        // Si el usuario mueve el dedo (zoom o arrastre), se cancela la selección
         isPressing = false;
         clearTimeout(pressTimer);
       });
