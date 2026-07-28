@@ -42,13 +42,16 @@
        ========================================= */
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     
-    body {
+    html, body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
     }
 
-    /* Scrollbar EXCLUSIVO para el Modal de Ayuda (Se quita el general para Hotmart) */
+    /* Scrollbar EXCLUSIVO para el Modal de Ayuda */
     .faq-scroll {
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
@@ -335,6 +338,19 @@
         text-shadow: 0 0 5px rgba(253, 184, 19, 0.3);
     }
 
+    /* ESTILOS FLOTANTES ADAPTABLES PARA IFRAME */
+    .floating-container {
+      position: sticky;
+      top: 15px;
+      float: right;
+      margin-right: 15px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    .floating-container * {
+      pointer-events: auto;
+    }
+
     @media (max-width: 650px) {
         .hero-image-wrapper { height: 240px; }
         .main-title { font-size: 16px; }
@@ -347,7 +363,183 @@
     }
   </style>
 </head>
-<body class="bg-[#191A1E] text-slate-100 pb-8 pt-2 selection:bg-gold-500 selection:text-black">
+<body class="bg-[#191A1E] text-slate-100 pb-8 pt-2 selection:bg-gold-500 selection:text-black relative">
+
+  <!-- CAPA FLOTANTE ADAPTABLE -->
+  <div class="floating-container">
+    <!-- BOTÓN ROJO -->
+    <div id="fab-faq" onclick="openFaqModal()" class="bg-red-600 shadow-red-glow flex items-center justify-center text-white cursor-pointer active:scale-95 transition-transform shrink-0" style="width: 55px; height: 55px; border-radius: 50%;">
+      <i data-lucide="message-circle-question" style="width: 28px; height: 28px;"></i>
+    </div>
+
+    <!-- MODAL FAQ TIPO CHAT -->
+    <div id="faq-modal" class="absolute right-0 top-16 z-[9999] backdrop-blur-md hidden flex-col opacity-0 transition-opacity duration-300 w-[280px] sm:w-[320px] max-h-[38vh] rounded-xl border border-gold-500/50 shadow-2xl bg-dark-900/95 overflow-hidden">
+      
+      <div class="flex-none flex items-center justify-between p-2.5 border-b border-slate-800 bg-dark-800/90 shadow-md">
+        <div class="flex items-center gap-2 text-red-500">
+          <i data-lucide="message-circle-question" class="w-4 h-4"></i>
+          <h2 class="text-[13px] font-black tracking-wide text-slate-100">Guía y Ayuda</h2>
+        </div>
+        <button onclick="closeFaqModal()" class="p-1 bg-dark-700 hover:bg-red-600/20 text-silver-300 hover:text-red-500 rounded-full transition-colors">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
+      </div>
+      
+      <div class="flex-1 faq-scroll p-2 space-y-2 pb-3">
+        <p class="text-[10px] text-silver-400 mb-2 font-medium text-center">Toca cualquier pregunta para ver la respuesta sobre este proyecto.</p>
+        
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Qué significa 'G' y 'D' en Tapacantos?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            'D' se refiere al Tapacanto Delgado (0.45mm) usado para bordes ocultos o de menor desgaste. 'G' es el Tapacanto Grueso (3mm) que se coloca en frentes y cubiertas para mayor resistencia y mejor acabado estético.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Qué significan (D:18, E:4, P:8)?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            Indican cómo hacer el canal para el fondo del cajón. D: 18mm es la Distancia desde el borde inferior; E: 4mm es el Espesor de la ranura; P: 8mm es la Profundidad del corte.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Cuánto espacio queda para la cama?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            El diseño estructural deja un espacio libre de 1350 mm (1.35 metros) exactos entre los dos cajoneros laterales, diseñado para encajar una cama estándar de 2 plazas.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Por qué el Fondo es distinto?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            La pieza 9 se fabrica en MDF de 3mm porque funciona exclusivamente como base ligera del cajón. Usar melamina de 18mm la haría innecesariamente pesada.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Para qué sirven los tornillos 4x50 y 4x30?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            Los de 4x50 son para unir las placas de melamina de 18mm. Los de 4x30 se usan para fijar las correderas a la madera sin traspasarla.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Qué función cumplen los 'Amarres'?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            Son tiras de melamina de 414x80mm en la parte superior. Mantienen los laterales paralelos y a escuadra, dando firmeza a la estructura antes de colocar la tapa.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Por qué necesito extensión imantada?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            Los cajoneros tienen espacios internos estrechos. La extensión evita que el tornillo se caiga y te permite atornillar las correderas al fondo sin que estorbe el taladro.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿De qué tamaño son las correderas?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            El proyecto exige correderas de 350 mm. Esta medida es perfecta ya que los laterales del cajón (Pieza 7) miden exactamente 350 mm de profundidad.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Cómo se fija el frente exterior?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            Se fija desde ADENTRO hacia afuera. Primero armas el cajón interno; luego acomodas el frente exterior y metes tornillos de 4x30 atravesando el frente interno.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Por qué el cajonero mide 650mm?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            El lateral (Pieza 3) tiene 632mm. A esto se le suma el espesor de la tapa superior que es de 18mm de melamina (632 + 18 = 650mm).
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Qué es la Puntilla Pz2?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            Es la punta de destornillador tipo Pozidriv tamaño 2. Es la punta con el encaje perfecto para los tornillos negros de ensamble de 4x50.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Cómo aseguro los 90 grados?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            Antes de deslizar y fijar el fondo, utiliza tu wincha para medir las dos diagonales internas. Si ambas son idénticas, tu cajón está escuadrado.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Para qué sirven los zócalos?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            Elevan el primer piso del cajonero evitando que la puerta o cajón inferior roce el piso al abrir, y protegen la estructura de la humedad o escobazos.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Cuándo se pega el tapacanto?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            El proceso de canteado debe realizarse en todas las piezas indicadas por la tabla de despiece ANTES de comenzar a perforar o ensamblar.
+          </div>
+        </details>
+
+        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
+          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
+            ¿Cómo se une todo el respaldo?
+            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
+          </summary>
+          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
+            La Pieza 2 (Respaldo Horizontal) se apoya y atornilla desde atrás contra las dos Piezas 1 (Verticales). Mides los 1350mm de separación baja, y fijas.
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
 
   <!-- ==================== SECCIÓN SUPERIOR ==================== -->
   <div class="w-full max-w-[1400px] mx-auto px-2 lg:px-4 mb-4 mt-2">
@@ -669,180 +861,6 @@
 
       </div>
     </main>
-
-    <!-- ================= BOTÓN FLOTANTE CÍRCULO PERFECTO (ARRIBA DERECHA - 10%) ================= -->
-    <div id="fab-faq" onclick="openFaqModal()" class="fixed z-[9999] bg-red-600 shadow-red-glow flex items-center justify-center text-white cursor-pointer active:scale-95 transition-transform shrink-0" style="top: 10%; right: 20px; width: 60px; height: 60px; border-radius: 50%;">
-      <i data-lucide="message-circle-question" style="width: 30px; height: 30px;"></i>
-    </div>
-
-    <!-- MODAL FAQ TIPO CHAT (POSICIONADO JUSTO DEBAJO DEL BOTÓN) -->
-    <div id="faq-modal" class="fixed z-[9999] backdrop-blur-md hidden flex-col opacity-0 transition-opacity duration-300 w-[280px] sm:w-[320px] max-h-[38vh] rounded-xl border border-gold-500/50 shadow-2xl bg-dark-900/95 overflow-hidden" style="top: 18%; right: 20px;">
-      
-      <div class="flex-none flex items-center justify-between p-2.5 border-b border-slate-800 bg-dark-800/90 shadow-md">
-        <div class="flex items-center gap-2 text-red-500">
-          <i data-lucide="message-circle-question" class="w-4 h-4"></i>
-          <h2 class="text-[13px] font-black tracking-wide text-slate-100">Guía y Ayuda</h2>
-        </div>
-        <button onclick="closeFaqModal()" class="p-1 bg-dark-700 hover:bg-red-600/20 text-silver-300 hover:text-red-500 rounded-full transition-colors">
-          <i data-lucide="x" class="w-3.5 h-3.5"></i>
-        </button>
-      </div>
-      
-      <div class="flex-1 faq-scroll p-2 space-y-2 pb-3">
-        <p class="text-[10px] text-silver-400 mb-2 font-medium text-center">Toca cualquier pregunta para ver la respuesta sobre este proyecto.</p>
-        
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Qué significa 'G' y 'D' en Tapacantos?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            'D' se refiere al Tapacanto Delgado (0.45mm) usado para bordes ocultos o de menor desgaste. 'G' es el Tapacanto Grueso (3mm) que se coloca en frentes y cubiertas para mayor resistencia y mejor acabado estético.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Qué significan (D:18, E:4, P:8)?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            Indican cómo hacer el canal para el fondo del cajón. D: 18mm es la Distancia desde el borde inferior; E: 4mm es el Espesor de la ranura; P: 8mm es la Profundidad del corte.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Cuánto espacio queda para la cama?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            El diseño estructural deja un espacio libre de 1350 mm (1.35 metros) exactos entre los dos cajoneros laterales, diseñado para encajar una cama estándar de 2 plazas.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Por qué el Fondo es distinto?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            La pieza 9 se fabrica en MDF de 3mm porque funciona exclusivamente como base ligera del cajón. Usar melamina de 18mm la haría innecesariamente pesada.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Para qué sirven los tornillos 4x50 y 4x30?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            Los de 4x50 son para unir las placas de melamina de 18mm. Los de 4x30 se usan para fijar las correderas a la madera sin traspasarla.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Qué función cumplen los 'Amarres'?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            Son tiras de melamina de 414x80mm en la parte superior. Mantienen los laterales paralelos y a escuadra, dando firmeza a la estructura antes de colocar la tapa.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Por qué necesito extensión imantada?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            Los cajoneros tienen espacios internos estrechos. La extensión evita que el tornillo se caiga y te permite atornillar las correderas al fondo sin que estorbe el taladro.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿De qué tamaño son las correderas?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            El proyecto exige correderas de 350 mm. Esta medida es perfecta ya que los laterales del cajón (Pieza 7) miden exactamente 350 mm de profundidad.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Cómo se fija el frente exterior?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            Se fija desde ADENTRO hacia afuera. Primero armas el cajón interno; luego acomodas el frente exterior y metes tornillos de 4x30 atravesando el frente interno.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Por qué el cajonero mide 650mm?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            El lateral (Pieza 3) tiene 632mm. A esto se le suma el espesor de la tapa superior que es de 18mm de melamina (632 + 18 = 650mm).
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Qué es la Puntilla Pz2?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            Es la punta de destornillador tipo Pozidriv tamaño 2. Es la punta con el encaje perfecto para los tornillos negros de ensamble de 4x50.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Cómo aseguro los 90 grados?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            Antes de deslizar y fijar el fondo, utiliza tu wincha para medir las dos diagonales internas. Si ambas son idénticas, tu cajón está escuadrado.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Para qué sirven los zócalos?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            Elevan el primer piso del cajonero evitando que la puerta o cajón inferior roce el piso al abrir, y protegen la estructura de la humedad o escobazos.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Cuándo se pega el tapacanto?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            El proceso de canteado debe realizarse en todas las piezas indicadas por la tabla de despiece ANTES de comenzar a perforar o ensamblar.
-          </div>
-        </details>
-
-        <details class="group bg-dark-800/80 border border-slate-700/50 rounded-lg overflow-hidden">
-          <summary class="flex items-center justify-between p-2 font-bold text-[10px] text-gold-400 cursor-pointer outline-none">
-            ¿Cómo se une todo el respaldo?
-            <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 transition-transform group-open:rotate-180 shrink-0 ml-1.5"></i>
-          </summary>
-          <div class="p-2 pt-0 text-[9px] text-silver-300 leading-relaxed border-t border-slate-700/50 mt-1">
-            La Pieza 2 (Respaldo Horizontal) se apoya y atornilla desde atrás contra las dos Piezas 1 (Verticales). Mides los 1350mm de separación baja, y fijas.
-          </div>
-        </details>
-      </div>
-    </div>
-
 
   <!-- ==================== SCRIPTS COMBINADOS ==================== -->
   <script>
@@ -1239,7 +1257,7 @@
 
     function toggleExplodedView() {
       isExploded = !isExploded;
-      currentStep = -1; // Reset steps if exploding
+      currentStep = -1;
       const btn = document.getElementById('btn-explode');
       btn.classList.toggle('bg-gold-500', isExploded);
       btn.classList.toggle('text-dark-900', isExploded);
@@ -1248,7 +1266,7 @@
       headboardGroup.traverse((child) => {
         if (child.isMesh && child.userData.origPos) {
           child.visible = true;
-          child.userData.animTarget = null; // stop any step animation
+          child.userData.animTarget = null;
           
           const orig = child.userData.origPos;
           if (isExploded) {
