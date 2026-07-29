@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="es" class="bg-[#191A1E]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>La Biblia del Artesano - Aparicio Studio</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: { 300: '#FCE788', 400: '#F3E5AB', 500: '#D4AF37', 600: '#AA820A', 700: '#856404' },
+            silver: { 300: '#E0E0E0', 400: '#C0C0C0', 500: '#A0A0A0', 600: '#707070' },
+            dark: { 900: '#0B0C10', 800: '#12141C', 700: '#1C1F2B', 600: '#282C3D' }
+          },
+          boxShadow: {
+            'gold-glow': '0 0 14px rgba(212, 175, 55, 0.3)',
+            'silver-glow': '0 0 10px rgba(192, 192, 192, 0.2)',
+            'red-glow': '0 0 15px rgba(220, 38, 38, 0.5)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Three.js + OrbitControls -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    
+    html, body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      scrollbar-width: none; 
+      -ms-overflow-style: none;
+    }
+
+    ::-webkit-scrollbar { display: none; }
+
+    .faq-scroll {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .faq-scroll::-webkit-scrollbar { display: none; }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+      opacity: 0;
+    }
+    .accordion-content.active {
+      max-height: 4000px;
+      opacity: 1;
+    }
+
+    #part-info-card {
+      left: 50%;
+      transform-origin: bottom center;
+      transform: translateY(150%) translateX(-50%);
+      opacity: 0;
+    }
+    .info-card-visible {
+      transform: translateY(0) translateX(-50%) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+    
+    .list-panel-open {
+      display: flex !important;
+      animation: fadeInDown 0.2s ease-out forwards;
+    }
+    
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    details > summary { list-style: none; outline: none; }
+    details > summary::-webkit-details-marker { display: none; }
+    
+    /* ANIMACIONES ESTILO NETFLIX (Direccionales) */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .animate-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .chat-bubble::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: 20px;
+      border-width: 0 5px 5px 5px;
+      border-style: solid;
+      border-color: transparent transparent #0B0C10 transparent; 
+    }
+
+    :root {
+        --bg-dark: #191A1E; 
+        --bg-card: #121212; 
+        --bg-accent: #1a1a1a;
+        --gold: #fdb813;
+        --gold-light: #ffe066;
+        --gold-bright: #fff2a3;
+        --gold-subtle: rgba(253, 184, 19, 0.15);
+        --gold-border: rgba(253, 184, 19, 0.7);
+        --gold-glow: rgba(253, 184, 19, 0.35);
+        --gold-gradient: linear-gradient(135deg, #ffe066 0%, #fdb813 50%, #c98a00 100%);
+    }
+
+    .header-container {
+        width: 100%;
+        max-width: 100%;
+        background-color: var(--bg-card);
+        border: 1px solid var(--gold-border);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.5), 0 0 15px var(--gold-glow);
+    }
+
+    .top-brand {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 10px 16px; background-color: #070707; border-bottom: 1px solid var(--gold-border);
+    }
+
+    .logo-box {
+        width: 38px; height: 38px; background: var(--gold-gradient); border-radius: 6px;
+        display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px var(--gold-glow);
+        padding: 2px; flex-shrink: 0;
+    }
+
+    .brand-text {
+        font-size: 11.5px; font-weight: 800; letter-spacing: 0.5px; color: var(--gold-light);
+        text-transform: uppercase; text-shadow: 0 0 6px rgba(253, 184, 19, 0.4);
+    }
+
+    .hero-image-wrapper { position: relative; width: 100%; height: 290px; background-color: #000; display: flex; align-items: center; justify-content: center; }
+    .hero-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.95; }
+    .hero-overlay { position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(0deg, var(--bg-card) 0%, rgba(18,18,18,0) 100%); pointer-events: none; }
+    .content-body { padding: 18px 20px 22px 20px; position: relative; z-index: 10; }
+    
+    .spec-card {
+        background-color: var(--bg-accent); border: 1px solid var(--gold-border); border-radius: 10px;
+        aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        padding: 8px; text-align: center; position: relative; overflow: hidden;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4), 0 3px 8px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .spec-card:hover { transform: translateY(-2px); border-color: var(--gold-light); box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 0 12px var(--gold-glow); }
+    .spec-card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2.5px; background: var(--gold-gradient); }
+
+    @media (max-width: 650px) {
+        .hero-image-wrapper { height: 220px; }
+        .spec-card { padding: 6px; }
+    }
+  </style>
+</head>
+<body class="bg-[#191A1E] text-slate-100 pb-8 pt-2 selection:bg-gold-500 selection:text-black">
+
+  <!-- ==================== SECCIÓN SUPERIOR ==================== -->
+  <div class="w-full max-w-[1400px] mx-auto px-1 sm:px-2 lg:px-4 mb-4 mt-1">
+      <!-- BLOQUE PRINCIPAL SIN ANIMACIÓN -->
+      <div class="header-container" id="main-header">
+          
+          <div class="top-brand">
+              <div class="brand-left gap-3">
+                  <div class="logo-box">
+                      <img src="https://i.ibb.co/SDwC5YCb/IMG-20260305-231115-415.png" alt="Logo La Biblia del Artesano" onerror="this.onerror=null; this.src='https://placehold.co/120x120/141414/fdb813?text=BA';"/>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                      <span class="brand-text">LA BIBLIA DEL ARTESANO</span>
+                  </div>
+              </div>
+              <div class="flex flex-col items-center justify-center gap-1 bg-gold-500/15 border border-gold-500/70 py-1.5 px-3 rounded-lg shadow-gold-glow">
+                  <div class="flex gap-0.5 text-gold-500 text-[9px]" id="stars-container"></div>
+                  <span class="text-[10px] text-gold-300 font-bold tracking-wide" id="rating-text">4.2 / 5</span>
+              </div>
+          </div>
+
+          <div class="hero-image-wrapper">
+              <a href="https://ibb.co/QFdkQygn" target="_blank" rel="noopener noreferrer" class="w-full h-full block">
+                  <img src="https://i.ibb.co/ynSpPH95/watermarked-img-10273521729506041317.jpg" alt="Cabecera Flotante Modular" class="hero-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=1200&q=80';"/>
+              </a>
+              <div class="hero-overlay"></div>
+          </div>
+
+          <div class="content-body">
+              <h1 class="text-xl md:text-2xl font-extrabold text-white leading-tight mb-2.5 uppercase tracking-wide">CABECERA FLOTANTE MODULAR CON REPISAS Y PANEL </h1>
+              <p class="text-[13px] text-gray-400 leading-relaxed mb-6">
+                  Un diseño vanguardista que combina funcionalidad y estética. Ideal para dormitorios modernos, optimizando el espacio con estantes laterales integrados y un panel decorativo de altura elevada sin tocar el suelo.
+              </p>
+
+              <div class="grid grid-cols-3 gap-2.5 w-full">
+                  <div class="spec-card">
+                      <div class="w-8 h-8 rounded-full bg-gold-500/15 border border-gold-500/70 flex items-center justify-center mb-1.5 text-gold-400 text-[12px] shadow-gold-glow">
+                          <i class="fa-solid fa-gear"></i>
+                      </div>
+                      <span class="text-[8px] sm:text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Especialidad</span>
+                      <span class="text-[10px] sm:text-[11px] md:text-[12px] font-extrabold text-gold-300 leading-tight drop-shadow-md">Carpintería Melamina</span>
+                  </div>
+                  <div class="spec-card">
+                      <div class="w-8 h-8 rounded-full bg-gold-500/15 border border-gold-500/70 flex items-center justify-center mb-1.5 text-gold-400 text-[12px] shadow-gold-glow">
+                          <i class="fa-solid fa-layer-group"></i>
+                      </div>
+                      <span class="text-[8px] sm:text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Dificultad</span>
+                      <span class="text-[10px] sm:text-[11px] md:text-[12px] font-extrabold text-gold-300 leading-tight drop-shadow-md">Fácil</span>
+                  </div>
+                  <div class="spec-card">
+                      <div class="w-8 h-8 rounded-full bg-gold-500/15 border border-gold-500/70 flex items-center justify-center mb-1.5 text-gold-400 text-[12px] shadow-gold-glow">
+                          <i class="fa-regular fa-clock"></i>
+                      </div>
+                      <span class="text-[8px] sm:text-[9px] text-gray-500 font-bold uppercase tracking-wide mb-1">Tiempo Est.</span>
+                      <span class="text-[10px] sm:text-[11px] md:text-[12px] font-extrabold text-gold-300 leading-tight drop-shadow-md">3 a 4 Horas</span>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- ==================== SECCIÓN INFERIOR ==================== -->
+  <main class="w-full max-w-[1400px] mx-auto px-1 sm:px-2 lg:px-4 flex flex-col lg:flex-row gap-4 relative">
+
+    <!-- COLUMNA IZQUIERDA (Solo 3D) -->
+    <div class="w-full lg:w-3/5 flex-shrink-0 space-y-4">
+      
+      <!-- ACORDEÓN 1: PLANO 3D -->
+      <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-lg animate-on-scroll">
+        <button onclick="toggleAccordion('acc-plano')" class="w-full p-3.5 flex items-center justify-between bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-left active:scale-[0.99] transition-transform">
+          <div class="flex items-center space-x-3.5">
+            <div class="p-2 rounded-lg bg-gold-500/10 border border-gold-500/30 text-gold-400">
+              <i data-lucide="mouse-pointer-click" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h2 class="text-sm font-extrabold text-slate-100 flex items-center gap-1.5 uppercase tracking-wide">
+                Proyecto Completo
+              </h2>
+              <span class="text-[11px] text-gold-500 font-medium block">Plano Interactivo 3D</span>
+            </div>
+          </div>
+          <i id="icon-acc-plano" data-lucide="chevron-down" class="w-5 h-5 text-gold-400 transition-transform duration-300"></i>
+        </button>
+
+        <div id="acc-plano" class="accordion-content active">
+          <div class="p-2 space-y-2">
+            <div class="relative w-full h-[380px] lg:h-[600px] bg-slate-950 rounded-md overflow-hidden border border-slate-800 shadow-inner group">
+              <div id="canvas-container" class="w-full h-full relative cursor-pointer"></div>
+              
+              <div class="absolute top-2 left-2 flex flex-col gap-1.5 z-20">
+                <button onclick="reset3DView()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reset
+                </button>
+                <button onclick="togglePasosList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="footprints" class="w-4 h-4"></i> Pasos
+                </button>
+                <div id="pasos-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto w-[150px]">
+                  <div id="pasos-list-container" class="flex flex-col gap-1"></div>
+                </div>
+              </div>
+
+              <div class="absolute top-2 right-2 z-20 flex flex-col items-end gap-1.5">
+                <button id="btn-explode" onclick="toggleExplodedView()" class="bg-dark-800/90 hover:bg-dark-700 text-slate-200 border border-silver-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="move-3d" class="w-4 h-4 text-gold-400"></i> Desarmar
+                </button>
+                <button onclick="togglePartsList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/50 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="list-tree" class="w-4 h-4"></i> Piezas
+                </button>
+                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto w-[180px]">
+                  <div class="text-[8px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1">Selecciona una pieza:</div>
+                  <div id="parts-list-container" class="flex flex-col gap-1"></div>
+                </div>
+              </div>
+
+              <div id="part-info-card" class="absolute bottom-2.5 left-1/2 w-[94%] max-w-[420px] bg-dark-900/95 border border-gold-500/60 rounded-lg p-3 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
+                <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1.5 rounded-md border border-slate-700 transition-colors z-20">
+                  <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+                <div class="flex justify-between items-center mb-2.5 border-b border-slate-800 pb-2 pr-6">
+                  <div class="flex items-center gap-2.5">
+                    <span id="info-id-badge" class="w-5 h-5 rounded bg-gold-500 text-dark-900 font-black flex items-center justify-center text-[11px]">1</span>
+                    <h3 id="info-name" class="text-xs font-black text-gold-400 leading-tight">Nombre</h3>
+                  </div>
+                  <div class="text-right">
+                    <span id="info-qty" class="text-[11px] bg-gold-500/20 text-gold-300 px-2 py-0.5 rounded border border-gold-500/30 font-bold inline-block">x2</span>
+                  </div>
+                </div>
+                <div class="grid grid-cols-4 gap-2 text-center">
+                  <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50">
+                    <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Largo</span>
+                    <span id="info-l" class="font-mono text-[11px] text-slate-100 font-black">0</span>
+                  </div>
+                  <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50">
+                    <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Ancho</span>
+                    <span id="info-a" class="font-mono text-[11px] text-slate-100 font-black">0</span>
+                  </div>
+                  <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50">
+                    <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Grosor</span>
+                    <span id="info-e" class="font-mono text-[11px] text-slate-100 font-black">18</span>
+                  </div>
+                  <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50 flex flex-col justify-center items-center">
+                    <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Tapa</span>
+                    <strong id="info-tap" class="text-[10px] text-gold-400 truncate w-full">G D D D</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- COLUMNA DERECHA LISTAS -->
+    <div class="w-full lg:w-2/5 flex flex-col gap-3.5 pb-8">
+      
+      <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-sm animate-on-scroll" style="transition-delay: 50ms;">
+        <button onclick="toggleAccordion('acc-accesorios')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
+            <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="package" class="w-4 h-4"></i></div>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Accesorios</h2>
+          </div>
+          <i id="icon-acc-accesorios" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-accesorios" class="accordion-content">
+          <div class="p-3 space-y-2">
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+              <div class="w-8 h-8 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-3 shrink-0"><i data-lucide="circle-dot" class="w-4 h-4"></i></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos 4 x 50</span><span class="text-[10px] text-silver-400">Para ensamble general</span></div>
+              <span class="text-[10px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">100 U.</span>
+            </div>
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+              <div class="w-8 h-8 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-3 shrink-0"><i data-lucide="disc" class="w-4 h-4"></i></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos 4 x 30</span><span class="text-[10px] text-silver-400">Para fijar respaldos</span></div>
+              <span class="text-[10px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">10 U.</span>
+            </div>
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+              <div class="w-8 h-8 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-3 shrink-0"><i data-lucide="sticker" class="w-4 h-4"></i></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tapitas Adhesivas</span><span class="text-[10px] text-silver-400">Color Madera / Blanco</span></div>
+              <span class="text-[10px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">1 PAQUETE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-md animate-on-scroll" style="transition-delay: 100ms;">
+        <button onclick="toggleAccordion('acc-herramientas')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
+            <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="wrench" class="w-4 h-4"></i></div>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Herramientas</h2>
+          </div>
+          <i id="icon-acc-herramientas" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-herramientas" class="accordion-content">
+          <div class="p-3 grid grid-cols-2 gap-2">
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex flex-col items-center text-center gap-2">
+              <div class="w-9 h-9 rounded-full bg-slate-800 text-gold-400 flex items-center justify-center"><i data-lucide="drill" class="w-4.5 h-4.5"></i></div>
+              <span class="text-[11px] font-bold text-slate-100 leading-tight">Atornillador Inal.</span>
+            </div>
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex flex-col items-center text-center gap-2">
+              <div class="w-9 h-9 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="pen-tool" class="w-4.5 h-4.5"></i></div>
+              <span class="text-[11px] font-bold text-slate-100 leading-tight">Puntilla Pz2</span>
+            </div>
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex flex-col items-center text-center gap-2">
+              <div class="w-9 h-9 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="ruler" class="w-4.5 h-4.5"></i></div>
+              <span class="text-[11px] font-bold text-slate-100 leading-tight">Wincha / Escuadra</span>
+            </div>
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex flex-col items-center text-center gap-2">
+              <div class="w-9 h-9 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="hammer" class="w-4.5 h-4.5"></i></div>
+              <span class="text-[11px] font-bold text-slate-100 leading-tight">Mazo de Goma</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-md animate-on-scroll" style="transition-delay: 150ms;">
+        <button onclick="toggleAccordion('acc-simbolos')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
+            <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="shapes" class="w-4 h-4"></i></div>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Símbolos</h2>
+          </div>
+          <i id="icon-acc-simbolos" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-simbolos" class="accordion-content">
+          <div class="p-3 grid grid-cols-1 gap-2.5">
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex items-center gap-3.5">
+              <span class="w-8 h-8 rounded bg-slate-800 text-silver-300 font-black flex justify-center items-center text-xs">D</span>
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-slate-100">TAPACANTO DELGADO</span>
+                <span class="text-[10px] text-silver-400">Bordes internos</span>
+              </div>
+            </div>
+            <div class="bg-dark-900 border border-gold-500/50 p-3 rounded flex items-center gap-3.5 shadow-[0_0_10px_rgba(212,175,55,0.1)]">
+              <span class="w-8 h-8 rounded bg-gold-500 text-dark-900 font-black flex justify-center items-center text-xs">G</span>
+              <div class="flex flex-col">
+                <span class="text-xs font-bold text-gold-400">TAPACANTO GRUESO</span>
+                <span class="text-[10px] text-silver-400">Frentes principales y expuestos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-md animate-on-scroll" style="transition-delay: 200ms;">
+        <button onclick="toggleAccordion('acc-ranuras')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
+            <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="align-vertical-space-between" class="w-4 h-4"></i></div>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Ranuras</h2>
+          </div>
+          <i id="icon-acc-ranuras" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-ranuras" class="accordion-content">
+          <div class="p-4 flex flex-col items-center justify-center text-center gap-2">
+            <div class="w-10 h-10 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center border border-slate-700">
+              <i data-lucide="info" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xs font-bold text-slate-100">Sin ranuras complejas</span>
+            <p class="text-[11px] text-silver-400 max-w-[200px]">Este proyecto de cabecera plana y repisas ensambladas no requiere cortes especiales de ranura para fondos.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-md animate-on-scroll" style="transition-delay: 250ms;">
+        <button onclick="toggleAccordion('acc-materiales')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
+            <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="layers" class="w-4 h-4"></i></div>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Materiales</h2>
+          </div>
+          <i id="icon-acc-materiales" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-materiales" class="accordion-content">
+          <div class="p-3 grid grid-cols-1 gap-2.5">
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex items-center justify-between">
+              <div class="flex items-center gap-3.5">
+                <div class="w-7 h-7 rounded-sm bg-[#c27a3e] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-3.5 h-3.5 text-dark-900"></i></div>
+                <span class="text-xs font-bold text-slate-100 uppercase">MELAMINA MADERA</span>
+              </div>
+              <span class="text-[11px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">18 mm</span>
+            </div>
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex items-center justify-between">
+              <div class="flex items-center gap-3.5">
+                <div class="w-7 h-7 rounded-sm bg-[#f4f4f4] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-3.5 h-3.5 text-dark-900"></i></div>
+                <span class="text-xs font-bold text-slate-100 uppercase">MELAMINA BLANCA</span>
+              </div>
+              <span class="text-[11px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">18 mm</span>
+            </div>
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex items-center justify-between">
+              <div class="flex items-center gap-3.5">
+                <div class="w-7 h-7 rounded-sm bg-[#606060] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-3.5 h-3.5 text-dark-900"></i></div>
+                <span class="text-xs font-bold text-slate-100 uppercase">MELAMINA GRIS</span>
+              </div>
+              <span class="text-[11px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">18 mm</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACORDEÓN: PREGUNTAS FRECUENTES -->
+      <div class="border border-red-500/40 rounded-lg bg-dark-800/80 overflow-hidden shadow-[0_0_12px_rgba(220,38,38,0.15)] animate-on-scroll mt-2" style="transition-delay: 300ms;">
+        <button onclick="toggleAccordion('acc-faq')" class="w-full p-3 flex items-center justify-between bg-gradient-to-r from-dark-800 to-red-950/20 border-b border-red-500/20 text-left active:bg-dark-700 transition-colors">
+          <div class="flex items-center gap-3">
+            <div class="p-1.5 rounded bg-red-500/20 text-red-500 border border-red-500/30"><i data-lucide="message-circle-question" class="w-4 h-4"></i></div>
+            <div>
+              <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Preguntas Frecuentes</h2>
+              <span class="text-[10px] text-silver-400 font-medium">Guía y Ayuda del Proyecto</span>
+            </div>
+          </div>
+          <i id="icon-acc-faq" data-lucide="chevron-down" class="w-4 h-4 text-red-400 transition-transform duration-300"></i>
+        </button>
+        <div id="acc-faq" class="accordion-content">
+          <div class="p-3 bg-dark-900/50 space-y-3 faq-scroll" style="max-height: 400px;">
+            
+            <details class="group relative">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+                ¿Qué espacio queda para la cama?
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
+              </summary>
+              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
+                  El diseño estructural deja un espacio libre de <strong>1350 mm (1.35 metros) exactos</strong> entre las dos torres laterales, diseñado perfectamente para encajar una cama estándar de 2 plazas.
+                </p>
+              </div>
+            </details>
+
+            <details class="group relative">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+                ¿Cómo fijo el respaldo horizontal flotante?
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
+              </summary>
+              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
+                  La Pieza 2 (panel blanco) se atornilla desde la parte posterior de los paneles laterales (Pieza 1). Se superpone 150mm en cada lado. Utiliza tornillos de 4x30 o 4x50 asegurándote de no traspasar la cara frontal.
+                </p>
+              </div>
+            </details>
+
+            <details class="group relative">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+                ¿Por qué el panel blanco no toca el suelo?
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
+              </summary>
+              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
+                  Es una decisión de diseño para dar un efecto de <strong>ligereza (flotante)</strong> al mueble y evitar la acumulación de polvo, facilitando la limpieza debajo de la cama y la cabecera.
+                </p>
+              </div>
+            </details>
+
+            <details class="group relative">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+                ¿Cómo se instalan los cuadros decorativos?
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
+              </summary>
+              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
+                  Puedes fijarlos de dos formas: usando cinta doble faz de montaje extra fuerte para un acabado sin perforaciones, o atornillándolos desde la parte posterior del panel blanco antes de instalarlo en las torres.
+                </p>
+              </div>
+            </details>
+
+            <details class="group relative">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+                ¿De qué tamaño son los cuadros?
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
+              </summary>
+              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
+                  Son 8 cuadrados en total (4 color madera, 4 color gris), cada uno mide exactamente <strong>150 x 150 mm</strong> y van canteados por sus 4 lados (D D D D).
+                </p>
+              </div>
+            </details>
+
+            <details class="group relative">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+                ¿Qué significa 'G' y 'D' en Tapacantos?
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
+              </summary>
+              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
+                  <strong>'D'</strong> se refiere al Tapacanto Delgado (0.45mm) usado para bordes internos. <strong>'G'</strong> es el Tapacanto Grueso (3mm) que se coloca en cantos expuestos a roces para mayor resistencia y estética.
+                </p>
+              </div>
+            </details>
+
+            <details class="group relative">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+                ¿Qué es la Puntilla Pz2 recomendada?
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
+              </summary>
+              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
+                  Es la punta de destornillador tipo Pozidriv tamaño 2. Tiene el encaje perfecto para los tornillos de ensamble (4x50 y 4x30) recomendados, evitando que se ruede la cabeza al atornillar.
+                </p>
+              </div>
+            </details>
+
+            <details class="group relative">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+                ¿Es necesario fijar la cabecera a la pared?
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
+              </summary>
+              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
+                  Aunque las torres laterales le dan buena estabilidad, para evitar movimientos al recostarse contra el panel flotante, se recomienda anclar las torres a la pared usando escuadras metálicas internas y tarugos.
+                </p>
+              </div>
+            </details>
+
+            <details class="group relative">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+                ¿Puedo cambiar los colores del diseño?
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
+              </summary>
+              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
+                  ¡Totalmente! El diseño es modular. Puedes usar los colores de melamina que mejor combinen con tu habitación, siempre y cuando mantengas el espesor estructural de <strong>18 mm</strong>.
+                </p>
+              </div>
+            </details>
+
+            <details class="group relative">
+              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
+                ¿En qué momento debo pegar el tapacanto?
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
+              </summary>
+              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
+                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
+                  El proceso de canteado debe realizarse en todas las piezas indicadas por la lista de símbolos <strong>ANTES</strong> de comenzar a marcar, perforar o ensamblar el mueble.
+                </p>
+              </div>
+            </details>
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==================== SCRIPTS COMBINADOS ==================== -->
+  <script>
+    window.onload = function() {
+      lucide.createIcons();
+      buildPartsListUI();
+      buildPasosListUI();
+      init3D();
+      initScrollAnimations();
+    };
+
+    // Animaciones Estilo Netflix
+    function initScrollAnimations() {
+      const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          } else {
+            if (entry.boundingClientRect.top > window.innerHeight * 0.7) {
+              entry.target.classList.remove('is-visible');
+            }
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    // Estrellas Fijas
+    function initRating() {
+      const container = document.getElementById('stars-container');
+      const ratingText = document.getElementById('rating-text');
+      const randomScore = 4.2;
+      if(ratingText) ratingText.textContent = `${randomScore} / 5`;
+      if(container) {
+          container.innerHTML = '';
+          const fullStars = Math.floor(randomScore);
+          const hasHalf = (randomScore - fullStars) >= 0.2;
+          for (let i = 1; i <= 5; i++) {
+            const star = document.createElement('i');
+            if (i <= fullStars) star.className = 'fa-solid fa-star';
+            else if (i === fullStars + 1 && hasHalf) star.className = 'fa-solid fa-star-half-stroke';
+            else star.className = 'fa-regular fa-star';
+            container.appendChild(star);
+          }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', initRating);
+
+    // CONTROL DE ACORDEONES INTELIGENTE
+    function toggleAccordion(id) {
+      const targetContent = document.getElementById(id);
+      const targetIcon = document.getElementById('icon-' + id);
+      const wasOpen = targetContent.classList.contains('active');
+
+      document.querySelectorAll('.accordion-content').forEach(content => {
+        if (content.id !== 'acc-plano' && content.id !== id) {
+          content.classList.remove('active');
+          const icon = document.getElementById('icon-' + content.id);
+          if (icon) icon.style.transform = 'rotate(0deg)';
+        }
+      });
+
+      if (!wasOpen) {
+        targetContent.classList.add('active');
+        if (targetIcon) targetIcon.style.transform = 'rotate(180deg)';
+        if (id === 'acc-plano') setTimeout(() => onWindowResize(), 100);
+      } else {
+        targetContent.classList.remove('active');
+        if (targetIcon) targetIcon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // DATOS DE PIEZAS ACTUALIZADOS
+    const partsData = {
+      1: { id: 1, name: "RESPALDO VERTICAL", l: 800, a: 550, cant: 2, tap: "G G G D", esp: 18 },
+      2: { id: 2, name: "RESPALDO HORIZ.", l: 1650, a: 585, cant: 1, tap: "G G D D", esp: 18 },
+      3: { id: 3, name: "LATERAL DE REPISA", l: 650, a: 350, cant: 2, tap: "G G - -", esp: 18 },
+      4: { id: 4, name: "REPISAS", l: 382, a: 350, cant: 6, tap: "G - - -", esp: 18 },
+      5: { id: 5, name: "CUADRO DECOR. MADERA", l: 150, a: 150, cant: 4, tap: "D D D D", esp: 18 },
+      6: { id: 6, name: "CUADRO DECOR. GRIS", l: 150, a: 150, cant: 4, tap: "D D D D", esp: 18 }
+    };
+
+    const assemblySteps = [
+      { id: 1, name: "Paso 1: Soportes Base", parts: [1] },
+      { id: 2, name: "Paso 2: Panel Flotante", parts: [2] },
+      { id: 3, name: "Paso 3: Separadores", parts: [3] },
+      { id: 4, name: "Paso 4: Repisas", parts: [4] },
+      { id: 5, name: "Paso 5: Decoración Madera", parts: [5] },
+      { id: 6, name: "Paso 6: Decoración Gris", parts: [6] }
+    ];
+    let currentStep = -1;
+
+    let scene, camera, renderer, controls;
+    let headboardGroup;
+    let isExploded = false;
+    let targetLookAt = new THREE.Vector3(0, 0.4, 0); 
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+
+    function togglePartsList() {
+      const panel = document.getElementById('parts-list-panel');
+      document.getElementById('pasos-list-panel').classList.remove('list-panel-open');
+      panel.classList.toggle('list-panel-open');
+    }
+
+    function togglePasosList() {
+      const panel = document.getElementById('pasos-list-panel');
+      document.getElementById('parts-list-panel').classList.remove('list-panel-open');
+      panel.classList.toggle('list-panel-open');
+    }
+
+    function buildPartsListUI() {
+      const container = document.getElementById('parts-list-container');
+      container.innerHTML = '';
+      Object.values(partsData).forEach(part => {
+        const btn = document.createElement('button');
+        btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group";
+        const badgeColor = "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
+        const textColor = "text-silver-300 group-hover:text-gold-300";
+        btn.innerHTML = `<span class="w-5 h-5 shrink-0 rounded flex items-center justify-center text-[10px] font-black transition-colors ${badgeColor}">${part.id}</span><span class="text-[11px] font-bold truncate ${textColor}">${part.name}</span>`;
+        btn.onclick = () => selectPartFromList(part.id);
+        container.appendChild(btn);
+      });
+    }
+
+    function buildPasosListUI() {
+      const container = document.getElementById('pasos-list-container');
+      container.innerHTML = '';
+      assemblySteps.forEach((step, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 text-silver-300 font-bold text-[10px] transition-colors";
+        btn.innerHTML = `<span class="w-5 h-5 rounded bg-dark-700 text-gold-400 flex justify-center items-center shrink-0 border border-gold-500/30">${step.id}</span> ${step.name}`;
+        btn.onclick = () => playStep(idx);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectPartFromList(partId) {
+      let targetMesh = null;
+      headboardGroup.traverse((child) => {
+        if (child.isMesh && child.userData.partId === partId && !targetMesh) {
+          targetMesh = child;
+        }
+      });
+      
+      if (targetMesh) {
+        if (!targetMesh.visible) {
+            targetMesh.visible = true;
+            if (targetMesh.userData.origPos) {
+                targetMesh.position.copy(targetMesh.userData.origPos);
+            }
+        }
+        selectPart(partId, targetMesh);
+        document.getElementById('parts-list-panel').classList.remove('list-panel-open');
+      }
+    }
+
+    function playStep(stepIndex) {
+      currentStep = stepIndex;
+      if (isExploded) toggleExplodedView(); 
+      document.getElementById('pasos-list-panel').classList.remove('list-panel-open');
+      resetSelection();
+
+      const partsToShow = [];
+      const partsToAnimate = [];
+
+      for(let i = 0; i <= stepIndex; i++) {
+        if(i === stepIndex) partsToAnimate.push(...assemblySteps[i].parts);
+        else partsToShow.push(...assemblySteps[i].parts);
+      }
+
+      headboardGroup.traverse((child) => {
+        if (child.isMesh && child.userData.origPos) {
+          const pid = child.userData.partId;
+          if (partsToAnimate.includes(pid)) {
+            child.visible = true;
+            child.position.set(child.userData.origPos.x, child.userData.origPos.y + 1.5, child.userData.origPos.z);
+            child.userData.animTarget = child.userData.origPos.clone();
+          } else if (partsToShow.includes(pid)) {
+            child.visible = true;
+            child.position.copy(child.userData.origPos);
+            child.userData.animTarget = null;
+          } else {
+            child.visible = false;
+            child.userData.animTarget = null;
+          }
+        }
+      });
+    }
+
+    function init3D() {
+      const container = document.getElementById('canvas-container');
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x0a0b0e);
+
+      camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+      camera.position.set(0, 1.5, 4.5);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.maxPolarAngle = Math.PI / 2 + 0.05;
+      controls.minDistance = 1.0;
+      controls.maxDistance = 10;
+      controls.target.set(0, 0.6, 0);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      scene.add(ambientLight);
+      const dirLight = new THREE.DirectionalLight(0xfff5e6, 1.2);
+      dirLight.position.set(3, 5, 4);
+      dirLight.castShadow = true;
+      scene.add(dirLight);
+
+      const gridHelper = new THREE.GridHelper(6, 20, 0xd4af37, 0x222633);
+      gridHelper.position.y = 0;
+      scene.add(gridHelper);
+
+      buildFurnitureModel();
+
+      window.addEventListener('resize', onWindowResize);
+      setupMobileInteraction(container);
+
+      animate();
+    }
+
+    // UX MOBILE MEJORADA
+    function setupMobileInteraction(container) {
+      let pressTimer;
+      let isPressing = false;
+
+      container.addEventListener('pointerdown', (e) => {
+        const partsPanel = document.getElementById('parts-list-panel');
+        const pasosPanel = document.getElementById('pasos-list-panel');
+        if(partsPanel.classList.contains('list-panel-open') && e.clientY > 100) partsPanel.classList.remove('list-panel-open');
+        if(pasosPanel.classList.contains('list-panel-open') && e.clientY > 100) pasosPanel.classList.remove('list-panel-open');
+
+        isPressing = true;
+        const rect = renderer.domElement.getBoundingClientRect();
+        mouse.x = ( (e.clientX - rect.left) / rect.width ) * 2 - 1;
+        mouse.y = - ( (e.clientY - rect.top) / rect.height ) * 2 + 1;
+
+        pressTimer = setTimeout(() => {
+            if (isPressing) executeRaycast();
+        }, 500); 
+      });
+
+      container.addEventListener('pointermove', () => {
+        isPressing = false;
+        clearTimeout(pressTimer);
+      });
+
+      container.addEventListener('pointerup', () => {
+        isPressing = false;
+        clearTimeout(pressTimer);
+      });
+
+      container.addEventListener('pointercancel', () => {
+        isPressing = false;
+        clearTimeout(pressTimer);
+      });
+    }
+
+    function executeRaycast() {
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(headboardGroup.children, true);
+      
+      if (intersects.length > 0) {
+        const object = intersects[0].object;
+        const partId = object.userData.partId;
+        if(partId && partId > 0 && object.visible) selectPart(partId, object);
+      }
+    }
+
+    function buildFurnitureModel() {
+      headboardGroup = new THREE.Group();
+      scene.add(headboardGroup);
+
+      const matWood = new THREE.MeshStandardMaterial({ color: 0xc27a3e, roughness: 0.5 });
+      const matWhite = new THREE.MeshStandardMaterial({ color: 0xf4f4f4, roughness: 0.3 });
+      const matGrey = new THREE.MeshStandardMaterial({ color: 0x606060, roughness: 0.6 });
+
+      function createBox(w, h, d, x, y, z, mat, partId) {
+        const geo = new THREE.BoxGeometry(w, h, d);
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(x, y, z);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.userData = { partId: partId, origPos: new THREE.Vector3(x, y, z), defaultMat: mat, animTarget: null };
+        return mesh;
+      }
+
+      // AJUSTE: Panel blanco sube 35% en Y (0.475 * 1.35 = 0.641)
+      const basePanelY = 0.475;
+      const newPanelY = basePanelY * 1.35; 
+      
+      // AJUSTE NUEVO: Cortar 10% de la parte inferior de la tabla blanca
+      const origHeightP2 = 0.650;
+      const cutAmount = origHeightP2 * 0.10; // 10% de corte
+      const finalHeightP2 = origHeightP2 - cutAmount; // Nueva altura (0.585)
+      // Subimos el centro de la pieza la mitad del corte para que el borde superior no se mueva nada
+      const finalPanelY = newPanelY + (cutAmount / 2);
+
+      // Piece 2: Respaldo Horizontal (White)
+      headboardGroup.add(createBox(1.650, finalHeightP2, 0.018, 0, finalPanelY, -0.009, matWhite, 2));
+
+      // Function to build side towers
+      function buildSide(isRight) {
+          const group = new THREE.Group();
+          const sign = isRight ? 1 : -1;
+          const centerP1 = 0.950; // Inner 0.675 + Width/2 (0.275) = 0.950
+
+          // Piece 1: Respaldo Vertical (Se mantiene en su lugar)
+          group.add(createBox(0.550, 0.800, 0.018, sign * centerP1, 0.400, 0.009, matWood, 1));
+
+          // Piece 3: Lateral de Repisa
+          group.add(createBox(0.018, 0.650, 0.350, sign * 0.834, 0.325, 0.193, matWood, 3));
+
+          // Piece 4: Repisas
+          const cxRepisa = sign * 1.034;
+          const zRepisa = 0.193;
+          group.add(createBox(0.382, 0.018, 0.350, cxRepisa, 0.150, zRepisa, matGrey, 4));
+          group.add(createBox(0.382, 0.018, 0.350, cxRepisa, 0.350, zRepisa, matGrey, 4));
+          group.add(createBox(0.382, 0.018, 0.350, cxRepisa, 0.550, zRepisa, matGrey, 4));
+
+          return group;
+      }
+
+      headboardGroup.add(buildSide(false)); // Left
+      headboardGroup.add(buildSide(true));  // Right
+
+      // Pieces 5 & 6: Cuadros decorativos
+      // AJUSTE: Primero se mueven junto con el panel (suben 35%)
+      // LUEGO suben un 10% adicional respecto a su nueva posición base
+      
+      const originalYTop = 0.600;
+      const originalYBot = 0.450;
+      
+      // Incremento del panel (35%)
+      const deltaYPanel = newPanelY - basePanelY; 
+      
+      // Nueva posición base + 10% de ajuste fino hacia arriba
+      const adjust10Percent = 0.10;
+      const newYTop = (originalYTop + deltaYPanel) + adjust10Percent;
+      const newYBot = (originalYBot + deltaYPanel) + adjust10Percent;
+
+      const zSq = 0.009; // Flush with front of Piece 1
+
+      // X centers for zig-zag pattern
+      const xCoords = [-0.525, -0.375, -0.225, -0.075, 0.075, 0.225, 0.375, 0.525];
+
+      for (let i = 0; i < 8; i++) {
+          if (i % 2 === 0) {
+              headboardGroup.add(createBox(0.150, 0.150, 0.018, xCoords[i], newYTop, zSq, matWood, 5));
+          } else {
+              headboardGroup.add(createBox(0.150, 0.150, 0.018, xCoords[i], newYBot, zSq, matGrey, 6));
+          }
+      }
+    }
+
+    function selectPart(partId, clickedMesh) {
+      headboardGroup.traverse((child) => {
+        if (child.isMesh && child.userData.defaultMat && child.visible) {
+          if (child.userData.partId === partId) {
+            child.material = new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0x856404, roughness: 0.2 });
+          } else {
+            child.material = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.40 });
+          }
+        }
+      });
+
+      const data = partsData[partId];
+      if (data) {
+        document.getElementById('info-id-badge').innerText = data.id;
+        document.getElementById('info-name').innerText = data.name;
+        document.getElementById('info-qty').innerText = "x" + data.cant;
+        
+        document.getElementById('info-l').innerText = data.l + " mm";
+        document.getElementById('info-a').innerText = data.a + " mm";
+        document.getElementById('info-e').innerText = data.esp + " mm";
+        
+        document.getElementById('info-tap').innerText = data.tap;
+        document.getElementById('part-info-card').classList.add('info-card-visible');
+      }
+
+      const bbox = new THREE.Box3().setFromObject(clickedMesh);
+      const center = new THREE.Vector3();
+      bbox.getCenter(center);
+      targetLookAt.copy(center);
+    }
+
+    function resetSelection() {
+      headboardGroup.traverse((child) => {
+        if (child.isMesh && child.userData.defaultMat) {
+          child.material = child.userData.defaultMat;
+          child.material.opacity = 1.0;
+          child.material.transparent = false;
+        }
+      });
+      document.getElementById('part-info-card').classList.remove('info-card-visible');
+      targetLookAt.set(0, 0.6, 0);
+    }
+
+    function reset3DView() {
+      resetSelection();
+      currentStep = -1;
+      camera.position.set(0, 1.5, 4.5);
+      document.getElementById('parts-list-panel').classList.remove('list-panel-open');
+      document.getElementById('pasos-list-panel').classList.remove('list-panel-open');
+      if (isExploded) toggleExplodedView();
+
+      headboardGroup.traverse((child) => {
+        if (child.isMesh && child.userData.origPos) {
+          child.visible = true;
+          child.position.copy(child.userData.origPos);
+          child.userData.animTarget = null;
+        }
+      });
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.target.lerp(targetLookAt, 0.08);
+      controls.update();
+
+      if(headboardGroup) {
+        headboardGroup.traverse((child) => {
+          if (child.isMesh && child.userData.animTarget) {
+            child.position.lerp(child.userData.animTarget, 0.12);
+            if (child.position.distanceTo(child.userData.animTarget) < 0.01) {
+              child.position.copy(child.userData.animTarget);
+              child.userData.animTarget = null;
+            }
+          }
+        });
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('canvas-container');
+      if (!container) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+
+    function toggleExplodedView() {
+      isExploded = !isExploded;
+      currentStep = -1;
+      const btn = document.getElementById('btn-explode');
+      btn.classList.toggle('bg-gold-500', isExploded);
+      btn.classList.toggle('text-dark-900', isExploded);
+      resetSelection();
+
+      headboardGroup.traverse((child) => {
+        if (child.isMesh && child.userData.origPos) {
+          child.visible = true;
+          child.userData.animTarget = null;
+          
+          const orig = child.userData.origPos;
+          if (isExploded) {
+            const pId = child.userData.partId;
+            let offset = new THREE.Vector3(0, 0, 0);
+            if (pId === 2) offset.set(0, 0, -0.4); 
+            if (pId === 1) offset.set(0, 0, -0.1); 
+            if (pId === 3) offset.set(orig.x > 0 ? 0.3 : -0.3, 0, 0.2); 
+            if (pId === 4) offset.set(orig.x > 0 ? 0.2 : -0.2, 0, 0.3); 
+            if (pId === 5 || pId === 6) offset.set(0, 0, 0.3); 
+            child.position.set(orig.x + offset.x, orig.y + offset.y, orig.z + offset.z);
+          } else {
+            child.position.copy(orig);
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
