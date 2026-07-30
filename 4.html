@@ -50,26 +50,27 @@
 
     ::-webkit-scrollbar { display: none; }
 
-    /* CORRECCIÓN SCROLL EN APP MOBILE (FAQ Y MENÚS) */
     .faq-scroll {
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       -ms-overflow-style: none;
-      touch-action: pan-y !important;
-      overscroll-behavior: contain !important;
     }
     .faq-scroll::-webkit-scrollbar { display: none; }
 
-    /* CORRECCIÓN VISOR 3D (DESACTIVAR SCROLL EN CONTENEDOR 3D) */
+    /* Estado por defecto: permite scroll normal de la página */
     #canvas-container {
-      touch-action: none !important;
-      overscroll-behavior: contain !important;
+      touch-action: pan-y;
       -webkit-user-select: none;
       user-select: none;
     }
 
-    /* CORRECCIÓN MENÚS DESPLEGABLES DENTRO DEL 3D */
+    /* Estado cuando se activa el modo 3D */
+    #canvas-container.interactive-3d {
+      touch-action: none !important;
+      overscroll-behavior: none !important;
+    }
+
     #pasos-list-panel, #parts-list-panel {
       touch-action: pan-y !important;
       overscroll-behavior: contain !important;
@@ -253,7 +254,6 @@
 
   <main class="w-full max-w-[1400px] mx-auto px-1 sm:px-2 lg:px-4 flex flex-col lg:flex-row gap-4 relative">
 
-    <!-- COLUMNA IZQUIERDA (Visor 3D) -->
     <div class="w-full lg:w-3/5 flex-shrink-0 space-y-4">
       
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-lg animate-on-scroll">
@@ -275,6 +275,13 @@
         <div id="acc-plano" class="accordion-content active">
           <div class="p-2 space-y-2">
             <div class="relative w-full h-[380px] lg:h-[600px] bg-slate-950 rounded-md overflow-hidden border border-slate-800 shadow-inner group">
+              
+              <!-- BOTÓN INTERRUPTOR FLOTANTE PARA ACTIVAR/DESACTIVAR EL MODO 3D -->
+              <button id="btn-toggle-3d" onclick="toggleInteraccion3D()" class="absolute bottom-16 right-3 z-30 bg-dark-900/90 hover:bg-dark-800 text-gold-400 border border-gold-500/70 px-3 py-2 rounded-lg text-[11px] font-extrabold flex items-center gap-1.5 shadow-gold-glow backdrop-blur transition-all">
+                <i data-lucide="hand" class="w-4 h-4"></i> <span id="btn-3d-text">Tocar para Girar 3D</span>
+              </button>
+
+              <!-- VISOR 3D -->
               <div id="canvas-container" class="w-full h-full relative cursor-pointer"></div>
               
               <div class="absolute top-2 left-2 flex flex-col gap-1.5 z-20">
@@ -302,7 +309,6 @@
                 </div>
               </div>
 
-              <!-- Tarjeta de Información Dinámica -->
               <div id="part-info-card" class="absolute bottom-2.5 left-1/2 w-[94%] max-w-[420px] bg-dark-900/95 border border-gold-500/60 rounded-lg p-3 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
                 <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1.5 rounded-md border border-slate-700 transition-colors z-20 pointer-events-auto">
                   <i data-lucide="x" class="w-4 h-4"></i>
@@ -601,7 +607,39 @@
       buildPasosListUI();
       init3D();
       initScrollAnimations();
+      setupScrollIsolation();
     };
+
+    // INTERRUPTOR DE INTERACCIÓN 3D
+    let is3DActive = false;
+    function toggleInteraccion3D() {
+      is3DActive = !is3DActive;
+      const container = document.getElementById('canvas-container');
+      const btnText = document.getElementById('btn-3d-text');
+      const btn = document.getElementById('btn-toggle-3d');
+
+      if (is3DActive) {
+        container.classList.add('interactive-3d');
+        btnText.textContent = "Modo 3D Activo (Toca para Salir)";
+        btn.classList.add('bg-gold-500', 'text-dark-900');
+        btn.classList.remove('bg-dark-900/90', 'text-gold-400');
+      } else {
+        container.classList.remove('interactive-3d');
+        btnText.textContent = "Tocar para Girar 3D";
+        btn.classList.remove('bg-gold-500', 'text-dark-900');
+        btn.classList.add('bg-dark-900/90', 'text-gold-400');
+      }
+    }
+
+    // AISLAMIENTO DE SCROLL EN VENTANITAS Y FAQ PARA QUE NO AFECTEN A HOTMART
+    function setupScrollIsolation() {
+      const scrollableElements = document.querySelectorAll('#parts-list-panel, #pasos-list-panel, .faq-scroll');
+      scrollableElements.forEach(el => {
+        el.addEventListener('touchmove', (e) => {
+          e.stopPropagation(); // Evita que el scroll de las listas mueva la lección de Hotmart
+        }, { passive: true });
+      });
+    }
 
     function initScrollAnimations() {
       const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
@@ -843,15 +881,6 @@
     function setupMobileInteraction(container) {
       let pressTimer;
       let isPressing = false;
-
-      // DETENER PROPAGACIÓN TÁCTIL DENTRO DE LA APP HOTMART
-      container.addEventListener('touchstart', (e) => {
-        e.stopPropagation();
-      }, { passive: false });
-
-      container.addEventListener('touchmove', (e) => {
-        e.stopPropagation();
-      }, { passive: false });
 
       container.addEventListener('pointerdown', (e) => {
         const partsPanel = document.getElementById('parts-list-panel');
