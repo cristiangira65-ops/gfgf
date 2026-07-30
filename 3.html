@@ -180,7 +180,7 @@
       <div class="header-container" id="main-header">
           
           <div class="top-brand">
-              <div class="brand-left gap-3">
+              <div class="brand-left gap-3 flex items-center">
                   <div class="logo-box">
                       <img src="https://i.ibb.co/SDwC5YCb/IMG-20260305-231115-415.png" alt="Logo La Biblia del Artesano" onerror="this.onerror=null; this.src='https://placehold.co/120x120/141414/fdb813?text=BA';"/>
                   </div>
@@ -285,7 +285,7 @@
 
               <!-- Tarjeta de Info de Pieza -->
               <div id="part-info-card" class="absolute bottom-2.5 left-1/2 w-[94%] max-w-[420px] bg-dark-900/95 border border-gold-500/60 rounded-lg p-3 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
-                <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1.5 rounded-md border border-slate-700 transition-colors z-20">
+                <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1.5 rounded-md border border-slate-700 transition-colors z-20 pointer-events-auto">
                   <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
                 <div class="flex justify-between items-center mb-2.5 border-b border-slate-800 pb-2 pr-6">
@@ -323,7 +323,6 @@
 
     </div>
 
-    <!-- COLUMNA DERECHA LISTAS -->
     <div class="w-full lg:w-2/5 flex flex-col gap-3.5 pb-8">
       
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-sm animate-on-scroll" style="transition-delay: 50ms;">
@@ -478,7 +477,6 @@
         </div>
       </div>
 
-      <!-- ACORDEÓN: PREGUNTAS FRECUENTES (Nuevas preguntas) -->
       <div class="border border-red-500/40 rounded-lg bg-dark-800/80 overflow-hidden shadow-[0_0_12px_rgba(220,38,38,0.15)] animate-on-scroll mt-2" style="transition-delay: 300ms;">
         <button onclick="toggleAccordion('acc-faq')" class="w-full p-3 flex items-center justify-between bg-gradient-to-r from-dark-800 to-red-950/20 border-b border-red-500/20 text-left active:bg-dark-700 transition-colors">
           <div class="flex items-center gap-3">
@@ -651,7 +649,6 @@
     function initRating() {
       const container = document.getElementById('stars-container');
       const ratingText = document.getElementById('rating-text');
-      // Calificación fijada a 4.8
       const score = 4.8;
       if(ratingText) ratingText.textContent = `${score} / 5`;
       if(container) {
@@ -692,7 +689,6 @@
       }
     }
 
-    // BASE DE DATOS EXACTA AL NUEVO PLANO
     const partsData = {
       1: { id: 1, name: "RESPALDO VERTICAL", l: 950, a: 550, cant: 2, tap: "G G G D", esp: 18 },
       2: { id: 2, name: "RESPALDO HORIZONTAL", l: 1350, a: 250, cant: 2, tap: "G G G G", esp: 18 },
@@ -922,40 +918,33 @@
 
       // 1. RESPALDOS VERTICALES (Grises, atras, a piso)
       // Ancho 550, Alto 950. Cama 1350 libre.
-      const posXV1 = -0.675 - (0.55/2); // Izquierdo
-      const posXV2 =  0.675 + (0.55/2); // Derecho
+      const posXV1 = -0.675 - (0.55/2); // -0.95
+      const posXV2 =  0.675 + (0.55/2); //  0.95
       headboardGroup.add(createBox(0.55, 0.95, esp, posXV1, 0.95/2, -gapFront, melaminaGrisMat, 1));
       headboardGroup.add(createBox(0.55, 0.95, esp, posXV2, 0.95/2, -gapFront, melaminaGrisMat, 1));
 
       // 2. RESPALDOS HORIZONTALES (Madera, frente a las verticales)
-      // Ancho 1350, Alto 250.
-      // Top board top at 1050, bottom at 800.
-      headboardGroup.add(createBox(1.35, 0.25, esp, 0, 0.925, gapFront, melaminaMaderaMat, 2));
-      // Bottom board top at 750, bottom at 500.
-      headboardGroup.add(createBox(1.35, 0.25, esp, 0, 0.625, gapFront, melaminaMaderaMat, 2));
+      // Se ajusta el ancho a 1.50m para que monte y sobrepase ligeramente las piezas verticales traseras
+      headboardGroup.add(createBox(1.50, 0.25, esp, 0, 0.925, gapFront, melaminaMaderaMat, 2));
+      headboardGroup.add(createBox(1.50, 0.25, esp, 0, 0.625, gapFront, melaminaMaderaMat, 2));
 
       // Función para armar velador (Cajonero)
       function buildNightstand(xBase, sign) {
         const group = new THREE.Group();
-        const baseZ = 0; // Pegado al respaldo
         
         // 3. LATERAL CAJONERO (482x400)
-        // Están dentro de los 450mm totales
         const lateralX1 = xBase - sign*(0.45/2 - 0.009);
         const lateralX2 = xBase + sign*(0.45/2 - 0.009);
         group.add(createBox(esp, 0.482, 0.40, lateralX1, 0.482/2, 0.20, melaminaGrisMat, 3));
         group.add(createBox(esp, 0.482, 0.40, lateralX2, 0.482/2, 0.20, melaminaGrisMat, 3));
         
         // 4. TECHO CAJONERO (450x400)
-        // Sobre los laterales
         group.add(createBox(0.45, esp, 0.40, xBase, 0.491, 0.20, melaminaGrisMat, 4));
 
         // 9. REPISA BAJA (414x380)
-        // Entre laterales. Y = 15cm
         group.add(createBox(0.414, esp, 0.38, xBase, 0.15, 0.21, melaminaGrisMat, 9));
 
-        // 7. TAPA DE CAJON (444x144) - Overlay frontal
-        // Tapa sobre los bordes, con 3mm juego.
+        // 7. TAPA DE CAJON (444x144)
         const tapaY = 0.482 - (0.144/2) - 0.002;
         group.add(createBox(0.444, 0.144, esp, xBase, tapaY, 0.409, melaminaGrisMat, 7));
         
@@ -965,7 +954,7 @@
         // CAJON INTERNO
         const cX = xBase;
         const cY = tapaY;
-        const cZ = 0.40 - esp - (0.35/2); // Profundidad 350
+        const cZ = 0.40 - esp - (0.35/2);
 
         // 5. LATERAL DE CAJON (350x100)
         const cajLatXL = cX - (0.352/2 + 0.009);
@@ -973,21 +962,20 @@
         group.add(createBox(esp, 0.10, 0.35, cajLatXL, cY, cZ, melaminaGrisMat, 5));
         group.add(createBox(esp, 0.10, 0.35, cajLatXR, cY, cZ, melaminaGrisMat, 5));
 
-        // 6. FRENTE DE CAJON (352x100) - Interno
+        // 6. FRENTE DE CAJON (352x100)
         const cajFrenteZFront = 0.40 - esp - gapFront;
         const cajFrenteZBack = 0.40 - esp - 0.35 + gapFront;
         group.add(createBox(0.352, 0.10, esp, cX, cY, cajFrenteZFront, melaminaGrisMat, 6));
         group.add(createBox(0.352, 0.10, esp, cX, cY, cajFrenteZBack, melaminaGrisMat, 6));
 
         // 8. FONDO DE CAJON (328x366 MDF 3mm)
-        // Posicionado en el fondo con su ranura
         group.add(createBox(0.366, 0.003, 0.328, cX, cY - 0.03, cZ, mdfMat, 8));
 
         return group;
       }
 
-      // Añadir ambos veladores
-      const nightstandPos = 0.675 + (0.45/2); // 0.90
+      // Veladores alineados al ras del borde exterior del respaldo vertical (x = 1.00m)
+      const nightstandPos = 1.00;
       headboardGroup.add(buildNightstand(-nightstandPos, -1)); // Izquierdo
       headboardGroup.add(buildNightstand(nightstandPos, 1));   // Derecho
     }
@@ -1099,13 +1087,11 @@
           if (isExploded) {
             const pId = child.userData.partId;
             let offset = new THREE.Vector3(0, 0, 0);
-            
-            // Lógica de separación de piezas
-            if (pId === 1) offset.set(0, 0, -0.2); // Respaldos V.
-            if (pId === 2) offset.set(0, 0.25, 0.3); // Respaldos H.
-            if (pId === 3 || pId === 4 || pId === 9) offset.set((orig.x < 0 ? -0.1 : 0.1), 0, 0); // Caja externa
-            if (pId === 8 || pId === 6 || pId === 7 || pId === 5 || pId === 0) offset.set(0, 0.15, 0.3); // Cajón
-            
+            if (pId === 1) offset.set(0, 0, -0.2);
+            if (pId === 2) offset.set(0, 0.25, -0.3);
+            if (pId === 7 || pId === 6 || pId === 5 || pId === 8) offset.set(0, 0, 0.25);
+            if (pId === 4) offset.set(0, 0.1, 0);
+            if (pId === 9) offset.set(0, -0.1, 0);
             child.position.set(orig.x + offset.x, orig.y + offset.y, orig.z + offset.z);
           } else {
             child.position.copy(orig);
