@@ -52,13 +52,31 @@
 
     ::-webkit-scrollbar { display: none; }
 
+    /* CORRECCIÓN SCROLL EN APP MOBILE (FAQ Y MENÚS) */
     .faq-scroll {
-      overflow-y: auto;
+      overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      touch-action: pan-y !important;
+      overscroll-behavior: contain !important;
     }
     .faq-scroll::-webkit-scrollbar { display: none; }
+
+    /* CORRECCIÓN VISOR 3D (DESACTIVAR SCROLL EN CONTENEDOR 3D) */
+    #canvas-container {
+      touch-action: none !important;
+      overscroll-behavior: contain !important;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    /* CORRECCIÓN MENÚS DESPLEGABLES DENTRO DEL 3D */
+    #pasos-list-panel, #parts-list-panel {
+      touch-action: pan-y !important;
+      overscroll-behavior: contain !important;
+      -webkit-overflow-scrolling: touch;
+    }
 
     .accordion-content {
       max-height: 0;
@@ -929,10 +947,19 @@
       animate();
     }
 
-    // UX MOBILE MEJORADA: Toque prolongado para seleccionar piezas (evita conflictos con zoom)
+    // UX MOBILE MEJORADA: Bloqueo de gestos táctiles para evitar interferencias en la App
     function setupMobileInteraction(container) {
       let pressTimer;
       let isPressing = false;
+
+      // DETENER PROPAGACIÓN TÁCTIL HACIA LA APP DE HOTMART
+      container.addEventListener('touchstart', (e) => {
+        e.stopPropagation();
+      }, { passive: false });
+
+      container.addEventListener('touchmove', (e) => {
+        e.stopPropagation();
+      }, { passive: false });
 
       container.addEventListener('pointerdown', (e) => {
         const partsPanel = document.getElementById('parts-list-panel');
