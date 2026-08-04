@@ -28,10 +28,8 @@
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-
   <!-- Three.js + OrbitControls -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -52,7 +50,24 @@
 
     ::-webkit-scrollbar { display: none; }
 
-    /* CORRECCIÓN SCROLL EN APP MOBILE (FAQ Y MENÚS) */
+    /* Barra de desplazamiento personalizada para la Calculadora y Tablas */
+    .calc-scroll {
+      overflow-y: visible !important; 
+      -webkit-overflow-scrolling: touch !important;
+      touch-action: pan-y !important;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(212, 175, 55, 0.5) rgba(28, 31, 43, 0.5);
+    }
+    .calc-scroll::-webkit-scrollbar { display: block !important; width: 4px; }
+    .calc-scroll::-webkit-scrollbar-track { background: rgba(28, 31, 43, 0.7); border-radius: 4px; }
+    .calc-scroll::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 4px; }
+
+    .show-scrollbar { scrollbar-width: thin; scrollbar-color: rgba(212, 175, 55, 0.5) rgba(28, 31, 43, 0.5); }
+    .show-scrollbar::-webkit-scrollbar { display: block !important; height: 8px; width: 6px; }
+    .show-scrollbar::-webkit-scrollbar-track { background: rgba(28, 31, 43, 0.7); border-radius: 4px; }
+    .show-scrollbar::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 4px; }
+
+    /* CORRECCIÓN SCROLL EN APP MOBILE (MENÚS) */
     .faq-scroll {
       overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
@@ -62,21 +77,6 @@
       overscroll-behavior: contain !important;
     }
     .faq-scroll::-webkit-scrollbar { display: none; }
-
-    /* CORRECCIÓN VISOR 3D (DESACTIVAR SCROLL EN CONTENEDOR 3D) */
-    #canvas-container {
-      touch-action: none !important;
-      overscroll-behavior: contain !important;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-
-    /* CORRECCIÓN MENÚS DESPLEGABLES DENTRO DEL 3D */
-    #pasos-list-panel, #parts-list-panel {
-      touch-action: pan-y !important;
-      overscroll-behavior: contain !important;
-      -webkit-overflow-scrolling: touch;
-    }
 
     .accordion-content {
       max-height: 0;
@@ -114,7 +114,6 @@
     details > summary { list-style: none; outline: none; }
     details > summary::-webkit-details-marker { display: none; }
     
-    /* ANIMACIONES ESTILO NETFLIX (Direccionales) */
     .animate-on-scroll {
       opacity: 0;
       transform: translateY(30px);
@@ -125,7 +124,7 @@
       opacity: 1;
       transform: translateY(0);
     }
-
+    
     .chat-bubble::before {
       content: '';
       position: absolute;
@@ -198,9 +197,7 @@
 </head>
 <body class="bg-[#191A1E] text-slate-100 pb-8 pt-2 selection:bg-gold-500 selection:text-black">
 
-  <!-- ==================== SECCIÓN SUPERIOR ==================== -->
   <div class="w-full max-w-[1400px] mx-auto px-1 sm:px-2 lg:px-4 mb-4 mt-1">
-      <!-- BLOQUE PRINCIPAL SIN ANIMACIÓN (Siempre visible al entrar) -->
       <div class="header-container" id="main-header">
           
           <div class="top-brand">
@@ -213,7 +210,13 @@
                   </div>
               </div>
               <div class="flex flex-col items-center justify-center gap-1 bg-gold-500/15 border border-gold-500/70 py-1.5 px-3 rounded-lg shadow-gold-glow">
-                  <div class="flex gap-0.5 text-gold-500 text-[9px]" id="stars-container"></div>
+                  <div class="flex gap-0.5 text-gold-500 text-[9px]" id="stars-container">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                  </div>
                   <span class="text-[10px] text-gold-300 font-bold tracking-wide" id="rating-text">4.8 / 5</span>
               </div>
           </div>
@@ -256,13 +259,12 @@
       </div>
   </div>
 
-  <!-- ==================== SECCIÓN INFERIOR ==================== -->
   <main class="w-full max-w-[1400px] mx-auto px-1 sm:px-2 lg:px-4 flex flex-col lg:flex-row gap-4 relative">
 
-    <!-- COLUMNA IZQUIERDA (Solo 3D) -->
+    <!-- COLUMNA IZQUIERDA (Visor 3D y Calculadora) -->
     <div class="w-full lg:w-3/5 flex-shrink-0 space-y-4">
       
-      <!-- ACORDEÓN 1: PLANO 3D -->
+      <!-- ACORDEÓN: PROYECTO 3D -->
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-lg animate-on-scroll">
         <button onclick="toggleAccordion('acc-plano')" class="w-full p-3.5 flex items-center justify-between bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-left active:scale-[0.99] transition-transform">
           <div class="flex items-center space-x-3.5">
@@ -284,33 +286,93 @@
             <div class="relative w-full h-[380px] lg:h-[600px] bg-slate-950 rounded-md overflow-hidden border border-slate-800 shadow-inner group">
               <div id="canvas-container" class="w-full h-full relative cursor-pointer"></div>
               
+              <!-- 2 BOTONES IZQUIERDA -->
               <div class="absolute top-2 left-2 flex flex-col gap-1.5 z-20">
                 <button onclick="reset3DView()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
                   <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reset
                 </button>
-                <button onclick="togglePasosList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="footprints" class="w-4 h-4"></i> Pasos
+                <button onclick="toggleCalculator()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="sliders" class="w-4 h-4"></i> Ajustar
                 </button>
-                <div id="pasos-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto w-[150px]">
-                  <div id="pasos-list-container" class="flex flex-col gap-1"></div>
+                
+                <!-- Panel Calculadora -->
+                <div id="calc-panel" class="hidden flex-col gap-2 bg-dark-900/95 border border-gold-500/50 p-2.5 rounded-md shadow-2xl backdrop-blur-md w-[176px] max-h-[75%] calc-scroll">
+                  <h3 class="text-[10px] font-bold text-gold-400 border-b border-slate-700 pb-1 uppercase tracking-wide shrink-0">Ajustar Medidas</h3>
+                  
+                  <div class="flex flex-col gap-0.5 shrink-0">
+                    <label class="text-[9px] text-silver-300 font-bold">Ancho Total <span id="lbl-unit-w">(mm)</span>:</label>
+                    <input type="number" id="calc-w" step="any" value="2350" min="1500" max="3500" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
+                  </div>
+                  
+                  <div class="flex flex-col gap-0.5 shrink-0">
+                    <label class="text-[9px] text-silver-300 font-bold">Alto Total <span id="lbl-unit-h">(mm)</span>:</label>
+                    <input type="number" id="calc-h" step="any" value="1150" min="800" max="2000" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
+                  </div>
+                  
+                  <div class="flex flex-col gap-0.5 shrink-0">
+                    <label class="text-[9px] text-silver-300 font-bold">Profundidad <span id="lbl-unit-d">(mm)</span>:</label>
+                    <input type="number" id="calc-d" step="any" value="400" min="300" max="800" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
+                  </div>
+                  
+                  <div class="flex flex-col gap-0.5 shrink-0 relative" id="custom-select-container">
+                    <label class="text-[9px] text-silver-300 font-bold">Grosor de melamina:</label>
+                    <button type="button" id="custom-select-btn" onclick="toggleCustomSelect(event)" class="flex justify-between items-center w-full bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] text-white outline-none focus:border-gold-500 active:bg-dark-700 transition-colors">
+                      <span id="custom-select-text">18 mm</span>
+                      <i data-lucide="chevron-up" class="w-3 h-3 text-silver-400 pointer-events-none transition-transform duration-200" id="custom-select-icon"></i>
+                    </button>
+                    
+                    <div id="custom-select-options" class="hidden absolute bottom-full left-0 w-full mb-1 bg-dark-800 border border-slate-600 rounded shadow-xl z-50 grid grid-cols-3 gap-1 p-1.5">
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="12" onclick="selectCustomOption(12, event)">12 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="15" onclick="selectCustomOption(15, event)">15 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] bg-gold-500/10 text-gold-400 font-bold hover:bg-gold-500/20 cursor-pointer text-center" data-mm="18" onclick="selectCustomOption(18, event)">18 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="21" onclick="selectCustomOption(21, event)">21 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="25" onclick="selectCustomOption(25, event)">25 mm</div>
+                    </div>
+                    <input type="hidden" id="calc-e" value="18">
+                  </div>
+                  
+                  <span id="calc-error" class="text-[8px] text-red-400 hidden font-bold mt-0.5 shrink-0">¡Revisa las medidas!</span>
+                  
+                  <button id="btn-recalc" onclick="startRecalculate()" class="mt-1 shrink-0 bg-gradient-to-r from-gold-600 to-gold-400 hover:from-gold-500 hover:to-gold-300 text-dark-900 font-bold py-1.5 rounded text-[10px] transition-colors shadow-gold-glow leading-tight">
+                    RECALCULAR PROYECTO
+                  </button>
+                  
+                  <button id="btn-reset-calc" onclick="resetDefaultDimensions()" class="mt-0.5 shrink-0 bg-dark-800 hover:bg-dark-700 text-silver-300 border border-slate-600 font-bold py-1 rounded text-[8px] transition-colors shadow-sm leading-tight">
+                    RESTABLECER PREDETERMINADAS
+                  </button>
+
+                  <div id="loading-container" class="hidden flex-col gap-1 mt-1 mb-1 shrink-0">
+                    <span class="text-[8px] text-gold-400 font-bold text-center animate-pulse">Calculando...</span>
+                    <div class="w-full h-1.5 bg-dark-800 rounded-full overflow-hidden border border-slate-700">
+                      <div id="loading-bar" class="h-full bg-gradient-to-r from-gold-500 to-gold-300 w-0 transition-all duration-1000 ease-in-out"></div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
+              <!-- 3 BOTONES DERECHA -->
               <div class="absolute top-2 right-2 z-20 flex flex-col items-end gap-1.5">
                 <button id="btn-explode" onclick="toggleExplodedView()" class="bg-dark-800/90 hover:bg-dark-700 text-slate-200 border border-silver-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="move-3d" class="w-4 h-4 text-gold-400"></i> Desarmar
+                  <i data-lucide="move-3d" class="w-4 h-4 text-gold-400"></i> <span id="text-explode">Desarmar</span>
+                </button>
+                <button onclick="toggleUnit()" class="bg-dark-800/90 hover:bg-dark-700 text-silver-300 border border-slate-500/50 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="ruler" class="w-4 h-4 text-silver-400"></i> <span id="text-unit">MM</span>
                 </button>
                 <button onclick="togglePartsList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/50 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="list-tree" class="w-4 h-4"></i> Piezas
+                  <i data-lucide="list-tree" class="w-4 h-4"></i> Medidas
                 </button>
-                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto w-[180px]">
-                  <div class="text-[8px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1">Selecciona una pieza:</div>
-                  <div id="parts-list-container" class="flex flex-col gap-1"></div>
+
+                <!-- Panel Lista de Medidas (2 columnas) -->
+                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-2.5 rounded-md shadow-xl backdrop-blur-md w-[300px] sm:w-[340px]">
+                  <div class="text-[9px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1.5">Selecciona para ver:</div>
+                  <div id="parts-list-container" class="block" style="column-count: 2; column-gap: 8px;"></div>
                 </div>
               </div>
 
+              <!-- Tarjeta de Información Dinámica -->
               <div id="part-info-card" class="absolute bottom-2.5 left-1/2 w-[94%] max-w-[420px] bg-dark-900/95 border border-gold-500/60 rounded-lg p-3 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
-                <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1.5 rounded-md border border-slate-700 transition-colors z-20">
+                <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1.5 rounded-md border border-slate-700 transition-colors z-20 pointer-events-auto">
                   <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
                 <div class="flex justify-between items-center mb-2.5 border-b border-slate-800 pb-2 pr-6">
@@ -345,12 +407,63 @@
           </div>
         </div>
       </div>
-
     </div>
 
-    <!-- COLUMNA DERECHA LISTAS -->
+    <!-- COLUMNA DERECHA (Tabla, Accesorios y Especificaciones) -->
     <div class="w-full lg:w-2/5 flex flex-col gap-3.5 pb-8">
       
+      <!-- ACORDEÓN: TABLA DE DESPIECE -->
+      <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-lg animate-on-scroll">
+        <button onclick="toggleAccordion('acc-tabla')" class="w-full p-3.5 flex items-center justify-between bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-left active:scale-[0.99] transition-transform">
+          <div class="flex items-center space-x-3.5">
+            <div class="p-2 rounded-lg bg-gold-500/10 border border-gold-500/30 text-gold-400">
+              <i data-lucide="table-properties" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h2 class="text-sm font-extrabold text-slate-100 flex items-center gap-1.5 uppercase tracking-wide">
+                Tabla de Despiece
+              </h2>
+              <span class="text-[11px] text-gold-500 font-medium block">Lista de cortes exacta <span id="ui-tabla-unidad">(MM)</span></span>
+            </div>
+          </div>
+          <i id="icon-acc-tabla" data-lucide="chevron-down" class="w-5 h-5 text-gold-400 transition-transform duration-300"></i>
+        </button>
+
+        <div id="acc-tabla" class="accordion-content">
+          <div class="p-3">
+            <div class="overflow-x-auto rounded border border-slate-700 show-scrollbar pb-2">
+              <table class="w-full text-[10px] text-center border-collapse whitespace-nowrap">
+                <thead>
+                  <tr class="bg-dark-900 text-silver-300">
+                    <th rowspan="2" class="border border-slate-700 p-2 text-gold-500 font-black">#</th>
+                    <th rowspan="2" class="border border-slate-700 p-2 text-left min-w-[140px] font-bold">NOMBRE</th>
+                    <th rowspan="2" class="border border-slate-700 p-2 font-bold">LARGO</th>
+                    <th rowspan="2" class="border border-slate-700 p-2 font-bold">ANCHO</th>
+                    <th rowspan="2" class="border border-slate-700 p-2 font-bold">CANT.</th>
+                    <th colspan="4" class="border border-slate-700 p-1.5 bg-slate-800/40 text-blue-300 font-bold tracking-wide">TAPACANTO</th>
+                    <th colspan="4" class="border border-slate-700 p-1.5 bg-slate-800/40 text-amber-300 font-bold tracking-wide">RANURA</th>
+                  </tr>
+                  <tr class="bg-dark-900 text-silver-400">
+                    <th class="border border-slate-700 p-1 w-6">L1</th>
+                    <th class="border border-slate-700 p-1 w-6">L2</th>
+                    <th class="border border-slate-700 p-1 w-6">A1</th>
+                    <th class="border border-slate-700 p-1 w-6">A2</th>
+                    <th class="border border-slate-700 p-1 w-7">Dist.</th>
+                    <th class="border border-slate-700 p-1 w-7">Esp.</th>
+                    <th class="border border-slate-700 p-1 w-7">Prof.</th>
+                    <th class="border border-slate-700 p-1 w-7">Pos.</th>
+                  </tr>
+                </thead>
+                <tbody id="despiece-table-body" class="text-slate-200">
+                  <!-- Las filas se inyectan via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACORDEÓN: ACCESORIOS -->
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-sm animate-on-scroll" style="transition-delay: 50ms;">
         <button onclick="toggleAccordion('acc-accesorios')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
           <div class="flex items-center gap-3">
@@ -361,24 +474,24 @@
         </button>
         <div id="acc-accesorios" class="accordion-content">
           <div class="p-3 space-y-2">
-            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700 w-full text-left">
               <div class="w-8 h-8 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-3 shrink-0"><i data-lucide="sliders-horizontal" class="w-4 h-4"></i></div>
-              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Correderas Telescópicas</span><span class="text-[10px] text-silver-400">350 mm</span></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Correderas Telescópicas</span><span class="text-[10px] text-silver-400" id="ui-acc-runner">Largo 350 mm</span></div>
               <span class="text-[10px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">2 PARES</span>
             </div>
-            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700 w-full text-left">
               <div class="w-8 h-8 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-3 shrink-0"><i data-lucide="grip-horizontal" class="w-4 h-4"></i></div>
               <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Jalador Frontal</span><span class="text-[10px] text-silver-400">Metálico</span></div>
               <span class="text-[10px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">2 UNIDS</span>
             </div>
-            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700 w-full text-left">
               <div class="w-8 h-8 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-3 shrink-0"><i data-lucide="circle-dot" class="w-4 h-4"></i></div>
-              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos 4 x 50</span><span class="text-[10px] text-silver-400">Para ensamble</span></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos <span id="ui-tornillo50-name">4 x 50 mm</span></span><span class="text-[10px] text-silver-400">Para ensamble</span></div>
               <span class="text-[10px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">100 U.</span>
             </div>
-            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700 w-full text-left">
               <div class="w-8 h-8 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-3 shrink-0"><i data-lucide="disc" class="w-4 h-4"></i></div>
-              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos 4 x 30</span><span class="text-[10px] text-silver-400">Para accesorios</span></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos <span id="ui-tornillo30-name">4 x 30 mm</span></span><span class="text-[10px] text-silver-400">Para accesorios</span></div>
               <span class="text-[10px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">20 U.</span>
             </div>
           </div>
@@ -457,19 +570,19 @@
               <div class="flex items-center gap-2">
                 <i data-lucide="arrow-right-to-line" class="w-4 h-4 text-silver-400"></i><span class="font-bold text-slate-100">D : DISTANCIA</span>
               </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20">= 18 mm</strong>
+              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20" id="ui-ran-d">= 18 mm</strong>
             </div>
             <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-2.5 rounded">
               <div class="flex items-center gap-2">
                 <i data-lucide="minimize-2" class="w-4 h-4 text-silver-400"></i><span class="font-bold text-slate-100">E : ESPESOR</span>
               </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20">= 4 mm</strong>
+              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20" id="ui-ran-e">= 4 mm</strong>
             </div>
             <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-2.5 rounded">
               <div class="flex items-center gap-2">
                 <i data-lucide="arrow-down-to-line" class="w-4 h-4 text-silver-400"></i><span class="font-bold text-slate-100">P : PROFUNDIDAD</span>
               </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20">= 8 mm</strong>
+              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20" id="ui-ran-p">= 8 mm</strong>
             </div>
           </div>
         </div>
@@ -490,214 +603,15 @@
                 <div class="w-7 h-7 rounded-sm bg-[#b59e24] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="file" class="w-3.5 h-3.5 text-dark-900"></i></div>
                 <span class="text-xs font-bold text-slate-100 uppercase">MDF</span>
               </div>
-              <span class="text-[11px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">3 mm</span>
+              <span class="text-[11px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600" id="ui-mat-mdf">3 mm</span>
             </div>
             <div class="bg-dark-900 border border-slate-700 p-3 rounded flex items-center justify-between">
               <div class="flex items-center gap-3.5">
                 <div class="w-7 h-7 rounded-sm bg-[#e5e5e5] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-3.5 h-3.5 text-dark-900"></i></div>
                 <span class="text-xs font-bold text-slate-100 uppercase">MELAMINA</span>
               </div>
-              <span class="text-[11px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">18 mm</span>
+              <span id="ui-mat-mel" class="text-[11px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">18 mm</span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ACORDEÓN: PREGUNTAS FRECUENTES -->
-      <div class="border border-red-500/40 rounded-lg bg-dark-800/80 overflow-hidden shadow-[0_0_12px_rgba(220,38,38,0.15)] animate-on-scroll mt-2" style="transition-delay: 300ms;">
-        <button onclick="toggleAccordion('acc-faq')" class="w-full p-3 flex items-center justify-between bg-gradient-to-r from-dark-800 to-red-950/20 border-b border-red-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-3">
-            <div class="p-1.5 rounded bg-red-500/20 text-red-500 border border-red-500/30"><i data-lucide="message-circle-question" class="w-4 h-4"></i></div>
-            <div>
-              <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Preguntas Frecuentes</h2>
-              <span class="text-[10px] text-silver-400 font-medium">Guía y Ayuda del Proyecto</span>
-            </div>
-          </div>
-          <i id="icon-acc-faq" data-lucide="chevron-down" class="w-4 h-4 text-red-400 transition-transform duration-300"></i>
-        </button>
-        <div id="acc-faq" class="accordion-content">
-          <div class="p-3 bg-dark-900/50 space-y-3 faq-scroll" style="max-height: 400px;">
-            
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Qué significa 'G' y 'D' en Tapacantos?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  <strong>'D'</strong> se refiere al Tapacanto Delgado (0.45mm) usado para bordes ocultos o de menor desgaste. <strong>'G'</strong> es el Tapacanto Grueso (3mm) que se coloca en frentes y cubiertas para mayor resistencia y mejor acabado estético.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Qué significan (D:18, E:4, P:8)?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Indican cómo hacer el canal para el fondo del cajón. <strong>D: 18mm</strong> es la Distancia desde el borde inferior; <strong>E: 4mm</strong> es el Espesor de la ranura; <strong>P: 8mm</strong> es la Profundidad del corte.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Cuánto espacio queda para la cama?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  El diseño estructural deja un espacio libre de <strong>1350 mm (1.35 metros) exactos</strong> entre los dos cajoneros laterales, diseñado para encajar una cama estándar de 2 plazas.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Por qué el Fondo es distinto?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  La pieza 9 se fabrica en <strong>MDF de 3mm</strong> porque funciona exclusivamente como base ligera del cajón. Usar melamina de 18mm la haría innecesariamente pesada.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Para qué sirven los tornillos 4x50 y 4x30?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Los de 4x50 son para unir las placas de melamina de 18mm. Los de 4x30 se usan para fijar las correderas a la madera sin traspasarla.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Qué función cumplen los 'Amarres'?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Son tiras de melamina de 414x80mm en la parte superior. Mantienen los laterales paralelos y a escuadra, dando firmeza a la estructura antes de colocar la tapa.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Por qué necesito extensión imantada?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Los cajoneros tienen espacios internos estrechos. La extensión evita que el tornillo se caiga y te permite atornillar las correderas al fondo sin que estorbe el taladro.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿De qué tamaño son las correderas?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  El proyecto exige correderas de 350 mm. Esta medida es perfecta ya que los laterales del cajón (Pieza 7) miden exactamente 350 mm de profundidad.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Cómo se fija el frente exterior?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Se fija desde ADENTRO hacia afuera. Primero armas el cajón interno; luego acomodas el frente exterior y metes tornillos de 4x30 atravesando el frente interno.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Por qué el cajonero mide 650mm?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  El lateral (Pieza 3) tiene 632mm. A esto se le suma el espesor de la tapa superior que es de 18mm de melamina (632 + 18 = 650mm).
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Qué es la Puntilla Pz2?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Es la punta de destornillador tipo Pozidriv tamaño 2. Es la punta con el encaje perfecto para los tornillos negros de ensamble de 4x50.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Cómo aseguro los 90 grados?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Antes de deslizar y fijar el fondo, utiliza tu wincha para medir las dos diagonales internas. Si ambas son idénticas, tu cajón está escuadrado.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Para qué sirven los zócalos?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Elevan el primer piso del cajonero evitando que la puerta o cajón inferior roce el piso al abrir, y protegen la estructura de la humedad o escobazos.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Cuándo se pega el tapacanto?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  El proceso de canteado debe realizarse en todas las piezas indicadas por la tabla de despiece <strong>ANTES</strong> de comenzar a perforar o ensamblar.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Cómo se une todo el respaldo?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  La Pieza 2 (Respaldo Horizontal) se apoya y atornilla desde atrás contra las dos Piezas 1 (Verticales). Mides los 1350mm de separación baja, y fijas.
-                </p>
-              </div>
-            </details>
-            
           </div>
         </div>
       </div>
@@ -705,17 +619,199 @@
     </div>
   </main>
 
-  <!-- ==================== SCRIPTS COMBINADOS ==================== -->
   <script>
+    let currentW = 2350;
+    let currentH = 1150; 
+    let currentD = 400;
+    let currentE = 18;  
+    
+    let isCM = false; 
+    let partsData = {};
+
+    function formatUnit(val, raw = false) {
+      if(isCM) {
+        const res = (val / 10).toFixed(val % 10 !== 0 ? 1 : 0);
+        return raw ? res : res + " cm";
+      }
+      return raw ? val : val + " mm";
+    }
+
+    function toggleCustomSelect(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const options = document.getElementById('custom-select-options');
+      const icon = document.getElementById('custom-select-icon');
+      const isHidden = options.classList.contains('hidden');
+      
+      if(isHidden) {
+          options.classList.remove('hidden');
+          icon.style.transform = 'rotate(180deg)';
+      } else {
+          options.classList.add('hidden');
+          icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function selectCustomOption(val, e) {
+      e.stopPropagation();
+      
+      document.querySelectorAll('.custom-option').forEach(opt => {
+          if (parseFloat(opt.getAttribute('data-mm')) === val) {
+              opt.classList.add('bg-gold-500/10', 'text-gold-400', 'font-bold');
+              opt.classList.remove('text-white');
+          } else {
+              opt.classList.remove('bg-gold-500/10', 'text-gold-400', 'font-bold');
+              opt.classList.add('text-white');
+          }
+      });
+
+      const inputVal = isCM ? val / 10 : val;
+      document.getElementById('calc-e').value = inputVal;
+      document.getElementById('custom-select-text').innerText = isCM ? (val / 10) + " cm" : val + " mm";
+      
+      document.getElementById('custom-select-options').classList.add('hidden');
+      document.getElementById('custom-select-icon').style.transform = 'rotate(0deg)';
+      
+      startRecalculate();
+    }
+
+    function updateAllUnitsUI() {
+        const u = isCM ? "cm" : "mm";
+        const U_UPPER = isCM ? "CM" : "MM";
+        const f = (val) => formatUnit(val);
+
+        document.getElementById('lbl-unit-w').innerText = `(${u})`;
+        document.getElementById('lbl-unit-h').innerText = `(${u})`;
+        document.getElementById('lbl-unit-d').innerText = `(${u})`;
+        const tablaUnit = document.getElementById('ui-tabla-unidad');
+        if(tablaUnit) tablaUnit.innerText = `(${U_UPPER})`;
+
+        const wInput = document.getElementById('calc-w');
+        const hInput = document.getElementById('calc-h');
+        const dInput = document.getElementById('calc-d');
+        wInput.value = isCM ? currentW / 10 : currentW;
+        hInput.value = isCM ? currentH / 10 : currentH;
+        dInput.value = isCM ? currentD / 10 : currentD;
+
+        // Custom Dropdown Update
+        const eInput = document.getElementById('calc-e');
+        document.querySelectorAll('.custom-option').forEach(opt => {
+            let baseVal = parseFloat(opt.getAttribute('data-mm'));
+            opt.innerText = isCM ? (baseVal / 10) + " cm" : baseVal + " mm";
+        });
+        eInput.value = isCM ? currentE / 10 : currentE;
+        document.getElementById('custom-select-text').innerText = isCM ? (currentE / 10) + " cm" : currentE + " mm";
+
+        document.getElementById('ui-mat-mdf').innerText = f(3);
+        document.getElementById('ui-mat-mel').innerText = f(currentE);
+
+        document.getElementById('ui-ran-d').innerText = "= " + f(currentE);
+        document.getElementById('ui-ran-e').innerText = "= " + f(4);
+        document.getElementById('ui-ran-p').innerText = "= " + f(8);
+        
+        let runner = Math.floor((currentD - 30) / 50) * 50;
+        if (runner < 250) runner = 250;
+        if (runner > 600) runner = 600;
+        document.getElementById('ui-acc-runner').innerText = "Largo " + f(runner);
+
+        document.getElementById('ui-tornillo50-name').innerText = isCM ? "0.4 x 5 cm" : "4 x 50 mm";
+        document.getElementById('ui-tornillo30-name').innerText = isCM ? "0.4 x 3 cm" : "4 x 30 mm";
+    }
+
+    function toggleUnit() {
+      isCM = !isCM;
+      document.getElementById('text-unit').innerText = isCM ? 'CM' : 'MM';
+      
+      updateAllUnitsUI();
+      buildDespieceTableUI(); 
+
+      const partId = document.getElementById('info-id-badge').innerText;
+      if (partId && partsData[partId] && document.getElementById('part-info-card').classList.contains('info-card-visible')) {
+          const data = partsData[partId];
+          document.getElementById('info-l').innerText = formatUnit(data.l);
+          document.getElementById('info-a').innerText = formatUnit(data.a);
+          document.getElementById('info-e').innerText = formatUnit(data.esp); 
+      }
+    }
+
+    function resetDefaultDimensions() {
+      currentW = 2350;
+      currentH = 1150;
+      currentD = 400;
+      currentE = 18;
+      
+      updateAllUnitsUI();
+      startRecalculate(true);
+    }
+
+    function generatePartsData(w, h, d, e) {
+       const sw = w / 2350;
+       const sh = h / 1150;
+       const sd = d / 400;
+
+       let runner = Math.floor((d - 30) / 50) * 50;
+       if (runner < 250) runner = 250;
+       if (runner > 600) runner = 600;
+
+       return {
+         1: { id: 1, name: "RESPALDO VERTICAL", l: h, a: Math.round(550 * sw), cant: 2, esp: e,
+              tap: { L1: 'G', L2: 'D', A1: 'D', A2: 'D' },
+              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         2: { id: 2, name: "RESPALDO HORIZONTAL", l: Math.round(1550 * sw), a: Math.round(400 * sh), cant: 1, esp: e,
+              tap: { L1: 'G', L2: 'G', A1: 'D', A2: 'D' },
+              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         3: { id: 3, name: "LATERAL DE CAJONERO", l: Math.round(632 * sh), a: d, cant: 4, esp: e,
+              tap: { L1: 'D', L2: '', A1: '', A2: '' },
+              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         4: { id: 4, name: "ZOCALOS", l: Math.round(414 * sw), a: Math.round(80 * sh), cant: 4, esp: e,
+              tap: { L1: '', L2: '', A1: '', A2: '' },
+              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         5: { id: 5, name: "AMARRES", l: Math.round(414 * sw), a: Math.round(80 * sh), cant: 4, esp: e,
+              tap: { L1: 'D', L2: '', A1: '', A2: '' },
+              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         6: { id: 6, name: "FRENTE DE CAJON", l: Math.round(352 * sw), a: Math.round(100 * sh), cant: 4, esp: e,
+              tap: { L1: 'D', L2: '', A1: '', A2: '' },
+              ran: { d: formatUnit(e, true), e: formatUnit(4, true), p: formatUnit(8, true), pos: 'L2' }, isMDF: false },
+         7: { id: 7, name: "LATERAL DE CAJON", l: runner, a: Math.round(100 * sh), cant: 4, esp: e,
+              tap: { L1: 'D', L2: '', A1: '', A2: '' },
+              ran: { d: formatUnit(e, true), e: formatUnit(4, true), p: formatUnit(8, true), pos: 'L2' }, isMDF: false },
+         8: { id: 8, name: "FRENTE EXTERIOR", l: Math.round(444 * sw), a: Math.round(150 * sh), cant: 2, esp: e,
+              tap: { L1: 'G', L2: 'G', A1: 'G', A2: 'G' },
+              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         9: { id: 9, name: "FONDO DE CAJON", l: Math.round(366 * sw), a: runner - 22, cant: 2, esp: 3,
+              tap: { L1: '', L2: '', A1: '', A2: '' },
+              ran: { d: '', e: '', p: '', pos: '' }, isMDF: true }
+       };
+    }
+
+    let scene, camera, renderer, controls;
+    let headboardGroup;
+    let isExploded = false;
+    let targetLookAt = new THREE.Vector3(0, 0.5, 0); 
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+
     window.onload = function() {
       lucide.createIcons();
+      updateAllUnitsUI(); 
+      partsData = generatePartsData(currentW, currentH, currentD, currentE);
       buildPartsListUI();
-      buildPasosListUI();
+      buildDespieceTableUI();
       init3D();
       initScrollAnimations();
+
+      document.addEventListener('pointerdown', (e) => {
+        const customSel = document.getElementById('custom-select-container');
+        if (customSel && !customSel.contains(e.target)) {
+            const opts = document.getElementById('custom-select-options');
+            if(opts && !opts.classList.contains('hidden')) {
+                opts.classList.add('hidden');
+                document.getElementById('custom-select-icon').style.transform = 'rotate(0deg)';
+            }
+        }
+      });
     };
 
-    // Animaciones Estilo Netflix (Activa solo al bajar, mantiene al subir)
     function initScrollAnimations() {
       const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
       const observer = new IntersectionObserver((entries) => {
@@ -723,8 +819,6 @@
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
           } else {
-            // Si el elemento sale por ABAJO de la pantalla (porque hemos subido el scroll), le quitamos la clase.
-            // Si sale por ARRIBA, no se la quitamos, así ya está visible cuando subimos.
             if (entry.boundingClientRect.top > window.innerHeight * 0.7) {
               entry.target.classList.remove('is-visible');
             }
@@ -737,28 +831,6 @@
       });
     }
 
-    // Estrellas
-    function initRating() {
-      const container = document.getElementById('stars-container');
-      const ratingText = document.getElementById('rating-text');
-      const randomScore = (Math.random() * (4.9 - 4.6) + 4.6).toFixed(1);
-      if(ratingText) ratingText.textContent = `${randomScore} / 5`;
-      if(container) {
-          container.innerHTML = '';
-          const fullStars = Math.floor(randomScore);
-          const hasHalf = (randomScore - fullStars) >= 0.5;
-          for (let i = 1; i <= 5; i++) {
-            const star = document.createElement('i');
-            if (i <= fullStars) star.className = 'fa-solid fa-star';
-            else if (i === fullStars + 1 && hasHalf) star.className = 'fa-solid fa-star-half-stroke';
-            else star.className = 'fa-regular fa-star';
-            container.appendChild(star);
-          }
-      }
-    }
-    window.addEventListener('DOMContentLoaded', initRating);
-
-    // CONTROL DE ACORDEONES INTELIGENTE
     function toggleAccordion(id) {
       const targetContent = document.getElementById(id);
       const targetIcon = document.getElementById('icon-' + id);
@@ -782,45 +854,71 @@
       }
     }
 
-    const partsData = {
-      1: { id: 1, name: "RESPALDO VERTICAL", l: 1150, a: 550, cant: 2, tap: "G D D D", esp: 18 },
-      2: { id: 2, name: "RESPALDO HORIZONTAL", l: 1550, a: 400, cant: 1, tap: "G G D D", esp: 18 },
-      3: { id: 3, name: "LATERAL DE CAJONERO", l: 632, a: 400, cant: 4, tap: "D - - -", esp: 18 },
-      4: { id: 4, name: "ZOCALOS", l: 414, a: 80, cant: 4, tap: "- - - -", esp: 18 },
-      5: { id: 5, name: "AMARRES", l: 414, a: 80, cant: 4, tap: "D - - -", esp: 18 },
-      6: { id: 6, name: "FRENTE DE CAJON", l: 352, a: 100, cant: 4, tap: "D - - - (R: 18x4)", esp: 18 },
-      7: { id: 7, name: "LATERAL DE CAJON", l: 350, a: 100, cant: 4, tap: "D - - - (R: 18x4)", esp: 18 },
-      8: { id: 8, name: "FRENTE EXTERIOR", l: 444, a: 150, cant: 2, tap: "G G G G", esp: 18 },
-      9: { id: 9, name: "FONDO DE CAJON", l: 366, a: 328, cant: 2, tap: "MDF 3mm", esp: 3 }
-    };
-
-    const assemblySteps = [
-      { id: 1, name: "Paso 1: Zócalos", parts: [4] },
-      { id: 2, name: "Paso 2: Laterales", parts: [3] },
-      { id: 3, name: "Paso 3: Amarres", parts: [5] },
-      { id: 4, name: "Paso 4: Cajones", parts: [7, 9, 6] },
-      { id: 5, name: "Paso 5: Frentes ext.", parts: [8] },
-      { id: 6, name: "Paso 6: Respaldo", parts: [1, 2] }
-    ];
-    let currentStep = -1;
-
-    let scene, camera, renderer, controls;
-    let headboardGroup;
-    let isExploded = false;
-    let targetLookAt = new THREE.Vector3(0, 0.5, 0); 
-    let raycaster = new THREE.Raycaster();
-    let mouse = new THREE.Vector2();
-
     function togglePartsList() {
       const panel = document.getElementById('parts-list-panel');
-      document.getElementById('pasos-list-panel').classList.remove('list-panel-open');
+      document.getElementById('calc-panel').classList.remove('list-panel-open');
       panel.classList.toggle('list-panel-open');
     }
 
-    function togglePasosList() {
-      const panel = document.getElementById('pasos-list-panel');
+    function toggleCalculator() {
+      const panel = document.getElementById('calc-panel');
       document.getElementById('parts-list-panel').classList.remove('list-panel-open');
       panel.classList.toggle('list-panel-open');
+    }
+
+    function startRecalculate(isReset = false) {
+      let w = parseFloat(document.getElementById('calc-w').value);
+      let h = parseFloat(document.getElementById('calc-h').value);
+      let d = parseFloat(document.getElementById('calc-d').value);
+      let e = parseFloat(document.getElementById('calc-e').value);
+
+      if(isCM) { w *= 10; h *= 10; d *= 10; e *= 10; }
+
+      const errorEl = document.getElementById('calc-error');
+      if(w < 1500 || h < 800 || d < 300) {
+         errorEl.classList.remove('hidden');
+         return;
+      }
+      errorEl.classList.add('hidden');
+
+      document.getElementById('btn-recalc').classList.add('hidden');
+      document.getElementById('btn-reset-calc').classList.add('hidden');
+      const loader = document.getElementById('loading-container');
+      const bar = document.getElementById('loading-bar');
+      
+      loader.classList.remove('hidden');
+      loader.classList.add('flex');
+      
+      setTimeout(() => { bar.style.width = '100%'; }, 50);
+
+      setTimeout(() => {
+          applyCustomDimensions(w, h, d, e);
+          
+          document.getElementById('btn-recalc').classList.remove('hidden');
+          document.getElementById('btn-reset-calc').classList.remove('hidden');
+          loader.classList.add('hidden');
+          loader.classList.remove('flex');
+          bar.style.width = '0%';
+          if(!isReset) document.getElementById('calc-panel').classList.remove('list-panel-open');
+      }, 1200);
+    }
+
+    function applyCustomDimensions(w, h, d, e) {
+      currentW = w;
+      currentH = h;
+      currentD = d;
+      currentE = e;
+
+      updateAllUnitsUI(); 
+      partsData = generatePartsData(w, h, d, e);
+      buildPartsListUI();
+      buildDespieceTableUI();
+      reset3DView();
+      
+      while(headboardGroup.children.length > 0){
+          headboardGroup.remove(headboardGroup.children[0]);
+      }
+      buildFurnitureModel();
     }
 
     function buildPartsListUI() {
@@ -828,24 +926,47 @@
       container.innerHTML = '';
       Object.values(partsData).forEach(part => {
         const btn = document.createElement('button');
-        btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group";
-        const badgeColor = part.id === 9 ? "bg-amber-500 text-dark-900" : "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
-        const textColor = part.id === 9 ? "text-amber-400" : "text-silver-300 group-hover:text-gold-300";
+        btn.className = "inline-flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group mb-1.5 break-inside-avoid";
+        const badgeColor = part.isMDF ? "bg-amber-500 text-dark-900" : "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
+        const textColor = part.isMDF ? "text-amber-400" : "text-silver-300 group-hover:text-gold-300";
         btn.innerHTML = `<span class="w-5 h-5 shrink-0 rounded flex items-center justify-center text-[10px] font-black transition-colors ${badgeColor}">${part.id}</span><span class="text-[11px] font-bold truncate ${textColor}">${part.name}</span>`;
         btn.onclick = () => selectPartFromList(part.id);
         container.appendChild(btn);
       });
     }
 
-    function buildPasosListUI() {
-      const container = document.getElementById('pasos-list-container');
-      container.innerHTML = '';
-      assemblySteps.forEach((step, idx) => {
-        const btn = document.createElement('button');
-        btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 text-silver-300 font-bold text-[10px] transition-colors";
-        btn.innerHTML = `<span class="w-5 h-5 rounded bg-dark-700 text-gold-400 flex justify-center items-center shrink-0 border border-gold-500/30">${step.id}</span> ${step.name}`;
-        btn.onclick = () => playStep(idx);
-        container.appendChild(btn);
+    function buildDespieceTableUI() {
+      const tbody = document.getElementById('despiece-table-body');
+      tbody.innerHTML = '';
+      
+      Object.values(partsData).forEach(part => {
+        const tr = document.createElement('tr');
+        tr.id = `row-part-${part.id}`;
+        tr.dataset.mdf = part.isMDF;
+        
+        const baseClass = part.isMDF 
+          ? 'bg-gold-500/10 text-gold-300' 
+          : 'hover:bg-dark-700/50 text-slate-200';
+          
+        tr.className = `cursor-pointer transition-colors row-part-item ${baseClass}`;
+        tr.onclick = () => selectPartFromList(part.id);
+        
+        tr.innerHTML = `
+          <td class="border border-slate-700 p-2 font-black text-gold-500 text-xs">${part.id}</td>
+          <td class="border border-slate-700 p-2 text-left font-bold text-[11px]">${part.name}</td>
+          <td class="border border-slate-700 p-2 font-mono">${formatUnit(part.l, true)}</td>
+          <td class="border border-slate-700 p-2 font-mono">${formatUnit(part.a, true)}</td>
+          <td class="border border-slate-700 p-2 font-bold">${part.cant}</td>
+          <td class="border border-slate-700 p-1.5 text-blue-300">${part.tap.L1}</td>
+          <td class="border border-slate-700 p-1.5 text-blue-300">${part.tap.L2}</td>
+          <td class="border border-slate-700 p-1.5 text-blue-300">${part.tap.A1}</td>
+          <td class="border border-slate-700 p-1.5 text-blue-300">${part.tap.A2}</td>
+          <td class="border border-slate-700 p-1.5 text-amber-300 font-mono">${part.ran.d}</td>
+          <td class="border border-slate-700 p-1.5 text-amber-300 font-mono">${part.ran.e}</td>
+          <td class="border border-slate-700 p-1.5 text-amber-300 font-mono">${part.ran.p}</td>
+          <td class="border border-slate-700 p-1.5 text-amber-300 font-mono">${part.ran.pos}</td>
+        `;
+        tbody.appendChild(tr);
       });
     }
 
@@ -869,39 +990,6 @@
       }
     }
 
-    function playStep(stepIndex) {
-      currentStep = stepIndex;
-      if (isExploded) toggleExplodedView(); 
-      document.getElementById('pasos-list-panel').classList.remove('list-panel-open');
-      resetSelection();
-
-      const partsToShow = [];
-      const partsToAnimate = [];
-
-      for(let i = 0; i <= stepIndex; i++) {
-        if(i === stepIndex) partsToAnimate.push(...assemblySteps[i].parts);
-        else partsToShow.push(...assemblySteps[i].parts);
-      }
-
-      headboardGroup.traverse((child) => {
-        if (child.isMesh && child.userData.origPos) {
-          const pid = child.userData.partId;
-          if (partsToAnimate.includes(pid)) {
-            child.visible = true;
-            child.position.set(child.userData.origPos.x, child.userData.origPos.y + 1.5, child.userData.origPos.z);
-            child.userData.animTarget = child.userData.origPos.clone();
-          } else if (partsToShow.includes(pid)) {
-            child.visible = true;
-            child.position.copy(child.userData.origPos);
-            child.userData.animTarget = null;
-          } else {
-            child.visible = false;
-            child.userData.animTarget = null;
-          }
-        }
-      });
-    }
-
     function init3D() {
       const container = document.getElementById('canvas-container');
       const width = container.clientWidth;
@@ -913,7 +1001,7 @@
       camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
       camera.position.set(0, 1.8, 5.5);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.shadowMap.enabled = true;
@@ -925,14 +1013,16 @@
       controls.dampingFactor = 0.05;
       controls.maxPolarAngle = Math.PI / 2 + 0.05;
       controls.minDistance = 1.0;
-      controls.maxDistance = 10;
+      controls.maxDistance = 10.0;
       controls.target.set(0, 0.5, 0);
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
       scene.add(ambientLight);
-      const dirLight = new THREE.DirectionalLight(0xfff5e6, 1.2);
+      const dirLight = new THREE.DirectionalLight(0xfff5e6, 1.0);
       dirLight.position.set(3, 5, 4);
       dirLight.castShadow = true;
+      dirLight.shadow.mapSize.width = 1024;
+      dirLight.shadow.mapSize.height = 1024;
       scene.add(dirLight);
 
       const gridHelper = new THREE.GridHelper(6, 20, 0xd4af37, 0x222633);
@@ -947,32 +1037,42 @@
       animate();
     }
 
-    // UX MOBILE MEJORADA: Bloqueo de gestos táctiles para evitar interferencias en la App
     function setupMobileInteraction(container) {
+      ['calc-panel', 'parts-list-panel', 'part-info-card'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('pointerdown', e => {
+              const customSel = document.getElementById('custom-select-container');
+              if (customSel && !customSel.contains(e.target)) {
+                  document.getElementById('custom-select-options').classList.add('hidden');
+                  const icon = document.getElementById('custom-select-icon');
+                  if(icon) icon.style.transform = 'rotate(0deg)';
+              }
+              e.stopPropagation();
+          });
+          el.addEventListener('pointermove', e => e.stopPropagation());
+          el.addEventListener('pointerup', e => e.stopPropagation());
+          el.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
+          el.addEventListener('touchmove', e => e.stopPropagation(), { passive: true });
+          el.addEventListener('wheel', e => e.stopPropagation(), { passive: true }); 
+        }
+      });
+
       let pressTimer;
       let isPressing = false;
 
-      // DETENER PROPAGACIÓN TÁCTIL HACIA LA APP DE HOTMART
-      container.addEventListener('touchstart', (e) => {
-        e.stopPropagation();
-      }, { passive: false });
-
-      container.addEventListener('touchmove', (e) => {
-        e.stopPropagation();
-      }, { passive: false });
-
       container.addEventListener('pointerdown', (e) => {
         const partsPanel = document.getElementById('parts-list-panel');
-        const pasosPanel = document.getElementById('pasos-list-panel');
+        const calcPanel = document.getElementById('calc-panel');
+        
         if(partsPanel.classList.contains('list-panel-open') && e.clientY > 100) partsPanel.classList.remove('list-panel-open');
-        if(pasosPanel.classList.contains('list-panel-open') && e.clientY > 100) pasosPanel.classList.remove('list-panel-open');
+        if(calcPanel.classList.contains('list-panel-open') && e.clientY > 100) calcPanel.classList.remove('list-panel-open');
 
         isPressing = true;
         const rect = renderer.domElement.getBoundingClientRect();
         mouse.x = ( (e.clientX - rect.left) / rect.width ) * 2 - 1;
         mouse.y = - ( (e.clientY - rect.top) / rect.height ) * 2 + 1;
 
-        // Inicia el temporizador de 0.5s (500ms)
         pressTimer = setTimeout(() => {
             if (isPressing) executeRaycast();
         }, 500); 
@@ -982,35 +1082,33 @@
         isPressing = false;
         clearTimeout(pressTimer);
       });
-
-      container.addEventListener('pointerup', () => {
-        isPressing = false;
-        clearTimeout(pressTimer);
-      });
-
-      container.addEventListener('pointercancel', () => {
-        isPressing = false;
-        clearTimeout(pressTimer);
-      });
+      container.addEventListener('pointerup', () => { isPressing = false; clearTimeout(pressTimer); });
+      container.addEventListener('pointercancel', () => { isPressing = false; clearTimeout(pressTimer); });
     }
 
     function executeRaycast() {
       raycaster.setFromCamera(mouse, camera);
       const intersects = raycaster.intersectObjects(headboardGroup.children, true);
-      
       if (intersects.length > 0) {
-        const object = intersects[0].object;
+        let object = intersects[0].object;
+        if(object.userData.partId === 0) {
+            headboardGroup.traverse((c) => { if(c.userData.partId === 8) object = c; }); 
+        }
         const partId = object.userData.partId;
         if(partId && partId > 0 && object.visible) selectPart(partId, object);
       }
     }
 
     function buildFurnitureModel() {
-      headboardGroup = new THREE.Group();
-      scene.add(headboardGroup);
+      if(!headboardGroup){
+          headboardGroup = new THREE.Group();
+          scene.add(headboardGroup);
+      }
 
       const melaminaLightMat = new THREE.MeshStandardMaterial({ color: 0xc8a27a, roughness: 0.4 });
       const melaminaDarkMat = new THREE.MeshStandardMaterial({ color: 0x2c1f18, roughness: 0.3 });
+      const mdfMat = new THREE.MeshStandardMaterial({ color: 0xffd700 }); 
+      const metalMat = new THREE.MeshStandardMaterial({ color: 0xe0e0e0, metalness: 0.9, roughness: 0.2 });
 
       function createBox(w, h, d, x, y, z, mat, partId) {
         const geo = new THREE.BoxGeometry(w, h, d);
@@ -1022,29 +1120,59 @@
         return mesh;
       }
 
-      const xOffset = 0.90; 
+      const e = currentE / 1000;
+      const wM = currentW / 1000;
+      const hM = currentH / 1000;
+      const dM = currentD / 1000;
+      
+      const sw = wM / 2.350;
+      const sh = hM / 1.150;
+      const sd = dM / 0.400;
 
-      headboardGroup.add(createBox(0.55, 1.15, 0.018, -xOffset, 1.15 / 2, -0.2, melaminaLightMat, 1));
-      headboardGroup.add(createBox(0.55, 1.15, 0.018, xOffset, 1.15 / 2, -0.2, melaminaLightMat, 1));
-      headboardGroup.add(createBox(1.55, 0.40, 0.018, 0, 0.95, -0.19, melaminaLightMat, 2));
+      const xOffset = 0.90 * sw; 
+
+      // 1: RESPALDOS VERTICALES
+      headboardGroup.add(createBox(0.55 * sw, hM, e, -xOffset, hM / 2, -dM/2, melaminaLightMat, 1));
+      headboardGroup.add(createBox(0.55 * sw, hM, e, xOffset, hM / 2, -dM/2, melaminaLightMat, 1));
+      
+      // 2: RESPALDO HORIZONTAL
+      headboardGroup.add(createBox(1.55 * sw, 0.40 * sh, e, 0, 0.95 * sh, -dM/2 + e, melaminaLightMat, 2));
 
       function buildCajonero(xPos) {
         const group = new THREE.Group();
-        group.add(createBox(0.018, 0.632, 0.40, xPos - 0.21, 0.632 / 2, 0, melaminaLightMat, 3));
-        group.add(createBox(0.018, 0.632, 0.40, xPos + 0.21, 0.632 / 2, 0, melaminaLightMat, 3));
-        group.add(createBox(0.45, 0.018, 0.42, xPos, 0.64, 0, melaminaLightMat, 3));
-
-        group.add(createBox(0.414, 0.08, 0.018, xPos, 0.04, 0.18, melaminaLightMat, 4));
-        group.add(createBox(0.414, 0.018, 0.08, xPos, 0.62, 0.15, melaminaLightMat, 5));
-
-        group.add(createBox(0.444, 0.15, 0.018, xPos, 0.50, 0.20, melaminaDarkMat, 8));
-        group.add(createBox(0.12, 0.015, 0.02, xPos, 0.50, 0.215, new THREE.MeshStandardMaterial({ color: 0xe0e0e0, metalness: 0.9 }), 0)); 
         
-        group.add(createBox(0.352, 0.10, 0.018, xPos, 0.48, 0.17, melaminaLightMat, 6));
-        group.add(createBox(0.018, 0.10, 0.35, xPos - 0.17, 0.48, 0, melaminaLightMat, 7));
-        group.add(createBox(0.018, 0.10, 0.35, xPos + 0.17, 0.48, 0, melaminaLightMat, 7));
+        // 3: LATERAL DE CAJONERO Y TAPA
+        group.add(createBox(e, 0.632 * sh, dM, xPos - 0.21 * sw, (0.632 * sh) / 2, 0, melaminaLightMat, 3));
+        group.add(createBox(e, 0.632 * sh, dM, xPos + 0.21 * sw, (0.632 * sh) / 2, 0, melaminaLightMat, 3));
+        group.add(createBox(0.45 * sw, e, dM + 0.02, xPos, 0.64 * sh, 0, melaminaLightMat, 3));
+
+        // 4: ZOCALOS
+        group.add(createBox(0.414 * sw, 0.08 * sh, e, xPos, 0.04 * sh, dM/2 - 0.02, melaminaLightMat, 4));
         
-        group.add(createBox(0.366, 0.003, 0.328, xPos, 0.435, 0, new THREE.MeshStandardMaterial({ color: 0xffd700 }), 9));
+        // 5: AMARRES
+        group.add(createBox(0.414 * sw, e, 0.08 * sh, xPos, 0.62 * sh, dM/2 - 0.05, melaminaLightMat, 5));
+
+        // 8: FRENTE EXTERIOR
+        group.add(createBox(0.444 * sw, 0.15 * sh, e, xPos, 0.50 * sh, dM/2, melaminaDarkMat, 8));
+        
+        // TIRADOR
+        group.add(createBox(0.12 * sw, 0.015 * sh, 0.02 * sd, xPos, 0.50 * sh, dM/2 + 0.015, metalMat, 0)); 
+        
+        // 6: FRENTE DE CAJON
+        group.add(createBox(0.352 * sw, 0.10 * sh, e, xPos, 0.48 * sh, dM/2 - 0.03, melaminaLightMat, 6));
+        
+        // 7: LATERAL DE CAJON
+        let runnerL = Math.floor((currentD - 30) / 50) * 50;
+        if(runnerL < 250) runnerL = 250;
+        if(runnerL > 600) runnerL = 600;
+        const runnerM = runnerL / 1000;
+        
+        group.add(createBox(e, 0.10 * sh, runnerM, xPos - 0.17 * sw, 0.48 * sh, dM/2 - 0.03 - runnerM/2, melaminaLightMat, 7));
+        group.add(createBox(e, 0.10 * sh, runnerM, xPos + 0.17 * sw, 0.48 * sh, dM/2 - 0.03 - runnerM/2, melaminaLightMat, 7));
+        
+        // 9: FONDO DE CAJON
+        group.add(createBox(0.366 * sw, 0.003, runnerM - 0.022, xPos, 0.435 * sh, dM/2 - 0.03 - runnerM/2, mdfMat, 9));
+        
         return group;
       }
 
@@ -1052,16 +1180,39 @@
       headboardGroup.add(buildCajonero(xOffset));
     }
 
+    function updateTableRowHighlight(partId) {
+      document.querySelectorAll('.row-part-item').forEach(row => {
+          const isMDF = row.dataset.mdf === 'true';
+          row.className = `cursor-pointer transition-all duration-300 row-part-item ${isMDF ? 'bg-gold-500/10 text-gold-300' : 'hover:bg-dark-700/50 text-slate-200'}`;
+          
+          Array.from(row.children).forEach(td => {
+              td.className = td.className.replace('border-gold-500', 'border-slate-700');
+          });
+      });
+
+      if (partId) {
+          const selectedRow = document.getElementById(`row-part-${partId}`);
+          if (selectedRow) {
+              selectedRow.className = "cursor-pointer transition-all duration-300 row-part-item bg-gold-500/30 shadow-[inset_0_0_15px_rgba(212,175,55,0.25)]";
+              Array.from(selectedRow.children).forEach(td => {
+                  td.className = td.className.replace('border-slate-700', 'border-gold-500');
+              });
+          }
+      }
+    }
+
     function selectPart(partId, clickedMesh) {
       headboardGroup.traverse((child) => {
         if (child.isMesh && child.userData.defaultMat && child.visible) {
-          if (child.userData.partId === partId) {
+          if (child.userData.partId === partId || (partId === 8 && child.userData.partId === 0)) { 
             child.material = new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0x856404, roughness: 0.2 });
           } else {
-            child.material = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.40 });
+            child.material = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.30 });
           }
         }
       });
+
+      updateTableRowHighlight(partId);
 
       const data = partsData[partId];
       if (data) {
@@ -1069,11 +1220,12 @@
         document.getElementById('info-name').innerText = data.name;
         document.getElementById('info-qty').innerText = "x" + data.cant;
         
-        document.getElementById('info-l').innerText = data.l + " mm";
-        document.getElementById('info-a').innerText = data.a + " mm";
-        document.getElementById('info-e').innerText = data.esp + " mm";
+        document.getElementById('info-l').innerText = formatUnit(data.l);
+        document.getElementById('info-a').innerText = formatUnit(data.a);
+        document.getElementById('info-e').innerText = formatUnit(data.esp);
         
-        document.getElementById('info-tap').innerText = data.tap;
+        // Tap sequence formatting
+        document.getElementById('info-tap').innerText = `${data.tap.L1} ${data.tap.L2} ${data.tap.A1} ${data.tap.A2}`;
         document.getElementById('part-info-card').classList.add('info-card-visible');
       }
 
@@ -1091,16 +1243,17 @@
           child.material.transparent = false;
         }
       });
+      
       document.getElementById('part-info-card').classList.remove('info-card-visible');
-      targetLookAt.set(0, 0.5, 0);
+      updateTableRowHighlight(null);
+      targetLookAt.set(0, 0.5, 0); 
     }
 
     function reset3DView() {
       resetSelection();
-      currentStep = -1;
       camera.position.set(0, 1.8, 5.5);
       document.getElementById('parts-list-panel').classList.remove('list-panel-open');
-      document.getElementById('pasos-list-panel').classList.remove('list-panel-open');
+      document.getElementById('calc-panel').classList.remove('list-panel-open');
       if (isExploded) toggleExplodedView();
 
       headboardGroup.traverse((child) => {
@@ -1121,7 +1274,7 @@
         headboardGroup.traverse((child) => {
           if (child.isMesh && child.userData.animTarget) {
             child.position.lerp(child.userData.animTarget, 0.12);
-            if (child.position.distanceTo(child.userData.animTarget) < 0.01) {
+            if (child.position.distanceTo(child.userData.animTarget) < 0.005) {
               child.position.copy(child.userData.animTarget);
               child.userData.animTarget = null;
             }
@@ -1144,14 +1297,17 @@
 
     function toggleExplodedView() {
       isExploded = !isExploded;
-      currentStep = -1;
       const btn = document.getElementById('btn-explode');
       btn.classList.toggle('bg-gold-500', isExploded);
       btn.classList.toggle('text-dark-900', isExploded);
+      
+      document.getElementById('text-explode').innerText = isExploded ? 'Armar' : 'Desarmar';
+      
       resetSelection();
 
       headboardGroup.traverse((child) => {
         if (child.isMesh && child.userData.origPos) {
+
           child.visible = true;
           child.userData.animTarget = null;
           
@@ -1159,10 +1315,12 @@
           if (isExploded) {
             const pId = child.userData.partId;
             let offset = new THREE.Vector3(0, 0, 0);
-            if (pId === 1) offset.set(0, 0, -0.2);
-            if (pId === 2) offset.set(0, 0.25, -0.3);
-            if (pId === 8 || pId === 6 || pId === 7 || pId === 9) offset.set(0, 0, 0.25);
-            if (pId === 4) offset.set(0, -0.1, 0);
+            
+            if (pId === 1) offset.set(0, 0, -0.2); 
+            if (pId === 2) offset.set(0, 0.25, -0.3); 
+            if (pId === 8 || pId === 6 || pId === 7 || pId === 9 || pId === 0) offset.set(0, 0, 0.35); 
+            if (pId === 4) offset.set(0, -0.1, 0); 
+            
             child.position.set(orig.x + offset.x, orig.y + offset.y, orig.z + offset.z);
           } else {
             child.position.copy(orig);
