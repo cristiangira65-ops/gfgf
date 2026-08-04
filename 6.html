@@ -206,7 +206,7 @@
           </div>
 
           <div class="content-body">
-              <h1 class="text-xl md:text-2xl font-extrabold text-white leading-tight mb-4 uppercase tracking-wide">VELADOR MODERNO MULTIFUNCIONAL CON CAJÓN Y REPISAS ASIMÉTRICAS</h1>
+              <h1 class="text-xl md:text-2xl font-extrabold text-white leading-tight mb-3 uppercase tracking-wide">VELADOR MODERNO MULTIFUNCIONAL CON CAJÓN Y REPISAS ASIMÉTRICAS</h1>
               <p class="text-[13px] text-gray-400 leading-relaxed mb-6">
                   Un velador elegante y práctico que integra un cajón inferior amplio, un compartimento abierto central y un respaldo con repisas flotantes asimétricas. Ideal para mantener el orden con un toque de diseño vanguardista y maximizar el espacio vertical en cualquier dormitorio.
               </p>
@@ -295,18 +295,18 @@
                   
                   <div class="flex flex-col gap-0.5 shrink-0 relative" id="custom-select-container">
                     <label class="text-[9px] text-silver-300 font-bold">Grosor de melamina:</label>
-                    <!-- Custom Select en lugar de etiqueta select nativa -->
+                    <!-- Custom Select abre hacia arriba (bottom-full) en 3 columnas -->
                     <button type="button" id="custom-select-btn" onclick="toggleCustomSelect(event)" class="flex justify-between items-center w-full bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] text-white outline-none focus:border-gold-500 active:bg-dark-700 transition-colors">
                       <span id="custom-select-text">18 mm</span>
-                      <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 pointer-events-none transition-transform duration-200" id="custom-select-icon"></i>
+                      <i data-lucide="chevron-up" class="w-3 h-3 text-silver-400 pointer-events-none transition-transform duration-200" id="custom-select-icon"></i>
                     </button>
                     
-                    <div id="custom-select-options" class="hidden absolute top-full left-0 w-full mt-1 bg-dark-800 border border-slate-600 rounded shadow-xl z-50 flex flex-col overflow-hidden">
-                      <div class="custom-option px-2 py-1.5 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer" data-mm="12" onclick="selectCustomOption(12, event)">12 mm</div>
-                      <div class="custom-option px-2 py-1.5 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer" data-mm="15" onclick="selectCustomOption(15, event)">15 mm</div>
-                      <div class="custom-option px-2 py-1.5 text-[10px] bg-gold-500/10 text-gold-400 font-bold hover:bg-gold-500/20 cursor-pointer" data-mm="18" onclick="selectCustomOption(18, event)">18 mm</div>
-                      <div class="custom-option px-2 py-1.5 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer" data-mm="21" onclick="selectCustomOption(21, event)">21 mm</div>
-                      <div class="custom-option px-2 py-1.5 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer" data-mm="25" onclick="selectCustomOption(25, event)">25 mm</div>
+                    <div id="custom-select-options" class="hidden absolute bottom-full left-0 w-full mb-1 bg-dark-800 border border-slate-600 rounded shadow-xl z-50 grid grid-cols-3 gap-1 p-1.5">
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="12" onclick="selectCustomOption(12, event)">12 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="15" onclick="selectCustomOption(15, event)">15 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] bg-gold-500/10 text-gold-400 font-bold hover:bg-gold-500/20 cursor-pointer text-center" data-mm="18" onclick="selectCustomOption(18, event)">18 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="21" onclick="selectCustomOption(21, event)">21 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="25" onclick="selectCustomOption(25, event)">25 mm</div>
                     </div>
                     <input type="hidden" id="calc-e" value="18">
                   </div>
@@ -344,10 +344,10 @@
                   <i data-lucide="list-tree" class="w-4 h-4"></i> Medidas
                 </button>
 
-                <!-- Panel Lista de Medidas (Ajustado para 2 columnas sin scroll) -->
-                <div id="parts-list-panel" class="hidden flex-col gap-1.5 bg-dark-900/95 border border-gold-500/30 p-2 rounded-md shadow-xl backdrop-blur-md w-[260px] sm:w-[310px]">
-                  <div class="text-[8px] uppercase tracking-widest text-silver-400 font-bold mb-0.5 px-1 border-b border-slate-700 pb-1">Selecciona para ver:</div>
-                  <div id="parts-list-container" class="grid grid-cols-2 gap-1.5"></div>
+                <!-- Panel Lista de Medidas (2 columnas, orden abajo, sin scroll, tamaño normal) -->
+                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-2.5 rounded-md shadow-xl backdrop-blur-md w-[300px] sm:w-[340px]">
+                  <div class="text-[9px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1.5">Selecciona para ver:</div>
+                  <div id="parts-list-container" class="block" style="column-count: 2; column-gap: 8px;"></div>
                 </div>
               </div>
 
@@ -915,15 +915,17 @@
       buildFurnitureModel();
     }
 
+    // LISTA DE MEDIDAS AJUSTADA A 2 COLUMNAS ORDENADAS HACIA ABAJO (TAMAÑO NORMAL DE LETRA)
     function buildPartsListUI() {
       const container = document.getElementById('parts-list-container');
       container.innerHTML = '';
       Object.values(partsData).forEach(part => {
         const btn = document.createElement('button');
-        btn.className = "flex items-center gap-1.5 w-full text-left p-1 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group overflow-hidden";
+        // break-inside-avoid evita que el botón se parta entre columnas
+        btn.className = "inline-flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group mb-1.5 break-inside-avoid";
         const badgeColor = part.isMDF ? "bg-amber-500 text-dark-900" : "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
         const textColor = part.isMDF ? "text-amber-400" : "text-silver-300 group-hover:text-gold-300";
-        btn.innerHTML = `<span class="w-4 h-4 shrink-0 rounded flex items-center justify-center text-[9px] font-black transition-colors ${badgeColor}">${part.id}</span><span class="text-[9.5px] font-bold truncate ${textColor}">${part.name}</span>`;
+        btn.innerHTML = `<span class="w-5 h-5 shrink-0 rounded flex items-center justify-center text-[10px] font-black transition-colors ${badgeColor}">${part.id}</span><span class="text-[11px] font-bold truncate ${textColor}">${part.name}</span>`;
         btn.onclick = () => selectPartFromList(part.id);
         container.appendChild(btn);
       });
