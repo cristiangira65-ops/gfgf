@@ -293,15 +293,22 @@
                     <input type="number" id="calc-d" step="any" value="400" min="25" max="1000" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
                   </div>
                   
-                  <div class="flex flex-col gap-0.5 shrink-0 relative">
+                  <div class="flex flex-col gap-0.5 shrink-0 relative" id="custom-select-container">
                     <label class="text-[9px] text-silver-300 font-bold">Grosor de melamina:</label>
-                    <select id="calc-e" onchange="startRecalculate()" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] text-white outline-none focus:border-gold-500">
-                      <option value="12" data-mm="12">12 mm</option>
-                      <option value="15" data-mm="15">15 mm</option>
-                      <option value="18" data-mm="18" selected>18 mm</option>
-                      <option value="21" data-mm="21">21 mm</option>
-                      <option value="25" data-mm="25">25 mm</option>
-                    </select>
+                    <!-- Custom Select en lugar de etiqueta select nativa -->
+                    <button type="button" id="custom-select-btn" onclick="toggleCustomSelect(event)" class="flex justify-between items-center w-full bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] text-white outline-none focus:border-gold-500 active:bg-dark-700 transition-colors">
+                      <span id="custom-select-text">18 mm</span>
+                      <i data-lucide="chevron-down" class="w-3 h-3 text-silver-400 pointer-events-none transition-transform duration-200" id="custom-select-icon"></i>
+                    </button>
+                    
+                    <div id="custom-select-options" class="hidden absolute top-full left-0 w-full mt-1 bg-dark-800 border border-slate-600 rounded shadow-xl z-50 flex flex-col overflow-hidden">
+                      <div class="custom-option px-2 py-1.5 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer" data-mm="12" onclick="selectCustomOption(12, event)">12 mm</div>
+                      <div class="custom-option px-2 py-1.5 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer" data-mm="15" onclick="selectCustomOption(15, event)">15 mm</div>
+                      <div class="custom-option px-2 py-1.5 text-[10px] bg-gold-500/10 text-gold-400 font-bold hover:bg-gold-500/20 cursor-pointer" data-mm="18" onclick="selectCustomOption(18, event)">18 mm</div>
+                      <div class="custom-option px-2 py-1.5 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer" data-mm="21" onclick="selectCustomOption(21, event)">21 mm</div>
+                      <div class="custom-option px-2 py-1.5 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer" data-mm="25" onclick="selectCustomOption(25, event)">25 mm</div>
+                    </div>
+                    <input type="hidden" id="calc-e" value="18">
                   </div>
                   
                   <span id="calc-error" class="text-[8px] text-red-400 hidden font-bold mt-0.5 shrink-0">¡Medidas muy pequeñas!</span>
@@ -606,6 +613,45 @@
       return raw ? val : val + " mm";
     }
 
+    function toggleCustomSelect(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const options = document.getElementById('custom-select-options');
+      const icon = document.getElementById('custom-select-icon');
+      const isHidden = options.classList.contains('hidden');
+      
+      if(isHidden) {
+          options.classList.remove('hidden');
+          icon.style.transform = 'rotate(180deg)';
+      } else {
+          options.classList.add('hidden');
+          icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function selectCustomOption(val, e) {
+      e.stopPropagation();
+      
+      document.querySelectorAll('.custom-option').forEach(opt => {
+          if (parseFloat(opt.getAttribute('data-mm')) === val) {
+              opt.classList.add('bg-gold-500/10', 'text-gold-400', 'font-bold');
+              opt.classList.remove('text-white');
+          } else {
+              opt.classList.remove('bg-gold-500/10', 'text-gold-400', 'font-bold');
+              opt.classList.add('text-white');
+          }
+      });
+
+      const inputVal = isCM ? val / 10 : val;
+      document.getElementById('calc-e').value = inputVal;
+      document.getElementById('custom-select-text').innerText = isCM ? (val / 10) + " cm" : val + " mm";
+      
+      document.getElementById('custom-select-options').classList.add('hidden');
+      document.getElementById('custom-select-icon').style.transform = 'rotate(0deg)';
+      
+      startRecalculate();
+    }
+
     function updateAllUnitsUI() {
         const u = isCM ? "cm" : "mm";
         const U_UPPER = isCM ? "CM" : "MM";
@@ -624,13 +670,14 @@
         hInput.value = isCM ? currentH / 10 : currentH;
         dInput.value = isCM ? currentD / 10 : currentD;
 
-        const eSelect = document.getElementById('calc-e');
-        Array.from(eSelect.options).forEach(opt => {
+        // Custom Dropdown Update
+        const eInput = document.getElementById('calc-e');
+        document.querySelectorAll('.custom-option').forEach(opt => {
             let baseVal = parseFloat(opt.getAttribute('data-mm'));
-            opt.value = isCM ? baseVal / 10 : baseVal;
-            opt.text = isCM ? (baseVal / 10) + " cm" : baseVal + " mm";
+            opt.innerText = isCM ? (baseVal / 10) + " cm" : baseVal + " mm";
         });
-        eSelect.value = isCM ? currentE / 10 : currentE;
+        eInput.value = isCM ? currentE / 10 : currentE;
+        document.getElementById('custom-select-text').innerText = isCM ? (currentE / 10) + " cm" : currentE + " mm";
 
         document.getElementById('ui-mat-mdf').innerText = f(3);
         document.getElementById('ui-mat-mel').innerText = f(currentE);
@@ -674,9 +721,7 @@
       startRecalculate(true);
     }
 
-    // FACTORES DE ESCALA RELATIVA PARA ESTIRAMIENTO PROPORCIONAL TIPO "ESQUINA"
     function generatePartsData(w, h, d, e) {
-       // Multiplicadores relativos base
        const sw = w / 500;
        const sh = h / 1050;
        const sd = d / 400;
@@ -747,6 +792,18 @@
       buildDespieceTableUI();
       init3D();
       initScrollAnimations();
+
+      // Cierra el custom dropdown si se hace click fuera
+      document.addEventListener('pointerdown', (e) => {
+        const customSel = document.getElementById('custom-select-container');
+        if (customSel && !customSel.contains(e.target)) {
+            const opts = document.getElementById('custom-select-options');
+            if(opts && !opts.classList.contains('hidden')) {
+                opts.classList.add('hidden');
+                document.getElementById('custom-select-icon').style.transform = 'rotate(0deg)';
+            }
+        }
+      });
     };
 
     function initScrollAnimations() {
@@ -858,7 +915,6 @@
       buildFurnitureModel();
     }
 
-    // LISTA DE MEDIDAS AJUSTADA A 2 COLUMNAS Y TEXTO MÁS PEQUEÑO
     function buildPartsListUI() {
       const container = document.getElementById('parts-list-container');
       container.innerHTML = '';
@@ -979,7 +1035,15 @@
       ['calc-panel', 'parts-list-panel', 'part-info-card'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-          el.addEventListener('pointerdown', e => e.stopPropagation());
+          el.addEventListener('pointerdown', e => {
+              const customSel = document.getElementById('custom-select-container');
+              if (customSel && !customSel.contains(e.target)) {
+                  document.getElementById('custom-select-options').classList.add('hidden');
+                  const icon = document.getElementById('custom-select-icon');
+                  if(icon) icon.style.transform = 'rotate(0deg)';
+              }
+              e.stopPropagation();
+          });
           el.addEventListener('pointermove', e => e.stopPropagation());
           el.addEventListener('pointerup', e => e.stopPropagation());
           el.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
@@ -1084,18 +1148,15 @@
 
       const deskH = 0.650 * sh; 
 
-      // 2 - RESPALDO (AHORA JUSTO AL RAS DE LA PIEZA 10)
       const respZ = -dTotal/2 + e/2;
       headboardGroup.add(createBox(wTotal, hTotal, e, 0, hTotal/2, respZ, melaminaDarkWood, 2));
 
-      // 1 - LATERALES (Con diseño curvo superior y escala dinámica)
       const latX = wTotal/2 - e/2;
       const latZ = e/2; 
       const latH = deskH + (0.080 * sh); 
       headboardGroup.add(createLateralCurvo(e, latH, dTotal - e, -latX, latH/2, latZ, melaminaDarkWood, 1));
       headboardGroup.add(createLateralCurvo(e, latH, dTotal - e,  latX, latH/2, latZ, melaminaDarkWood, 1));
 
-      // 3 - BASES / REPISAS PRINCIPALES
       const baseW = wTotal - (2 * e);
       const baseD = dTotal - e; 
       
@@ -1109,7 +1170,6 @@
       
       headboardGroup.add(createBox(baseW, e, baseD, 0, deskH - e/2, latZ, melaminaDarkWood, 3));
 
-      // GRUPO DEL CAJÓN
       const cajonGroup = new THREE.Group();
       
       const tapaH = 0.238 * sh; 
@@ -1135,18 +1195,15 @@
       const cajonZCenter = tapaZ - e/2 - cajonD/2;
       
       const cajonLatH = 0.100 * sh;
-      // Laterales Cajón (Part 4)
       cajonGroup.add(createBox(e, cajonLatH, cajonD, -latCajonX, cajonBoxY, cajonZCenter, melaminaDarkWood, 4));
       cajonGroup.add(createBox(e, cajonLatH, cajonD,  latCajonX, cajonBoxY, cajonZCenter, melaminaDarkWood, 4));
 
-      // Frente y Posterior Cajón (Part 5)
       const frenteW = baseW - 0.062;
       const intFrenteZ = tapaZ - e - e/2; 
       const intTraseraZ = tapaZ - e - cajonD + e/2; 
       cajonGroup.add(createBox(frenteW, cajonLatH, e, 0, cajonBoxY, intFrenteZ, melaminaDarkWood, 5));
       cajonGroup.add(createBox(frenteW, cajonLatH, e, 0, cajonBoxY, intTraseraZ, melaminaDarkWood, 5));
 
-      // Fondo Cajón (Part 7)
       const fondoY = cajonBoxY - (cajonLatH/2) + 0.008; 
       const fondoW = baseW - 0.048;
       const fondoD = cajonD - 0.022;
@@ -1154,13 +1211,11 @@
 
       headboardGroup.add(cajonGroup);
 
-      // REPISAS ALTAS SUPERIORES (8, 9, 10)
       const topShelvesDepth = 0.100 * sd;
       const topShelvesZ = respZ + e/2 + topShelvesDepth/2;
       
       const vertH = 0.230 * sh;
       
-      // CENTRO Y EXACTO DE LA PIEZA 10 PARA QUE AL TOPE SEA IGUAL A hTotal
       const topYRef = hTotal - (vertH / 2); 
       
       const gapRight = 0.030 * sw;
@@ -1169,15 +1224,13 @@
       
       headboardGroup.add(createBox(e, vertH, topShelvesDepth, vertX, topYRef, topShelvesZ, melaminaDarkWood, 10));
 
-      // Repisa Alta 1 Derecha (Part 8)
       const repDerechaX = wTotal/2 - gapRight - repDerechaW/2;
-      const repDerechaY = topYRef - vertH/2 + e/2; // Al ras por abajo de la vertical
+      const repDerechaY = topYRef - vertH/2 + e/2; 
       headboardGroup.add(createBox(repDerechaW, e, topShelvesDepth, repDerechaX, repDerechaY, topShelvesZ, melaminaDarkWood, 8));
 
-      // Repisa Alta 2 Izquierda (Part 9)
       const repIzquierdaW = 0.170 * sw;
       const repIzquierdaX = vertX - e/2 - repIzquierdaW/2;
-      const repIzquierdaY = topYRef; // Justo en el medio exacto
+      const repIzquierdaY = topYRef; 
       headboardGroup.add(createBox(repIzquierdaW, e, topShelvesDepth, repIzquierdaX, repIzquierdaY, topShelvesZ, melaminaDarkWood, 9));
     }
 
