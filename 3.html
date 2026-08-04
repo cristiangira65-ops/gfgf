@@ -28,10 +28,8 @@
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-
   <!-- Three.js + OrbitControls -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -52,13 +50,22 @@
 
     ::-webkit-scrollbar { display: none; }
 
-    .faq-scroll {
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
+    /* Barra de desplazamiento personalizada para la Calculadora y Tablas */
+    .calc-scroll {
+      overflow-y: visible !important; 
+      -webkit-overflow-scrolling: touch !important;
+      touch-action: pan-y !important;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(212, 175, 55, 0.5) rgba(28, 31, 43, 0.5);
     }
-    .faq-scroll::-webkit-scrollbar { display: none; }
+    .calc-scroll::-webkit-scrollbar { display: block !important; width: 4px; }
+    .calc-scroll::-webkit-scrollbar-track { background: rgba(28, 31, 43, 0.7); border-radius: 4px; }
+    .calc-scroll::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 4px; }
+
+    .show-scrollbar { scrollbar-width: thin; scrollbar-color: rgba(212, 175, 55, 0.5) rgba(28, 31, 43, 0.5); }
+    .show-scrollbar::-webkit-scrollbar { display: block !important; height: 8px; width: 6px; }
+    .show-scrollbar::-webkit-scrollbar-track { background: rgba(28, 31, 43, 0.7); border-radius: 4px; }
+    .show-scrollbar::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 4px; }
 
     .accordion-content {
       max-height: 0;
@@ -105,16 +112,6 @@
     .animate-on-scroll.is-visible {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    .chat-bubble::before {
-      content: '';
-      position: absolute;
-      top: -5px;
-      left: 20px;
-      border-width: 0 5px 5px 5px;
-      border-style: solid;
-      border-color: transparent transparent #0B0C10 transparent; 
     }
 
     :root {
@@ -189,7 +186,13 @@
                   </div>
               </div>
               <div class="flex flex-col items-center justify-center gap-1 bg-gold-500/15 border border-gold-500/70 py-1.5 px-3 rounded-lg shadow-gold-glow">
-                  <div class="flex gap-0.5 text-gold-500 text-[9px]" id="stars-container"></div>
+                  <div class="flex gap-0.5 text-gold-500 text-[9px]" id="stars-container">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                  </div>
                   <span class="text-[10px] text-gold-300 font-bold tracking-wide" id="rating-text">4.8 / 5</span>
               </div>
           </div>
@@ -234,9 +237,10 @@
 
   <main class="w-full max-w-[1400px] mx-auto px-1 sm:px-2 lg:px-4 flex flex-col lg:flex-row gap-4 relative">
 
-    <!-- COLUMNA IZQUIERDA (Visor 3D) -->
+    <!-- COLUMNA IZQUIERDA (Visor 3D y Calculadora) -->
     <div class="w-full lg:w-3/5 flex-shrink-0 space-y-4">
       
+      <!-- ACORDEÓN: PROYECTO 3D -->
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-lg animate-on-scroll">
         <button onclick="toggleAccordion('acc-plano')" class="w-full p-3.5 flex items-center justify-between bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-left active:scale-[0.99] transition-transform">
           <div class="flex items-center space-x-3.5">
@@ -258,32 +262,91 @@
             <div class="relative w-full h-[380px] lg:h-[600px] bg-slate-950 rounded-md overflow-hidden border border-slate-800 shadow-inner group">
               <div id="canvas-container" class="w-full h-full relative cursor-pointer"></div>
               
+              <!-- 2 BOTONES IZQUIERDA -->
               <div class="absolute top-2 left-2 flex flex-col gap-1.5 z-20">
                 <button onclick="reset3DView()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
                   <i data-lucide="rotate-ccw" class="w-4 h-4"></i> Reset
                 </button>
-                <button onclick="togglePasosList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="footprints" class="w-4 h-4"></i> Pasos
+                <button onclick="toggleCalculator()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="sliders" class="w-4 h-4"></i> Ajustar
                 </button>
-                <div id="pasos-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto w-[150px]">
-                  <div id="pasos-list-container" class="flex flex-col gap-1"></div>
+                
+                <!-- Panel Calculadora -->
+                <div id="calc-panel" class="hidden flex-col gap-2 bg-dark-900/95 border border-gold-500/50 p-2.5 rounded-md shadow-2xl backdrop-blur-md w-[176px] max-h-[75%] calc-scroll">
+                  <h3 class="text-[10px] font-bold text-gold-400 border-b border-slate-700 pb-1 uppercase tracking-wide shrink-0">Ajustar Medidas</h3>
+                  
+                  <div class="flex flex-col gap-0.5 shrink-0">
+                    <label class="text-[9px] text-silver-300 font-bold">Ancho Total <span id="lbl-unit-w">(mm)</span>:</label>
+                    <input type="number" id="calc-w" step="any" value="2450" min="1500" max="3500" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
+                  </div>
+                  
+                  <div class="flex flex-col gap-0.5 shrink-0">
+                    <label class="text-[9px] text-silver-300 font-bold">Alto Total <span id="lbl-unit-h">(mm)</span>:</label>
+                    <input type="number" id="calc-h" step="any" value="950" min="600" max="1800" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
+                  </div>
+                  
+                  <div class="flex flex-col gap-0.5 shrink-0">
+                    <label class="text-[9px] text-silver-300 font-bold">Prof. Velador <span id="lbl-unit-d">(mm)</span>:</label>
+                    <input type="number" id="calc-d" step="any" value="400" min="300" max="800" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
+                  </div>
+                  
+                  <div class="flex flex-col gap-0.5 shrink-0 relative" id="custom-select-container">
+                    <label class="text-[9px] text-silver-300 font-bold">Grosor de melamina:</label>
+                    <button type="button" id="custom-select-btn" onclick="toggleCustomSelect(event)" class="flex justify-between items-center w-full bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] text-white outline-none focus:border-gold-500 active:bg-dark-700 transition-colors">
+                      <span id="custom-select-text">18 mm</span>
+                      <i data-lucide="chevron-up" class="w-3 h-3 text-silver-400 pointer-events-none transition-transform duration-200" id="custom-select-icon"></i>
+                    </button>
+                    
+                    <div id="custom-select-options" class="hidden absolute bottom-full left-0 w-full mb-1 bg-dark-800 border border-slate-600 rounded shadow-xl z-50 grid grid-cols-3 gap-1 p-1.5">
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="12" onclick="selectCustomOption(12, event)">12 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="15" onclick="selectCustomOption(15, event)">15 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] bg-gold-500/10 text-gold-400 font-bold hover:bg-gold-500/20 cursor-pointer text-center" data-mm="18" onclick="selectCustomOption(18, event)">18 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="21" onclick="selectCustomOption(21, event)">21 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="25" onclick="selectCustomOption(25, event)">25 mm</div>
+                    </div>
+                    <input type="hidden" id="calc-e" value="18">
+                  </div>
+                  
+                  <span id="calc-error" class="text-[8px] text-red-400 hidden font-bold mt-0.5 shrink-0">¡Revisa las medidas!</span>
+                  
+                  <button id="btn-recalc" onclick="startRecalculate()" class="mt-1 shrink-0 bg-gradient-to-r from-gold-600 to-gold-400 hover:from-gold-500 hover:to-gold-300 text-dark-900 font-bold py-1.5 rounded text-[10px] transition-colors shadow-gold-glow leading-tight">
+                    RECALCULAR PROYECTO
+                  </button>
+                  
+                  <button id="btn-reset-calc" onclick="resetDefaultDimensions()" class="mt-0.5 shrink-0 bg-dark-800 hover:bg-dark-700 text-silver-300 border border-slate-600 font-bold py-1 rounded text-[8px] transition-colors shadow-sm leading-tight">
+                    RESTABLECER PREDETERMINADAS
+                  </button>
+
+                  <div id="loading-container" class="hidden flex-col gap-1 mt-1 mb-1 shrink-0">
+                    <span class="text-[8px] text-gold-400 font-bold text-center animate-pulse">Calculando...</span>
+                    <div class="w-full h-1.5 bg-dark-800 rounded-full overflow-hidden border border-slate-700">
+                      <div id="loading-bar" class="h-full bg-gradient-to-r from-gold-500 to-gold-300 w-0 transition-all duration-1000 ease-in-out"></div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
+              <!-- 3 BOTONES DERECHA -->
               <div class="absolute top-2 right-2 z-20 flex flex-col items-end gap-1.5">
                 <button id="btn-explode" onclick="toggleExplodedView()" class="bg-dark-800/90 hover:bg-dark-700 text-slate-200 border border-silver-500/40 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="move-3d" class="w-4 h-4 text-gold-400"></i> Desarmar
+                  <i data-lucide="move-3d" class="w-4 h-4 text-gold-400"></i> <span id="text-explode">Desarmar</span>
+                </button>
+                <button onclick="toggleUnit()" class="bg-dark-800/90 hover:bg-dark-700 text-silver-300 border border-slate-500/50 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
+                  <i data-lucide="ruler" class="w-4 h-4 text-silver-400"></i> <span id="text-unit">MM</span>
                 </button>
                 <button onclick="togglePartsList()" class="bg-dark-800/90 hover:bg-dark-700 text-gold-400 border border-gold-500/50 px-3 py-1.5 rounded text-[11px] font-bold flex items-center justify-center gap-1.5 shadow-md backdrop-blur transition-colors">
-                  <i data-lucide="list-tree" class="w-4 h-4"></i> Piezas
+                  <i data-lucide="list-tree" class="w-4 h-4"></i> Medidas
                 </button>
-                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto w-[180px]">
-                  <div class="text-[8px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1">Selecciona una pieza:</div>
-                  <div id="parts-list-container" class="flex flex-col gap-1"></div>
+
+                <!-- Panel Lista de Medidas (2 columnas) -->
+                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-2.5 rounded-md shadow-xl backdrop-blur-md w-[300px] sm:w-[340px]">
+                  <div class="text-[9px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1.5">Selecciona para ver:</div>
+                  <div id="parts-list-container" class="block" style="column-count: 2; column-gap: 8px;"></div>
                 </div>
               </div>
 
-              <!-- Tarjeta de Info de Pieza -->
+              <!-- Tarjeta de Información Dinámica -->
               <div id="part-info-card" class="absolute bottom-2.5 left-1/2 w-[94%] max-w-[420px] bg-dark-900/95 border border-gold-500/60 rounded-lg p-3 shadow-2xl backdrop-blur-md transition-all duration-400 z-10 pointer-events-none">
                 <button onclick="resetSelection()" class="absolute top-2 right-2 text-silver-400 hover:text-white bg-dark-800 p-1.5 rounded-md border border-slate-700 transition-colors z-20 pointer-events-auto">
                   <i data-lucide="x" class="w-4 h-4"></i>
@@ -320,11 +383,63 @@
           </div>
         </div>
       </div>
-
     </div>
 
+    <!-- COLUMNA DERECHA (Tabla, Accesorios y Especificaciones) -->
     <div class="w-full lg:w-2/5 flex flex-col gap-3.5 pb-8">
       
+      <!-- ACORDEÓN: TABLA DE DESPIECE -->
+      <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-lg animate-on-scroll">
+        <button onclick="toggleAccordion('acc-tabla')" class="w-full p-3.5 flex items-center justify-between bg-gradient-to-r from-dark-800 via-dark-700 to-dark-800 border-b border-gold-500/20 text-left active:scale-[0.99] transition-transform">
+          <div class="flex items-center space-x-3.5">
+            <div class="p-2 rounded-lg bg-gold-500/10 border border-gold-500/30 text-gold-400">
+              <i data-lucide="table-properties" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h2 class="text-sm font-extrabold text-slate-100 flex items-center gap-1.5 uppercase tracking-wide">
+                Tabla de Despiece
+              </h2>
+              <span class="text-[11px] text-gold-500 font-medium block">Lista de cortes exacta <span id="ui-tabla-unidad">(MM)</span></span>
+            </div>
+          </div>
+          <i id="icon-acc-tabla" data-lucide="chevron-down" class="w-5 h-5 text-gold-400 transition-transform duration-300"></i>
+        </button>
+
+        <div id="acc-tabla" class="accordion-content">
+          <div class="p-3">
+            <div class="overflow-x-auto rounded border border-slate-700 show-scrollbar pb-2">
+              <table class="w-full text-[10px] text-center border-collapse whitespace-nowrap">
+                <thead>
+                  <tr class="bg-dark-900 text-silver-300">
+                    <th rowspan="2" class="border border-slate-700 p-2 text-gold-500 font-black">#</th>
+                    <th rowspan="2" class="border border-slate-700 p-2 text-left min-w-[140px] font-bold">NOMBRE</th>
+                    <th rowspan="2" class="border border-slate-700 p-2 font-bold">LARGO</th>
+                    <th rowspan="2" class="border border-slate-700 p-2 font-bold">ANCHO</th>
+                    <th rowspan="2" class="border border-slate-700 p-2 font-bold">CANT.</th>
+                    <th colspan="4" class="border border-slate-700 p-1.5 bg-slate-800/40 text-blue-300 font-bold tracking-wide">TAPACANTO</th>
+                    <th colspan="4" class="border border-slate-700 p-1.5 bg-slate-800/40 text-amber-300 font-bold tracking-wide">RANURA</th>
+                  </tr>
+                  <tr class="bg-dark-900 text-silver-400">
+                    <th class="border border-slate-700 p-1 w-6">L1</th>
+                    <th class="border border-slate-700 p-1 w-6">L2</th>
+                    <th class="border border-slate-700 p-1 w-6">A1</th>
+                    <th class="border border-slate-700 p-1 w-6">A2</th>
+                    <th class="border border-slate-700 p-1 w-7">Dist.</th>
+                    <th class="border border-slate-700 p-1 w-7">Esp.</th>
+                    <th class="border border-slate-700 p-1 w-7">Prof.</th>
+                    <th class="border border-slate-700 p-1 w-7">Pos.</th>
+                  </tr>
+                </thead>
+                <tbody id="despiece-table-body" class="text-slate-200">
+                  <!-- Las filas se inyectan via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACORDEÓN: ACCESORIOS -->
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-sm animate-on-scroll" style="transition-delay: 50ms;">
         <button onclick="toggleAccordion('acc-accesorios')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
           <div class="flex items-center gap-3">
@@ -335,24 +450,24 @@
         </button>
         <div id="acc-accesorios" class="accordion-content">
           <div class="p-3 space-y-2">
-            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700 w-full text-left">
               <div class="w-8 h-8 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-3 shrink-0"><i data-lucide="sliders-horizontal" class="w-4 h-4"></i></div>
-              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Correderas Telescópicas</span><span class="text-[10px] text-silver-400">350 mm</span></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Correderas Telescópicas</span><span class="text-[10px] text-silver-400" id="ui-acc-runner">Largo 350 mm</span></div>
               <span class="text-[10px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">2 PARES</span>
             </div>
-            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700 w-full text-left">
               <div class="w-8 h-8 rounded bg-slate-800 text-gold-400 flex items-center justify-center mr-3 shrink-0"><i data-lucide="grip-horizontal" class="w-4 h-4"></i></div>
               <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Jalador Frontal</span><span class="text-[10px] text-silver-400">Metálico</span></div>
               <span class="text-[10px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">2 UNIDS</span>
             </div>
-            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700 w-full text-left">
               <div class="w-8 h-8 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-3 shrink-0"><i data-lucide="circle-dot" class="w-4 h-4"></i></div>
-              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos 4 x 50</span><span class="text-[10px] text-silver-400">Para ensamble</span></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos <span id="ui-tornillo50-name">4 x 50 mm</span></span><span class="text-[10px] text-silver-400">Para ensamble general</span></div>
               <span class="text-[10px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">100 U.</span>
             </div>
-            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700">
+            <div class="flex items-center p-2.5 rounded bg-dark-900 border border-slate-700 w-full text-left">
               <div class="w-8 h-8 rounded bg-slate-800 text-silver-300 flex items-center justify-center mr-3 shrink-0"><i data-lucide="disc" class="w-4 h-4"></i></div>
-              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos 4 x 30</span><span class="text-[10px] text-silver-400">Para correderas</span></div>
+              <div class="flex-1"><span class="text-xs font-bold text-slate-100 block">Tornillos <span id="ui-tornillo30-name">4 x 30 mm</span></span><span class="text-[10px] text-silver-400">Para correderas</span></div>
               <span class="text-[10px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">20 U.</span>
             </div>
           </div>
@@ -383,7 +498,7 @@
             </div>
             <div class="bg-dark-900 border border-slate-700 p-3 rounded flex flex-col items-center text-center gap-2">
               <div class="w-9 h-9 rounded-full bg-slate-800 text-silver-300 flex items-center justify-center"><i data-lucide="ruler" class="w-4.5 h-4.5"></i></div>
-              <span class="text-[11px] font-bold text-slate-100 leading-tight">Wincha / Esquad.</span>
+              <span class="text-[11px] font-bold text-slate-100 leading-tight">Wincha / Escuadra</span>
             </div>
           </div>
         </div>
@@ -410,7 +525,7 @@
               <span class="w-8 h-8 rounded bg-gold-500 text-dark-900 font-black flex justify-center items-center text-xs">G</span>
               <div class="flex flex-col">
                 <span class="text-xs font-bold text-gold-400">TAPACANTO GRUESO</span>
-                <span class="text-[10px] text-silver-400">Frentes expuestos (3mm)</span>
+                <span class="text-[10px] text-silver-400">Frentes principales y expuestos</span>
               </div>
             </div>
           </div>
@@ -421,7 +536,7 @@
         <button onclick="toggleAccordion('acc-ranuras')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
           <div class="flex items-center gap-3">
             <div class="p-1.5 rounded bg-gold-500/10 text-gold-400"><i data-lucide="align-vertical-space-between" class="w-4 h-4"></i></div>
-            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Ranuras (L2)</h2>
+            <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Ranuras (Cajón)</h2>
           </div>
           <i id="icon-acc-ranuras" data-lucide="chevron-down" class="w-4 h-4 text-gold-400 transition-transform duration-300"></i>
         </button>
@@ -431,19 +546,19 @@
               <div class="flex items-center gap-2">
                 <i data-lucide="arrow-right-to-line" class="w-4 h-4 text-silver-400"></i><span class="font-bold text-slate-100">D : DISTANCIA</span>
               </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20">= 18 mm</strong>
+              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20" id="ui-ran-d">= 18 mm</strong>
             </div>
             <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-2.5 rounded">
               <div class="flex items-center gap-2">
                 <i data-lucide="minimize-2" class="w-4 h-4 text-silver-400"></i><span class="font-bold text-slate-100">E : ESPESOR</span>
               </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20">= 4 mm</strong>
+              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20" id="ui-ran-e">= 4 mm</strong>
             </div>
             <div class="flex items-center justify-between bg-dark-900 border border-slate-700 p-2.5 rounded">
               <div class="flex items-center gap-2">
                 <i data-lucide="arrow-down-to-line" class="w-4 h-4 text-silver-400"></i><span class="font-bold text-slate-100">P : PROFUNDIDAD</span>
               </div>
-              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20">= 8 mm</strong>
+              <strong class="text-gold-400 bg-gold-500/10 px-2.5 py-1 rounded border border-gold-500/20" id="ui-ran-p">= 8 mm</strong>
             </div>
           </div>
         </div>
@@ -464,153 +579,22 @@
                 <div class="w-7 h-7 rounded-sm bg-[#b59e24] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="file" class="w-3.5 h-3.5 text-dark-900"></i></div>
                 <span class="text-xs font-bold text-slate-100 uppercase">MDF (Fondo Cajón)</span>
               </div>
-              <span class="text-[11px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600">3 mm</span>
+              <span class="text-[11px] bg-slate-800 text-silver-300 font-bold px-2.5 py-1 rounded border border-slate-600" id="ui-mat-mdf">3 mm</span>
             </div>
             <div class="bg-dark-900 border border-slate-700 p-3 rounded flex items-center justify-between">
               <div class="flex items-center gap-3.5">
-                <div class="w-7 h-7 rounded-sm bg-[#e5e5e5] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-3.5 h-3.5 text-dark-900"></i></div>
-                <span class="text-xs font-bold text-slate-100 uppercase">MELAMINA</span>
+                <div class="w-7 h-7 rounded-sm bg-[#6e6e6e] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-3.5 h-3.5 text-dark-900"></i></div>
+                <span class="text-xs font-bold text-slate-100 uppercase">MELAMINA GRIS</span>
               </div>
-              <span class="text-[11px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">18 mm</span>
+              <span id="ui-mat-mel1" class="text-[11px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">18 mm</span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="border border-red-500/40 rounded-lg bg-dark-800/80 overflow-hidden shadow-[0_0_12px_rgba(220,38,38,0.15)] animate-on-scroll mt-2" style="transition-delay: 300ms;">
-        <button onclick="toggleAccordion('acc-faq')" class="w-full p-3 flex items-center justify-between bg-gradient-to-r from-dark-800 to-red-950/20 border-b border-red-500/20 text-left active:bg-dark-700 transition-colors">
-          <div class="flex items-center gap-3">
-            <div class="p-1.5 rounded bg-red-500/20 text-red-500 border border-red-500/30"><i data-lucide="message-circle-question" class="w-4 h-4"></i></div>
-            <div>
-              <h2 class="text-[13px] font-bold text-slate-100 uppercase tracking-wide">Preguntas Frecuentes</h2>
-              <span class="text-[10px] text-silver-400 font-medium">Guía y Ayuda del Proyecto</span>
+            <div class="bg-dark-900 border border-slate-700 p-3 rounded flex items-center justify-between">
+              <div class="flex items-center gap-3.5">
+                <div class="w-7 h-7 rounded-sm bg-[#d2b48c] border border-dark-900 outline outline-1 outline-slate-600 flex justify-center items-center"><i data-lucide="layers" class="w-3.5 h-3.5 text-dark-900"></i></div>
+                <span class="text-xs font-bold text-slate-100 uppercase">MELAMINA MADERA</span>
+              </div>
+              <span id="ui-mat-mel2" class="text-[11px] bg-gold-500/10 text-gold-400 font-bold px-2.5 py-1 rounded border border-gold-500/30">18 mm</span>
             </div>
-          </div>
-          <i id="icon-acc-faq" data-lucide="chevron-down" class="w-4 h-4 text-red-400 transition-transform duration-300"></i>
-        </button>
-        <div id="acc-faq" class="accordion-content">
-          <div class="p-3 bg-dark-900/50 space-y-3 faq-scroll" style="max-height: 400px;">
-            
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Cómo se fijan los Respaldos Horizontales?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Se atornillan <strong>por detrás</strong>, desde los Respaldos Verticales (Pieza 1) hacia los horizontales (Pieza 2), usando tornillos de 4x30 para no traspasar la madera frontal. Hay que cuidar dejar un espacio de 50mm entre ambos tableros.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Por qué la Tapa del cajón mide 444mm?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  El ancho total del velador es de 450mm. Al fabricar la tapa (Pieza 7) en 444mm, se garantiza un juego perimetral de <strong>3mm a cada lado</strong>, evitando que roce al abrir o cerrar el cajón.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿La repisa baja va al ras del piso?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  No, se recomienda elevar la Repisa Baja (Pieza 9) unos <strong>10 a 15 cm</strong> del piso atornillándola entre los laterales. Esto facilita la limpieza debajo del mueble y la protege de la humedad del suelo.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿El velador va unido a la cabecera?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Sí. Para lograr mayor estabilidad, el Lateral Interior del cajonero (Pieza 3) debe ser atornillado firmemente contra el Respaldo Vertical (Pieza 1) conformando un solo bloque estructural.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Dónde aplico el Tapacanto 'G' en el Techo?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Según la tabla, el Techo del Cajonero (Pieza 4) lleva canto grueso (G) en <strong>sus 4 lados</strong> (L1, L2, A1, A2). Esto le brinda máxima protección y estética, ya que funciona como la cubierta principal donde apoyarás objetos.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Para qué sirven las ranuras (D:18, E:4, P:8)?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Son las instrucciones para hacer el canal con sierra o router por donde se desliza el Fondo de MDF de 3mm. Se hace a 18mm del borde inferior, con 4mm de ancho y 8mm de profundidad.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Qué tipo de correderas uso para los cajones?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  Se recomiendan correderas telescópicas pesadas o livianas de <strong>350mm</strong>. Permiten la extracción total del cajón y soportan mejor el peso diario que las correderas simples con ruedas.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Debo fijar todo a la pared?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  No es estrictamente obligatorio si la cama presiona la estructura, pero para máxima seguridad y rigidez, se aconseja atornillar el Respaldo Vertical (Pieza 1) directamente al muro.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Es necesario encolar las uniones?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  No. En carpintería de melamina no se utiliza pegamento o cola sintética en los ensambles ya que no penetra el material plastificado. Los tornillos de 4x50 aseguran la estructura perfectamente.
-                </p>
-              </div>
-            </details>
-
-            <details class="group relative">
-              <summary class="flex items-center justify-between p-2.5 bg-dark-800 border border-slate-700 rounded cursor-pointer text-xs font-bold text-gold-400 hover:bg-dark-700 transition-colors outline-none">
-                ¿Se puede invertir la combinación de colores?
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-silver-400 transition-transform group-open:rotate-180"></i>
-              </summary>
-              <div class="chat-bubble relative mt-2 ml-2 mr-2 p-3 bg-dark-900 rounded-lg rounded-tl-none shadow-sm border border-slate-700">
-                <p class="text-[11.5px] font-medium text-silver-300 leading-relaxed">
-                  ¡Totalmente! Un excelente contraste es usar tono madera para los veladores y un tono sólido oscuro (como grafito o plomo) para los respaldos. Solo asegúrate de respetar las medidas.
-                </p>
-              </div>
-            </details>
-            
           </div>
         </div>
       </div>
@@ -619,12 +603,196 @@
   </main>
 
   <script>
+    let currentW = 2450;
+    let currentH = 950; 
+    let currentD = 400;
+    let currentE = 18;  
+    
+    let isCM = false; 
+    let partsData = {};
+
+    function formatUnit(val, raw = false) {
+      if(isCM) {
+        const res = (val / 10).toFixed(val % 10 !== 0 ? 1 : 0);
+        return raw ? res : res + " cm";
+      }
+      return raw ? val : val + " mm";
+    }
+
+    function toggleCustomSelect(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const options = document.getElementById('custom-select-options');
+      const icon = document.getElementById('custom-select-icon');
+      const isHidden = options.classList.contains('hidden');
+      
+      if(isHidden) {
+          options.classList.remove('hidden');
+          icon.style.transform = 'rotate(180deg)';
+      } else {
+          options.classList.add('hidden');
+          icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function selectCustomOption(val, e) {
+      e.stopPropagation();
+      
+      document.querySelectorAll('.custom-option').forEach(opt => {
+          if (parseFloat(opt.getAttribute('data-mm')) === val) {
+              opt.classList.add('bg-gold-500/10', 'text-gold-400', 'font-bold');
+              opt.classList.remove('text-white');
+          } else {
+              opt.classList.remove('bg-gold-500/10', 'text-gold-400', 'font-bold');
+              opt.classList.add('text-white');
+          }
+      });
+
+      const inputVal = isCM ? val / 10 : val;
+      document.getElementById('calc-e').value = inputVal;
+      document.getElementById('custom-select-text').innerText = isCM ? (val / 10) + " cm" : val + " mm";
+      
+      document.getElementById('custom-select-options').classList.add('hidden');
+      document.getElementById('custom-select-icon').style.transform = 'rotate(0deg)';
+      
+      startRecalculate();
+    }
+
+    function updateAllUnitsUI() {
+        const u = isCM ? "cm" : "mm";
+        const U_UPPER = isCM ? "CM" : "MM";
+        const f = (val) => formatUnit(val);
+
+        document.getElementById('lbl-unit-w').innerText = `(${u})`;
+        document.getElementById('lbl-unit-h').innerText = `(${u})`;
+        document.getElementById('lbl-unit-d').innerText = `(${u})`;
+        const tablaUnit = document.getElementById('ui-tabla-unidad');
+        if(tablaUnit) tablaUnit.innerText = `(${U_UPPER})`;
+
+        const wInput = document.getElementById('calc-w');
+        const hInput = document.getElementById('calc-h');
+        const dInput = document.getElementById('calc-d');
+        wInput.value = isCM ? currentW / 10 : currentW;
+        hInput.value = isCM ? currentH / 10 : currentH;
+        dInput.value = isCM ? currentD / 10 : currentD;
+
+        // Custom Dropdown Update
+        const eInput = document.getElementById('calc-e');
+        document.querySelectorAll('.custom-option').forEach(opt => {
+            let baseVal = parseFloat(opt.getAttribute('data-mm'));
+            opt.innerText = isCM ? (baseVal / 10) + " cm" : baseVal + " mm";
+        });
+        eInput.value = isCM ? currentE / 10 : currentE;
+        document.getElementById('custom-select-text').innerText = isCM ? (currentE / 10) + " cm" : currentE + " mm";
+
+        // Materiales y Ranuras UI
+        document.getElementById('ui-mat-mdf').innerText = f(3);
+        document.getElementById('ui-mat-mel1').innerText = f(currentE);
+        document.getElementById('ui-mat-mel2').innerText = f(currentE);
+
+        document.getElementById('ui-ran-d').innerText = "= " + f(currentE);
+        document.getElementById('ui-ran-e').innerText = "= " + f(4);
+        document.getElementById('ui-ran-p').innerText = "= " + f(8);
+        
+        let runner = Math.floor((currentD - 30) / 50) * 50;
+        if (runner < 250) runner = 250;
+        if (runner > 600) runner = 600;
+        document.getElementById('ui-acc-runner').innerText = "Largo " + f(runner);
+
+        document.getElementById('ui-tornillo50-name').innerText = isCM ? "0.4 x 5 cm" : "4 x 50 mm";
+        document.getElementById('ui-tornillo30-name').innerText = isCM ? "0.4 x 3 cm" : "4 x 30 mm";
+    }
+
+    function toggleUnit() {
+      isCM = !isCM;
+      document.getElementById('text-unit').innerText = isCM ? 'CM' : 'MM';
+      
+      updateAllUnitsUI();
+      buildDespieceTableUI(); 
+
+      const partId = document.getElementById('info-id-badge').innerText;
+      if (partId && partsData[partId] && document.getElementById('part-info-card').classList.contains('info-card-visible')) {
+          const data = partsData[partId];
+          document.getElementById('info-l').innerText = formatUnit(data.l);
+          document.getElementById('info-a').innerText = formatUnit(data.a);
+          document.getElementById('info-e').innerText = formatUnit(data.esp); 
+      }
+    }
+
+    function resetDefaultDimensions() {
+      currentW = 2450;
+      currentH = 950;
+      currentD = 400;
+      currentE = 18;
+      
+      updateAllUnitsUI();
+      startRecalculate(true);
+    }
+
+    // Adaptación Paramétrica (Cabecera Modular Dúo)
+    function generatePartsData(w, h, d, e) {
+       const sw = w / 2450;
+       const sh = h / 950;
+       const sd = d / 400;
+
+       let runner = Math.floor((d - 30) / 50) * 50;
+       if (runner < 250) runner = 250;
+       if (runner > 600) runner = 600;
+
+       const veladorW = Math.round(450 * sw);
+       const intW = veladorW - (2 * e); // 414 interno
+       const cajonW = intW - 26; // 388 (juego de 13mm corredera por lado)
+       const frenteCajon = cajonW - (2 * e); // 352
+       const fondoW = cajonW - 24; // 364
+       
+       return {
+         1: { id: 1, name: "RESPALDO VERTICAL", l: h, a: Math.round(550 * sw), cant: 2, esp: e,
+              tap: { L1: 'G', L2: 'G', A1: 'G', A2: 'D' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         2: { id: 2, name: "RESPALDO HORIZONTAL", l: Math.round(1500 * sw), a: Math.round(250 * sh), cant: 2, esp: e,
+              tap: { L1: 'G', L2: 'G', A1: 'G', A2: 'G' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         3: { id: 3, name: "LATERAL CAJONERO", l: Math.round(482 * sh), a: d, cant: 4, esp: e,
+              tap: { L1: 'D', L2: '', A1: '', A2: '' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         4: { id: 4, name: "TECHO CAJONERO", l: veladorW, a: d, cant: 2, esp: e,
+              tap: { L1: 'G', L2: 'G', A1: 'G', A2: 'G' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         5: { id: 5, name: "LATERAL DE CAJON", l: runner, a: Math.round(100 * sh), cant: 4, esp: e,
+              tap: { L1: 'D', L2: '', A1: '', A2: '' }, ran: { d: formatUnit(e, true), e: formatUnit(4, true), p: formatUnit(8, true), pos: 'L2' }, isMDF: false },
+         6: { id: 6, name: "FRENTE DE CAJON", l: frenteCajon, a: Math.round(100 * sh), cant: 4, esp: e,
+              tap: { L1: 'D', L2: '', A1: '', A2: '' }, ran: { d: formatUnit(e, true), e: formatUnit(4, true), p: formatUnit(8, true), pos: 'L2' }, isMDF: false },
+         7: { id: 7, name: "TAPA DE CAJON", l: Math.round(444 * sw), a: Math.round(144 * sh), cant: 2, esp: e,
+              tap: { L1: 'G', L2: 'G', A1: 'G', A2: 'G' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         8: { id: 8, name: "FONDO DE CAJON", l: fondoW, a: runner + 16, cant: 2, esp: 3,
+              tap: { L1: '', L2: '', A1: '', A2: '' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: true },
+         9: { id: 9, name: "REPISA BAJA", l: intW, a: Math.round(d - 20), cant: 2, esp: e,
+              tap: { L1: 'D', L2: '', A1: '', A2: '' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false }
+       };
+    }
+
+    let scene, camera, renderer, controls;
+    let headboardGroup;
+    let isExploded = false;
+    let targetLookAt = new THREE.Vector3(0, 0.5, 0); 
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+
     window.onload = function() {
       lucide.createIcons();
+      updateAllUnitsUI(); 
+      partsData = generatePartsData(currentW, currentH, currentD, currentE);
       buildPartsListUI();
-      buildPasosListUI();
+      buildDespieceTableUI();
       init3D();
       initScrollAnimations();
+
+      document.addEventListener('pointerdown', (e) => {
+        const customSel = document.getElementById('custom-select-container');
+        if (customSel && !customSel.contains(e.target)) {
+            const opts = document.getElementById('custom-select-options');
+            if(opts && !opts.classList.contains('hidden')) {
+                opts.classList.add('hidden');
+                document.getElementById('custom-select-icon').style.transform = 'rotate(0deg)';
+            }
+        }
+      });
     };
 
     function initScrollAnimations() {
@@ -645,26 +813,6 @@
         observer.observe(el);
       });
     }
-
-    function initRating() {
-      const container = document.getElementById('stars-container');
-      const ratingText = document.getElementById('rating-text');
-      const score = 4.8;
-      if(ratingText) ratingText.textContent = `${score} / 5`;
-      if(container) {
-          container.innerHTML = '';
-          const fullStars = Math.floor(score);
-          const hasHalf = (score - fullStars) >= 0.5;
-          for (let i = 1; i <= 5; i++) {
-            const star = document.createElement('i');
-            if (i <= fullStars) star.className = 'fa-solid fa-star';
-            else if (i === fullStars + 1 && hasHalf) star.className = 'fa-solid fa-star-half-stroke';
-            else star.className = 'fa-regular fa-star';
-            container.appendChild(star);
-          }
-      }
-    }
-    window.addEventListener('DOMContentLoaded', initRating);
 
     function toggleAccordion(id) {
       const targetContent = document.getElementById(id);
@@ -689,48 +837,71 @@
       }
     }
 
-    const partsData = {
-      1: { id: 1, name: "RESPALDO VERTICAL", l: 950, a: 550, cant: 2, tap: "G G G D", esp: 18 },
-      2: { id: 2, name: "RESPALDO HORIZONTAL", l: 1350, a: 250, cant: 2, tap: "G G G G", esp: 18 },
-      3: { id: 3, name: "LATERAL CAJONERO", l: 482, a: 400, cant: 4, tap: "D - - -", esp: 18 },
-      4: { id: 4, name: "TECHO CAJONERO", l: 450, a: 400, cant: 2, tap: "G G G G", esp: 18 },
-      5: { id: 5, name: "LATERAL DE CAJON", l: 350, a: 100, cant: 4, tap: "D - - - (R: 18x4)", esp: 18 },
-      6: { id: 6, name: "FRENTE DE CAJON", l: 352, a: 100, cant: 4, tap: "D - - - (R: 18x4)", esp: 18 },
-      7: { id: 7, name: "TAPA DE CAJON", l: 444, a: 144, cant: 2, tap: "G G G G", esp: 18 },
-      8: { id: 8, name: "FONDO DE CAJON", l: 328, a: 366, cant: 2, tap: "MDF 3mm", esp: 3 },
-      9: { id: 9, name: "REPISA BAJA", l: 414, a: 380, cant: 2, tap: "D - - -", esp: 18 }
-    };
-
-    const assemblySteps = [
-      { id: 1, name: "Paso 1: Respaldos Verticales", parts: [1] },
-      { id: 2, name: "Paso 2: Respaldos Horizontales", parts: [2] },
-      { id: 3, name: "Paso 3: Laterales del Velador", parts: [3] },
-      { id: 4, name: "Paso 4: Repisa Baja", parts: [9] },
-      { id: 5, name: "Paso 5: Techo de Velador", parts: [4] },
-      { id: 6, name: "Paso 6: Estructura del Cajón", parts: [5, 6] },
-      { id: 7, name: "Paso 7: Fondo de Cajón", parts: [8] },
-      { id: 8, name: "Paso 8: Tapa Exterior de Cajón", parts: [7] },
-      { id: 9, name: "Paso 9: Accesorios y Tiradores", parts: [0] }
-    ];
-    
-    let currentStep = -1;
-    let scene, camera, renderer, controls;
-    let headboardGroup;
-    let isExploded = false;
-    let targetLookAt = new THREE.Vector3(0, 0.5, 0); 
-    let raycaster = new THREE.Raycaster();
-    let mouse = new THREE.Vector2();
-
     function togglePartsList() {
       const panel = document.getElementById('parts-list-panel');
-      document.getElementById('pasos-list-panel').classList.remove('list-panel-open');
+      document.getElementById('calc-panel').classList.remove('list-panel-open');
       panel.classList.toggle('list-panel-open');
     }
 
-    function togglePasosList() {
-      const panel = document.getElementById('pasos-list-panel');
+    function toggleCalculator() {
+      const panel = document.getElementById('calc-panel');
       document.getElementById('parts-list-panel').classList.remove('list-panel-open');
       panel.classList.toggle('list-panel-open');
+    }
+
+    function startRecalculate(isReset = false) {
+      let w = parseFloat(document.getElementById('calc-w').value);
+      let h = parseFloat(document.getElementById('calc-h').value);
+      let d = parseFloat(document.getElementById('calc-d').value);
+      let e = parseFloat(document.getElementById('calc-e').value);
+
+      if(isCM) { w *= 10; h *= 10; d *= 10; e *= 10; }
+
+      const errorEl = document.getElementById('calc-error');
+      if(w < 1500 || h < 600 || d < 300) {
+         errorEl.classList.remove('hidden');
+         return;
+      }
+      errorEl.classList.add('hidden');
+
+      document.getElementById('btn-recalc').classList.add('hidden');
+      document.getElementById('btn-reset-calc').classList.add('hidden');
+      const loader = document.getElementById('loading-container');
+      const bar = document.getElementById('loading-bar');
+      
+      loader.classList.remove('hidden');
+      loader.classList.add('flex');
+      
+      setTimeout(() => { bar.style.width = '100%'; }, 50);
+
+      setTimeout(() => {
+          applyCustomDimensions(w, h, d, e);
+          
+          document.getElementById('btn-recalc').classList.remove('hidden');
+          document.getElementById('btn-reset-calc').classList.remove('hidden');
+          loader.classList.add('hidden');
+          loader.classList.remove('flex');
+          bar.style.width = '0%';
+          if(!isReset) document.getElementById('calc-panel').classList.remove('list-panel-open');
+      }, 1200);
+    }
+
+    function applyCustomDimensions(w, h, d, e) {
+      currentW = w;
+      currentH = h;
+      currentD = d;
+      currentE = e;
+
+      updateAllUnitsUI(); 
+      partsData = generatePartsData(w, h, d, e);
+      buildPartsListUI();
+      buildDespieceTableUI();
+      reset3DView();
+      
+      while(headboardGroup.children.length > 0){
+          headboardGroup.remove(headboardGroup.children[0]);
+      }
+      buildFurnitureModel();
     }
 
     function buildPartsListUI() {
@@ -738,24 +909,47 @@
       container.innerHTML = '';
       Object.values(partsData).forEach(part => {
         const btn = document.createElement('button');
-        btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group";
-        const badgeColor = part.id === 8 ? "bg-amber-500 text-dark-900" : "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
-        const textColor = part.id === 8 ? "text-amber-400" : "text-silver-300 group-hover:text-gold-300";
+        btn.className = "inline-flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group mb-1.5 break-inside-avoid";
+        const badgeColor = part.isMDF ? "bg-amber-500 text-dark-900" : "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
+        const textColor = part.isMDF ? "text-amber-400" : "text-silver-300 group-hover:text-gold-300";
         btn.innerHTML = `<span class="w-5 h-5 shrink-0 rounded flex items-center justify-center text-[10px] font-black transition-colors ${badgeColor}">${part.id}</span><span class="text-[11px] font-bold truncate ${textColor}">${part.name}</span>`;
         btn.onclick = () => selectPartFromList(part.id);
         container.appendChild(btn);
       });
     }
 
-    function buildPasosListUI() {
-      const container = document.getElementById('pasos-list-container');
-      container.innerHTML = '';
-      assemblySteps.forEach((step, idx) => {
-        const btn = document.createElement('button');
-        btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 text-silver-300 font-bold text-[10px] transition-colors";
-        btn.innerHTML = `<span class="w-5 h-5 rounded bg-dark-700 text-gold-400 flex justify-center items-center shrink-0 border border-gold-500/30">${step.id}</span> ${step.name}`;
-        btn.onclick = () => playStep(idx);
-        container.appendChild(btn);
+    function buildDespieceTableUI() {
+      const tbody = document.getElementById('despiece-table-body');
+      tbody.innerHTML = '';
+      
+      Object.values(partsData).forEach(part => {
+        const tr = document.createElement('tr');
+        tr.id = `row-part-${part.id}`;
+        tr.dataset.mdf = part.isMDF;
+        
+        const baseClass = part.isMDF 
+          ? 'bg-gold-500/10 text-gold-300' 
+          : 'hover:bg-dark-700/50 text-slate-200';
+          
+        tr.className = `cursor-pointer transition-colors row-part-item ${baseClass}`;
+        tr.onclick = () => selectPartFromList(part.id);
+        
+        tr.innerHTML = `
+          <td class="border border-slate-700 p-2 font-black text-gold-500 text-xs">${part.id}</td>
+          <td class="border border-slate-700 p-2 text-left font-bold text-[11px]">${part.name}</td>
+          <td class="border border-slate-700 p-2 font-mono">${formatUnit(part.l, true)}</td>
+          <td class="border border-slate-700 p-2 font-mono">${formatUnit(part.a, true)}</td>
+          <td class="border border-slate-700 p-2 font-bold">${part.cant}</td>
+          <td class="border border-slate-700 p-1.5 text-blue-300">${part.tap.L1}</td>
+          <td class="border border-slate-700 p-1.5 text-blue-300">${part.tap.L2}</td>
+          <td class="border border-slate-700 p-1.5 text-blue-300">${part.tap.A1}</td>
+          <td class="border border-slate-700 p-1.5 text-blue-300">${part.tap.A2}</td>
+          <td class="border border-slate-700 p-1.5 text-amber-300 font-mono">${part.ran.d}</td>
+          <td class="border border-slate-700 p-1.5 text-amber-300 font-mono">${part.ran.e}</td>
+          <td class="border border-slate-700 p-1.5 text-amber-300 font-mono">${part.ran.p}</td>
+          <td class="border border-slate-700 p-1.5 text-amber-300 font-mono">${part.ran.pos}</td>
+        `;
+        tbody.appendChild(tr);
       });
     }
 
@@ -779,39 +973,6 @@
       }
     }
 
-    function playStep(stepIndex) {
-      currentStep = stepIndex;
-      if (isExploded) toggleExplodedView(); 
-      document.getElementById('pasos-list-panel').classList.remove('list-panel-open');
-      resetSelection();
-
-      const partsToShow = [];
-      const partsToAnimate = [];
-
-      for(let i = 0; i <= stepIndex; i++) {
-        if(i === stepIndex) partsToAnimate.push(...assemblySteps[i].parts);
-        else partsToShow.push(...assemblySteps[i].parts);
-      }
-
-      headboardGroup.traverse((child) => {
-        if (child.isMesh && child.userData.origPos) {
-          const pid = child.userData.partId;
-          if (partsToAnimate.includes(pid)) {
-            child.visible = true;
-            child.position.set(child.userData.origPos.x, child.userData.origPos.y + 1.5, child.userData.origPos.z);
-            child.userData.animTarget = child.userData.origPos.clone();
-          } else if (partsToShow.includes(pid)) {
-            child.visible = true;
-            child.position.copy(child.userData.origPos);
-            child.userData.animTarget = null;
-          } else {
-            child.visible = false;
-            child.userData.animTarget = null;
-          }
-        }
-      });
-    }
-
     function init3D() {
       const container = document.getElementById('canvas-container');
       const width = container.clientWidth;
@@ -823,7 +984,7 @@
       camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
       camera.position.set(0, 1.8, 5.5);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.shadowMap.enabled = true;
@@ -835,14 +996,16 @@
       controls.dampingFactor = 0.05;
       controls.maxPolarAngle = Math.PI / 2 + 0.05;
       controls.minDistance = 1.0;
-      controls.maxDistance = 10;
+      controls.maxDistance = 10.0;
       controls.target.set(0, 0.5, 0);
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
       scene.add(ambientLight);
-      const dirLight = new THREE.DirectionalLight(0xfff5e6, 1.2);
+      const dirLight = new THREE.DirectionalLight(0xfff5e6, 1.0);
       dirLight.position.set(3, 5, 4);
       dirLight.castShadow = true;
+      dirLight.shadow.mapSize.width = 1024;
+      dirLight.shadow.mapSize.height = 1024;
       scene.add(dirLight);
 
       const gridHelper = new THREE.GridHelper(6, 20, 0xd4af37, 0x222633);
@@ -858,14 +1021,35 @@
     }
 
     function setupMobileInteraction(container) {
+      ['calc-panel', 'parts-list-panel', 'part-info-card'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('pointerdown', e => {
+              const customSel = document.getElementById('custom-select-container');
+              if (customSel && !customSel.contains(e.target)) {
+                  document.getElementById('custom-select-options').classList.add('hidden');
+                  const icon = document.getElementById('custom-select-icon');
+                  if(icon) icon.style.transform = 'rotate(0deg)';
+              }
+              e.stopPropagation();
+          });
+          el.addEventListener('pointermove', e => e.stopPropagation());
+          el.addEventListener('pointerup', e => e.stopPropagation());
+          el.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
+          el.addEventListener('touchmove', e => e.stopPropagation(), { passive: true });
+          el.addEventListener('wheel', e => e.stopPropagation(), { passive: true }); 
+        }
+      });
+
       let pressTimer;
       let isPressing = false;
 
       container.addEventListener('pointerdown', (e) => {
         const partsPanel = document.getElementById('parts-list-panel');
-        const pasosPanel = document.getElementById('pasos-list-panel');
+        const calcPanel = document.getElementById('calc-panel');
+        
         if(partsPanel.classList.contains('list-panel-open') && e.clientY > 100) partsPanel.classList.remove('list-panel-open');
-        if(pasosPanel.classList.contains('list-panel-open') && e.clientY > 100) pasosPanel.classList.remove('list-panel-open');
+        if(calcPanel.classList.contains('list-panel-open') && e.clientY > 100) calcPanel.classList.remove('list-panel-open');
 
         isPressing = true;
         const rect = renderer.domElement.getBoundingClientRect();
@@ -877,7 +1061,10 @@
         }, 500); 
       });
 
-      container.addEventListener('pointermove', () => { isPressing = false; clearTimeout(pressTimer); });
+      container.addEventListener('pointermove', () => {
+        isPressing = false;
+        clearTimeout(pressTimer);
+      });
       container.addEventListener('pointerup', () => { isPressing = false; clearTimeout(pressTimer); });
       container.addEventListener('pointercancel', () => { isPressing = false; clearTimeout(pressTimer); });
     }
@@ -886,17 +1073,21 @@
       raycaster.setFromCamera(mouse, camera);
       const intersects = raycaster.intersectObjects(headboardGroup.children, true);
       if (intersects.length > 0) {
-        const object = intersects[0].object;
+        let object = intersects[0].object;
+        if(object.userData.partId === 0) {
+            headboardGroup.traverse((c) => { if(c.userData.partId === 7) object = c; }); 
+        }
         const partId = object.userData.partId;
         if(partId && partId > 0 && object.visible) selectPart(partId, object);
       }
     }
 
     function buildFurnitureModel() {
-      headboardGroup = new THREE.Group();
-      scene.add(headboardGroup);
+      if(!headboardGroup){
+          headboardGroup = new THREE.Group();
+          scene.add(headboardGroup);
+      }
 
-      // Materiales fieles al diseño
       const melaminaGrisMat = new THREE.MeshStandardMaterial({ color: 0x6e6e6e, roughness: 0.6 });
       const melaminaMaderaMat = new THREE.MeshStandardMaterial({ color: 0xd2b48c, roughness: 0.5 });
       const mdfMat = new THREE.MeshStandardMaterial({ color: 0xeedda5 });
@@ -912,84 +1103,124 @@
         return mesh;
       }
 
-      // Constantes de dimensiones base (metros)
-      const esp = 0.018; // espesor melamina 18mm
-      const gapFront = 0.009; // mitad del espesor para alinear
+      const e = currentE / 1000;
+      const wM = currentW / 1000;
+      const hM = currentH / 1000;
+      const dM = currentD / 1000;
+      
+      const sw = wM / 2.450;
+      const sh = hM / 0.950;
+      const sd = dM / 0.400;
 
-      // 1. RESPALDOS VERTICALES (Grises, atras, a piso)
-      // Ancho 550, Alto 950. Cama 1350 libre.
-      const posXV1 = -0.675 - (0.55/2); // -0.95
-      const posXV2 =  0.675 + (0.55/2); //  0.95
-      headboardGroup.add(createBox(0.55, 0.95, esp, posXV1, 0.95/2, -gapFront, melaminaGrisMat, 1));
-      headboardGroup.add(createBox(0.55, 0.95, esp, posXV2, 0.95/2, -gapFront, melaminaGrisMat, 1));
+      const gapFront = 0.009; 
 
-      // 2. RESPALDOS HORIZONTALES (Madera, frente a las verticales)
-      // Se ajusta el ancho a 1.50m para que monte y sobrepase ligeramente las piezas verticales traseras
-      headboardGroup.add(createBox(1.50, 0.25, esp, 0, 0.925, gapFront, melaminaMaderaMat, 2));
-      headboardGroup.add(createBox(1.50, 0.25, esp, 0, 0.625, gapFront, melaminaMaderaMat, 2));
+      // 1. RESPALDOS VERTICALES (Grises, atras)
+      const respW = 0.550 * sw;
+      const distCenter = (1.90 * sw) / 2; // +/- 0.95
+      headboardGroup.add(createBox(respW, hM, e, -distCenter, hM/2, -e/2, melaminaGrisMat, 1));
+      headboardGroup.add(createBox(respW, hM, e, distCenter, hM/2, -e/2, melaminaGrisMat, 1));
 
-      // Función para armar velador (Cajonero)
+      // 2. RESPALDOS HORIZONTALES (Madera)
+      const horizW = 1.50 * sw;
+      const horizH = 0.25 * sh;
+      headboardGroup.add(createBox(horizW, horizH, e, 0, 0.925 * sh, e/2, melaminaMaderaMat, 2));
+      headboardGroup.add(createBox(horizW, horizH, e, 0, 0.625 * sh, e/2, melaminaMaderaMat, 2));
+
       function buildNightstand(xBase, sign) {
         const group = new THREE.Group();
         
-        // 3. LATERAL CAJONERO (482x400)
-        const lateralX1 = xBase - sign*(0.45/2 - 0.009);
-        const lateralX2 = xBase + sign*(0.45/2 - 0.009);
-        group.add(createBox(esp, 0.482, 0.40, lateralX1, 0.482/2, 0.20, melaminaGrisMat, 3));
-        group.add(createBox(esp, 0.482, 0.40, lateralX2, 0.482/2, 0.20, melaminaGrisMat, 3));
+        const veladorW = 0.45 * sw;
+        const intW = veladorW - 2*e;
+        const latH = 0.482 * sh;
         
-        // 4. TECHO CAJONERO (450x400)
-        group.add(createBox(0.45, esp, 0.40, xBase, 0.491, 0.20, melaminaGrisMat, 4));
-
-        // 9. REPISA BAJA (414x380)
-        group.add(createBox(0.414, esp, 0.38, xBase, 0.15, 0.21, melaminaGrisMat, 9));
-
-        // 7. TAPA DE CAJON (444x144)
-        const tapaY = 0.482 - (0.144/2) - 0.002;
-        group.add(createBox(0.444, 0.144, esp, xBase, tapaY, 0.409, melaminaGrisMat, 7));
+        // 3. LATERAL CAJONERO
+        const latX1 = xBase - sign*(veladorW/2 - e/2);
+        const latX2 = xBase + sign*(veladorW/2 - e/2);
+        group.add(createBox(e, latH, dM, latX1, latH/2, dM/2 + e, melaminaGrisMat, 3));
+        group.add(createBox(e, latH, dM, latX2, latH/2, dM/2 + e, melaminaGrisMat, 3));
         
-        // Jalador (Accesorio Visual)
-        group.add(createBox(0.12, 0.015, 0.02, xBase, tapaY, 0.425, metalMat, 0));
+        // 4. TECHO CAJONERO
+        group.add(createBox(veladorW, e, dM, xBase, latH + e/2, dM/2 + e, melaminaGrisMat, 4));
+
+        // 9. REPISA BAJA
+        const repD = dM - 0.02;
+        group.add(createBox(intW, e, repD, xBase, 0.15 * sh, dM/2 + e - 0.01, melaminaGrisMat, 9));
+
+        // 7. TAPA DE CAJON
+        const tapaY = latH - (0.144 * sh)/2 - 0.002;
+        group.add(createBox(veladorW - 0.006, 0.144 * sh, e, xBase, tapaY, dM + e + e/2, melaminaGrisMat, 7));
+        
+        // Jalador
+        group.add(createBox(0.12 * sw, 0.015 * sh, 0.02 * sd, xBase, tapaY, dM + e + e/2 + 0.015, metalMat, 0));
 
         // CAJON INTERNO
-        const cX = xBase;
+        let runnerL = Math.floor((currentD - 30) / 50) * 50;
+        if(runnerL < 250) runnerL = 250;
+        if(runnerL > 600) runnerL = 600;
+        const runnerM = runnerL / 1000;
+
+        const cajonW = intW - 0.026;
+        const frenteCajon = cajonW - 2*e;
+
         const cY = tapaY;
-        const cZ = 0.40 - esp - (0.35/2);
+        const cZ = dM + e - runnerM/2;
 
-        // 5. LATERAL DE CAJON (350x100)
-        const cajLatXL = cX - (0.352/2 + 0.009);
-        const cajLatXR = cX + (0.352/2 + 0.009);
-        group.add(createBox(esp, 0.10, 0.35, cajLatXL, cY, cZ, melaminaGrisMat, 5));
-        group.add(createBox(esp, 0.10, 0.35, cajLatXR, cY, cZ, melaminaGrisMat, 5));
+        // 5. LATERAL DE CAJON
+        const cajLatXL = xBase - cajonW/2 + e/2;
+        const cajLatXR = xBase + cajonW/2 - e/2;
+        group.add(createBox(e, 0.10 * sh, runnerM, cajLatXL, cY, cZ, melaminaGrisMat, 5));
+        group.add(createBox(e, 0.10 * sh, runnerM, cajLatXR, cY, cZ, melaminaGrisMat, 5));
 
-        // 6. FRENTE DE CAJON (352x100)
-        const cajFrenteZFront = 0.40 - esp - gapFront;
-        const cajFrenteZBack = 0.40 - esp - 0.35 + gapFront;
-        group.add(createBox(0.352, 0.10, esp, cX, cY, cajFrenteZFront, melaminaGrisMat, 6));
-        group.add(createBox(0.352, 0.10, esp, cX, cY, cajFrenteZBack, melaminaGrisMat, 6));
+        // 6. FRENTE DE CAJON
+        const cajFrenteZFront = dM + e - e/2;
+        const cajFrenteZBack = dM + e - runnerM + e/2;
+        group.add(createBox(frenteCajon, 0.10 * sh, e, xBase, cY, cajFrenteZFront, melaminaGrisMat, 6));
+        group.add(createBox(frenteCajon, 0.10 * sh, e, xBase, cY, cajFrenteZBack, melaminaGrisMat, 6));
 
-        // 8. FONDO DE CAJON (328x366 MDF 3mm)
-        group.add(createBox(0.366, 0.003, 0.328, cX, cY - 0.03, cZ, mdfMat, 8));
+        // 8. FONDO DE CAJON
+        group.add(createBox(cajonW - 0.024, 0.003, runnerM - 0.022, xBase, cY - 0.03, cZ, mdfMat, 8));
 
         return group;
       }
 
-      // Veladores alineados al ras del borde exterior del respaldo vertical (x = 1.00m)
-      const nightstandPos = 1.00;
-      headboardGroup.add(buildNightstand(-nightstandPos, -1)); // Izquierdo
-      headboardGroup.add(buildNightstand(nightstandPos, 1));   // Derecho
+      const nightstandPos = 1.00 * sw;
+      headboardGroup.add(buildNightstand(-nightstandPos, -1)); 
+      headboardGroup.add(buildNightstand(nightstandPos, 1));  
+    }
+
+    function updateTableRowHighlight(partId) {
+      document.querySelectorAll('.row-part-item').forEach(row => {
+          const isMDF = row.dataset.mdf === 'true';
+          row.className = `cursor-pointer transition-all duration-300 row-part-item ${isMDF ? 'bg-gold-500/10 text-gold-300' : 'hover:bg-dark-700/50 text-slate-200'}`;
+          
+          Array.from(row.children).forEach(td => {
+              td.className = td.className.replace('border-gold-500', 'border-slate-700');
+          });
+      });
+
+      if (partId) {
+          const selectedRow = document.getElementById(`row-part-${partId}`);
+          if (selectedRow) {
+              selectedRow.className = "cursor-pointer transition-all duration-300 row-part-item bg-gold-500/30 shadow-[inset_0_0_15px_rgba(212,175,55,0.25)]";
+              Array.from(selectedRow.children).forEach(td => {
+                  td.className = td.className.replace('border-slate-700', 'border-gold-500');
+              });
+          }
+      }
     }
 
     function selectPart(partId, clickedMesh) {
       headboardGroup.traverse((child) => {
         if (child.isMesh && child.userData.defaultMat && child.visible) {
-          if (child.userData.partId === partId) {
+          if (child.userData.partId === partId || (partId === 7 && child.userData.partId === 0)) { 
             child.material = new THREE.MeshStandardMaterial({ color: 0xffd700, emissive: 0x856404, roughness: 0.2 });
           } else {
-            child.material = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.40 });
+            child.material = new THREE.MeshStandardMaterial({ color: 0x333333, transparent: true, opacity: 0.30 });
           }
         }
       });
+
+      updateTableRowHighlight(partId);
 
       const data = partsData[partId];
       if (data) {
@@ -997,11 +1228,12 @@
         document.getElementById('info-name').innerText = data.name;
         document.getElementById('info-qty').innerText = "x" + data.cant;
         
-        document.getElementById('info-l').innerText = data.l + " mm";
-        document.getElementById('info-a').innerText = data.a + " mm";
-        document.getElementById('info-e').innerText = data.esp + " mm";
+        document.getElementById('info-l').innerText = formatUnit(data.l);
+        document.getElementById('info-a').innerText = formatUnit(data.a);
+        document.getElementById('info-e').innerText = formatUnit(data.esp);
         
-        document.getElementById('info-tap').innerText = data.tap;
+        // Tap sequence formatting
+        document.getElementById('info-tap').innerText = `${data.tap.L1} ${data.tap.L2} ${data.tap.A1} ${data.tap.A2}`;
         document.getElementById('part-info-card').classList.add('info-card-visible');
       }
 
@@ -1019,16 +1251,17 @@
           child.material.transparent = false;
         }
       });
+      
       document.getElementById('part-info-card').classList.remove('info-card-visible');
-      targetLookAt.set(0, 0.5, 0);
+      updateTableRowHighlight(null);
+      targetLookAt.set(0, 0.5, 0); 
     }
 
     function reset3DView() {
       resetSelection();
-      currentStep = -1;
       camera.position.set(0, 1.8, 5.5);
       document.getElementById('parts-list-panel').classList.remove('list-panel-open');
-      document.getElementById('pasos-list-panel').classList.remove('list-panel-open');
+      document.getElementById('calc-panel').classList.remove('list-panel-open');
       if (isExploded) toggleExplodedView();
 
       headboardGroup.traverse((child) => {
@@ -1049,7 +1282,7 @@
         headboardGroup.traverse((child) => {
           if (child.isMesh && child.userData.animTarget) {
             child.position.lerp(child.userData.animTarget, 0.12);
-            if (child.position.distanceTo(child.userData.animTarget) < 0.01) {
+            if (child.position.distanceTo(child.userData.animTarget) < 0.005) {
               child.position.copy(child.userData.animTarget);
               child.userData.animTarget = null;
             }
@@ -1072,14 +1305,17 @@
 
     function toggleExplodedView() {
       isExploded = !isExploded;
-      currentStep = -1;
       const btn = document.getElementById('btn-explode');
       btn.classList.toggle('bg-gold-500', isExploded);
       btn.classList.toggle('text-dark-900', isExploded);
+      
+      document.getElementById('text-explode').innerText = isExploded ? 'Armar' : 'Desarmar';
+      
       resetSelection();
 
       headboardGroup.traverse((child) => {
         if (child.isMesh && child.userData.origPos) {
+
           child.visible = true;
           child.userData.animTarget = null;
           
@@ -1087,11 +1323,13 @@
           if (isExploded) {
             const pId = child.userData.partId;
             let offset = new THREE.Vector3(0, 0, 0);
-            if (pId === 1) offset.set(0, 0, -0.2);
-            if (pId === 2) offset.set(0, 0.25, -0.3);
-            if (pId === 7 || pId === 6 || pId === 5 || pId === 8) offset.set(0, 0, 0.25);
-            if (pId === 4) offset.set(0, 0.1, 0);
-            if (pId === 9) offset.set(0, -0.1, 0);
+            
+            if (pId === 1) offset.set(0, 0, -0.2); 
+            if (pId === 2) offset.set(0, 0.25, -0.3); 
+            if (pId === 7 || pId === 6 || pId === 5 || pId === 8 || pId === 0) offset.set(0, 0, 0.35); 
+            if (pId === 4) offset.set(0, 0.1, 0); 
+            if (pId === 9) offset.set(0, -0.1, 0); 
+            
             child.position.set(orig.x + offset.x, orig.y + offset.y, orig.z + offset.z);
           } else {
             child.position.copy(orig);
