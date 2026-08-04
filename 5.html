@@ -50,20 +50,22 @@
 
     ::-webkit-scrollbar { display: none; }
 
-    /* Barra de desplazamiento personalizada (Para Tabla y Calculadora) */
+    /* Barra de desplazamiento personalizada para la Calculadora */
+    .calc-scroll {
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      touch-action: pan-y !important;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(212, 175, 55, 0.5) rgba(28, 31, 43, 0.5);
+    }
+    .calc-scroll::-webkit-scrollbar { display: block !important; width: 4px; }
+    .calc-scroll::-webkit-scrollbar-track { background: rgba(28, 31, 43, 0.7); border-radius: 4px; }
+    .calc-scroll::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 4px; }
+
     .show-scrollbar { scrollbar-width: thin; scrollbar-color: rgba(212, 175, 55, 0.5) rgba(28, 31, 43, 0.5); }
     .show-scrollbar::-webkit-scrollbar { display: block !important; height: 8px; width: 6px; }
     .show-scrollbar::-webkit-scrollbar-track { background: rgba(28, 31, 43, 0.7); border-radius: 4px; }
     .show-scrollbar::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 4px; }
-    .show-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.8); }
-
-    .faq-scroll {
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .faq-scroll::-webkit-scrollbar { display: none; }
 
     .accordion-content {
       max-height: 0;
@@ -266,28 +268,28 @@
                   <i data-lucide="sliders" class="w-4 h-4"></i> Ajustar
                 </button>
                 
-                <!-- Panel Calculadora -->
-                <div id="calc-panel" class="hidden flex-col gap-2.5 bg-dark-900/95 border border-gold-500/50 p-3 rounded-md shadow-2xl backdrop-blur-md w-[220px] max-h-[85%] overflow-y-auto show-scrollbar">
-                  <h3 class="text-[11px] font-bold text-gold-400 border-b border-slate-700 pb-1 uppercase tracking-wide shrink-0">Ajustar Medidas</h3>
+                <!-- Panel Calculadora (Reducido: Ancho -20% -> 176px, Alto -10% -> 75% max-h, Scroll Activo) -->
+                <div id="calc-panel" class="hidden flex-col gap-2 bg-dark-900/95 border border-gold-500/50 p-2.5 rounded-md shadow-2xl backdrop-blur-md w-[176px] max-h-[75%] calc-scroll">
+                  <h3 class="text-[10px] font-bold text-gold-400 border-b border-slate-700 pb-1 uppercase tracking-wide shrink-0">Ajustar Medidas</h3>
                   
-                  <div class="flex flex-col gap-1 shrink-0">
-                    <label class="text-[10px] text-silver-300 font-bold">Ancho <span id="lbl-unit-w">(mm)</span>:</label>
-                    <input type="number" id="calc-w" step="any" value="500" min="30" max="1500" class="bg-dark-800 border border-slate-600 rounded px-2 py-1.5 text-[11px] font-mono text-white outline-none focus:border-gold-500">
+                  <div class="flex flex-col gap-0.5 shrink-0">
+                    <label class="text-[9px] text-silver-300 font-bold">Ancho <span id="lbl-unit-w">(mm)</span>:</label>
+                    <input type="number" id="calc-w" step="any" value="500" min="30" max="1500" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
                   </div>
                   
-                  <div class="flex flex-col gap-1 shrink-0">
-                    <label class="text-[10px] text-silver-300 font-bold">Alto <span id="lbl-unit-h">(mm)</span>:</label>
-                    <input type="number" id="calc-h" step="any" value="650" min="35" max="1500" class="bg-dark-800 border border-slate-600 rounded px-2 py-1.5 text-[11px] font-mono text-white outline-none focus:border-gold-500">
+                  <div class="flex flex-col gap-0.5 shrink-0">
+                    <label class="text-[9px] text-silver-300 font-bold">Alto <span id="lbl-unit-h">(mm)</span>:</label>
+                    <input type="number" id="calc-h" step="any" value="650" min="35" max="1500" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
                   </div>
                   
-                  <div class="flex flex-col gap-1 shrink-0">
-                    <label class="text-[10px] text-silver-300 font-bold">Profundidad <span id="lbl-unit-d">(mm)</span>:</label>
-                    <input type="number" id="calc-d" step="any" value="450" min="25" max="1000" class="bg-dark-800 border border-slate-600 rounded px-2 py-1.5 text-[11px] font-mono text-white outline-none focus:border-gold-500">
+                  <div class="flex flex-col gap-0.5 shrink-0">
+                    <label class="text-[9px] text-silver-300 font-bold">Profundidad <span id="lbl-unit-d">(mm)</span>:</label>
+                    <input type="number" id="calc-d" step="any" value="450" min="25" max="1000" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
                   </div>
                   
-                  <div class="flex flex-col gap-1 shrink-0">
-                    <label class="text-[10px] text-silver-300 font-bold">Grosor de melamina:</label>
-                    <select id="calc-e" class="bg-dark-800 border border-slate-600 rounded px-2 py-1.5 text-[11px] text-white outline-none focus:border-gold-500">
+                  <div class="flex flex-col gap-0.5 shrink-0">
+                    <label class="text-[9px] text-silver-300 font-bold">Grosor de melamina:</label>
+                    <select id="calc-e" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] text-white outline-none focus:border-gold-500">
                       <option value="12" data-mm="12">12 mm</option>
                       <option value="15" data-mm="15">15 mm</option>
                       <option value="18" data-mm="18" selected>18 mm</option>
@@ -295,19 +297,19 @@
                     </select>
                   </div>
                   
-                  <span id="calc-error" class="text-[9px] text-red-400 hidden font-bold mt-1 shrink-0">¡Medidas muy pequeñas!</span>
+                  <span id="calc-error" class="text-[8px] text-red-400 hidden font-bold mt-0.5 shrink-0">¡Medidas muy pequeñas!</span>
                   
-                  <button id="btn-recalc" onclick="startRecalculate()" class="mt-1 shrink-0 bg-gradient-to-r from-gold-600 to-gold-400 hover:from-gold-500 hover:to-gold-300 text-dark-900 font-bold py-1.5 rounded text-[11px] transition-colors shadow-gold-glow">
+                  <button id="btn-recalc" onclick="startRecalculate()" class="mt-1 shrink-0 bg-gradient-to-r from-gold-600 to-gold-400 hover:from-gold-500 hover:to-gold-300 text-dark-900 font-bold py-1.5 rounded text-[10px] transition-colors shadow-gold-glow leading-tight">
                     RECALCULAR PROYECTO
                   </button>
                   
-                  <button id="btn-reset-calc" onclick="resetDefaultDimensions()" class="mt-1 shrink-0 bg-dark-800 hover:bg-dark-700 text-silver-300 border border-slate-600 font-bold py-1.5 rounded text-[9px] transition-colors shadow-sm">
+                  <button id="btn-reset-calc" onclick="resetDefaultDimensions()" class="mt-0.5 shrink-0 bg-dark-800 hover:bg-dark-700 text-silver-300 border border-slate-600 font-bold py-1 rounded text-[8px] transition-colors shadow-sm leading-tight">
                     RESTABLECER PREDETERMINADAS
                   </button>
 
                   <!-- Barra de carga -->
-                  <div id="loading-container" class="hidden flex-col gap-1.5 mt-1 mb-1 shrink-0">
-                    <span class="text-[9px] text-gold-400 font-bold text-center animate-pulse">Calculando Despiece...</span>
+                  <div id="loading-container" class="hidden flex-col gap-1 mt-1 mb-1 shrink-0">
+                    <span class="text-[8px] text-gold-400 font-bold text-center animate-pulse">Calculando...</span>
                     <div class="w-full h-1.5 bg-dark-800 rounded-full overflow-hidden border border-slate-700">
                       <div id="loading-bar" class="h-full bg-gradient-to-r from-gold-500 to-gold-300 w-0 transition-all duration-1000 ease-in-out"></div>
                     </div>
@@ -424,7 +426,7 @@
         </div>
       </div>
 
-      <!-- ACORDEÓN: ACCESORIOS (Estáticos) -->
+      <!-- ACORDEÓN: ACCESORIOS -->
       <div class="border border-gold-500/30 rounded-lg bg-dark-800/80 overflow-hidden shadow-sm animate-on-scroll" style="transition-delay: 50ms;">
         <button onclick="toggleAccordion('acc-accesorios')" class="w-full p-3 flex items-center justify-between bg-dark-800 border-b border-gold-500/20 text-left active:bg-dark-700 transition-colors">
           <div class="flex items-center gap-3">
@@ -581,7 +583,6 @@
   </main>
 
   <script>
-    // Variables paramétricas base del nuevo modelo
     let currentW = 500;
     let currentH = 650; 
     let currentD = 450;
@@ -666,9 +667,8 @@
       startRecalculate(true);
     }
 
-    // Adaptado estrictamente al nuevo plano provisto
     function generatePartsData(w, h, d, e) {
-       const baseW = w - (2 * e); // Ej: 500 - 36 = 464
+       const baseW = w - (2 * e);
        
        let runner = Math.floor((d - 30) / 50) * 50;
        if (runner < 200) runner = 200;
@@ -945,13 +945,16 @@
     }
 
     function setupMobileInteraction(container) {
+      // Ajuste de propagación de eventos para permitir el scroll natural dentro del panel sin interferir con OrbitControls
       ['calc-panel', 'parts-list-panel', 'part-info-card'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           el.addEventListener('pointerdown', e => e.stopPropagation());
           el.addEventListener('pointermove', e => e.stopPropagation());
           el.addEventListener('pointerup', e => e.stopPropagation());
-          el.addEventListener('wheel', e => e.stopPropagation()); 
+          el.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
+          el.addEventListener('touchmove', e => e.stopPropagation(), { passive: true });
+          el.addEventListener('wheel', e => e.stopPropagation(), { passive: true }); 
         }
       });
 
@@ -996,7 +999,6 @@
       }
     }
 
-    // Adaptado al nuevo modelo: sin patas, respaldar completo, Tapa de 494 superpuesta
     function buildFurnitureModel() {
       if(!headboardGroup){
           headboardGroup = new THREE.Group();
@@ -1022,45 +1024,36 @@
       const dTotal = currentD / 1000;
       const boxH = currentH / 1000;
 
-      // 1. LATERALES (a los lados, desde el suelo)
       const latX = wTotal/2 - e/2;
       headboardGroup.add(createBox(e, boxH, dTotal, -latX, boxH/2, 0, melaminaDarkWood, 1));
       headboardGroup.add(createBox(e, boxH, dTotal,  latX, boxH/2, 0, melaminaDarkWood, 1));
 
-      // 2. RESPALDO (Atrás, cubre todo el fondo, entre los laterales)
       const baseW = wTotal - (2 * e);
       const respZ = -dTotal/2 + e/2;
       headboardGroup.add(createBox(baseW, boxH, e, 0, boxH/2, respZ, melaminaDarkWood, 2));
 
-      // 3. BASES / REPISAS (2 unidades)
-      // Ajuste visual basado en la imagen: cajón abajo, estante arriba.
-      // Inferior a 0.100 m del suelo. Superior justo encima del cajón.
       const baseD = dTotal - 0.069; 
-      const baseZ = dTotal/2 - baseD/2; // Alineadas al frente
+      const baseZ = dTotal/2 - baseD/2; 
       
-      const baseYLower = 0.050; // Zócalo visual para que la tapa encaje
+      const baseYLower = 0.050; 
       headboardGroup.add(createBox(baseW, e, baseD, 0, baseYLower, baseZ, melaminaDarkWood, 3));
       
-      const baseYUpper = baseYLower + 0.164 + e; // Encima de la Tapa del cajón
+      const baseYUpper = baseYLower + 0.164 + e; 
       headboardGroup.add(createBox(baseW, e, baseD, 0, baseYUpper, baseZ, melaminaDarkWood, 3));
 
-      // 4. REPISA 2 (Superior, 250mm de profundidad)
       const repisaD = 0.250;
       const repisaY = 0.550 - e/2; 
-      const repisaZ = respZ + e/2 + repisaD/2; // Pegada al respaldo
+      const repisaZ = respZ + e/2 + repisaD/2; 
       headboardGroup.add(createBox(baseW, e, repisaD, 0, repisaY, repisaZ, melaminaDarkWood, 4));
 
-      // CAJON (5, 6, 7, 8)
       const cajonGroup = new THREE.Group();
       
-      // 7. TAPA DE CAJON (Overlay, sale un poco del perfil general según medida 494)
       const tapaH = 0.164; 
       const tapaW = wTotal - 0.006;
       const tapaY = baseYLower + e/2 + tapaH/2 + 0.002;
-      const tapaZ = dTotal/2 + e/2; // Superpuesta al lateral
+      const tapaZ = dTotal/2 + e/2; 
       cajonGroup.add(createBox(tapaW, tapaH, e, 0, tapaY, tapaZ, melaminaDarkWood, 7));
 
-      // Jalador (Referencia 0 para click)
       const handleGeo = new THREE.CylinderGeometry(0.015, 0.015, 0.01, 32);
       const handleMesh = new THREE.Mesh(handleGeo, metalMat);
       handleMesh.rotation.x = Math.PI / 2;
@@ -1068,28 +1061,24 @@
       handleMesh.userData = { partId: 0, origPos: handleMesh.position.clone(), defaultMat: metalMat, animTarget: null };
       cajonGroup.add(handleMesh);
 
-      // Armado Interno Cajón
       let runnerLength = Math.floor((currentD - 30) / 50) * 50;
       if (runnerLength < 200) runnerLength = 200;
       if (runnerLength > 500) runnerLength = 500;
       const cajonD = runnerLength / 1000;
       
       const cajonZCenter = tapaZ - e/2 - cajonD/2;
-      const latCajonX = (baseW/2) - (e/2) - 0.013; // Espacio corredera
+      const latCajonX = (baseW/2) - (e/2) - 0.013; 
       const cajonBoxY = tapaY - 0.02; 
       
-      // 5. LATERALES DE CAJON
       cajonGroup.add(createBox(e, 0.100, cajonD, -latCajonX, cajonBoxY, cajonZCenter, melaminaDarkWood, 5));
       cajonGroup.add(createBox(e, 0.100, cajonD,  latCajonX, cajonBoxY, cajonZCenter, melaminaDarkWood, 5));
 
-      // 6. FRENTE/TRASERA DE CAJON
       const frenteW = baseW - 0.062;
       const intFrenteZ = tapaZ - e - e/2; 
       const intTraseraZ = tapaZ - e - cajonD + e/2; 
       cajonGroup.add(createBox(frenteW, 0.100, e, 0, cajonBoxY, intFrenteZ, melaminaDarkWood, 6));
       cajonGroup.add(createBox(frenteW, 0.100, e, 0, cajonBoxY, intTraseraZ, melaminaDarkWood, 6));
 
-      // 8. FONDO DE CAJON
       const fondoY = cajonBoxY - 0.05 + 0.008; 
       const fondoW = baseW - 0.048;
       const fondoD = cajonD - 0.022;
@@ -1232,11 +1221,11 @@
             const pId = child.userData.partId;
             let offset = new THREE.Vector3(0, 0, 0);
             
-            if (pId === 1) offset.set(orig.x > 0 ? 0.3 : -0.3, 0, 0); // Laterales a los costados
-            if (pId === 2) offset.set(0, 0, -0.3); // Respaldo hacia atrás
-            if (pId === 3) offset.set(0, orig.y > 0.2 ? 0.2 : -0.1, 0); // Repisas separadas en Y
-            if (pId === 4) offset.set(0, 0.3, 0); // Repisa superior arriba
-            if (pId === 5 || pId === 6 || pId === 7 || pId === 8 || pId === 0) offset.set(0, 0, 0.5); // Cajón entero al frente
+            if (pId === 1) offset.set(orig.x > 0 ? 0.3 : -0.3, 0, 0); 
+            if (pId === 2) offset.set(0, 0, -0.3); 
+            if (pId === 3) offset.set(0, orig.y > 0.2 ? 0.2 : -0.1, 0); 
+            if (pId === 4) offset.set(0, 0.3, 0); 
+            if (pId === 5 || pId === 6 || pId === 7 || pId === 8 || pId === 0) offset.set(0, 0, 0.5); 
             
             child.position.set(orig.x + offset.x, orig.y + offset.y, orig.z + offset.z);
           } else {
