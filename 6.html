@@ -206,8 +206,7 @@
           </div>
 
           <div class="content-body">
-              <h1 class="text-xl md:text-2xl font-extrabold text-white leading-tight mb-2.5 uppercase tracking-wide">VELADOR MODERNO MULTIFUNCIONAL</h1>
-              <h2 class="text-[14px] text-gold-400 font-bold leading-tight mb-2 uppercase tracking-wide">DISEÑO OPTIMIZADO CON CAJÓN Y REPISAS ASIMÉTRICAS</h2>
+              <h1 class="text-xl md:text-2xl font-extrabold text-white leading-tight mb-4 uppercase tracking-wide">VELADOR MODERNO MULTIFUNCIONAL CON CAJÓN Y REPISAS ASIMÉTRICAS</h1>
               <p class="text-[13px] text-gray-400 leading-relaxed mb-6">
                   Un velador elegante y práctico que integra un cajón inferior amplio, un compartimento abierto central y un respaldo con repisas flotantes asimétricas. Ideal para mantener el orden con un toque de diseño vanguardista y maximizar el espacio vertical en cualquier dormitorio.
               </p>
@@ -338,10 +337,10 @@
                   <i data-lucide="list-tree" class="w-4 h-4"></i> Medidas
                 </button>
 
-                <!-- Panel Lista de Medidas -->
-                <div id="parts-list-panel" class="hidden flex-col gap-1 bg-dark-900/95 border border-gold-500/30 p-1.5 rounded-md shadow-xl backdrop-blur-md max-h-[240px] overflow-y-auto show-scrollbar w-[180px]">
-                  <div class="text-[8px] uppercase tracking-widest text-silver-400 font-bold mb-1 px-1 border-b border-slate-700 pb-1">Selecciona para ver:</div>
-                  <div id="parts-list-container" class="flex flex-col gap-1"></div>
+                <!-- Panel Lista de Medidas (Ajustado para 2 columnas sin scroll) -->
+                <div id="parts-list-panel" class="hidden flex-col gap-1.5 bg-dark-900/95 border border-gold-500/30 p-2 rounded-md shadow-xl backdrop-blur-md w-[260px] sm:w-[310px]">
+                  <div class="text-[8px] uppercase tracking-widest text-silver-400 font-bold mb-0.5 px-1 border-b border-slate-700 pb-1">Selecciona para ver:</div>
+                  <div id="parts-list-container" class="grid grid-cols-2 gap-1.5"></div>
                 </div>
               </div>
 
@@ -682,14 +681,14 @@
        const sh = h / 1050;
        const sd = d / 400;
 
-       const baseW = w - (2 * e); // Absolute width adjustment for fit
+       const baseW = w - (2 * e); 
        
        let runner = Math.floor((d - 30) / 50) * 50;
        if (runner < 200) runner = 200;
        if (runner > 500) runner = 500;
 
        const deskH = 650 * sh;
-       const latH = deskH + (80 * sh); // La curva escala con la altura
+       const latH = deskH + (80 * sh); 
        
        const repDerechaW = 300 * sw;
        const repIzquierdaW = 170 * sw;
@@ -859,15 +858,16 @@
       buildFurnitureModel();
     }
 
+    // LISTA DE MEDIDAS AJUSTADA A 2 COLUMNAS Y TEXTO MÁS PEQUEÑO
     function buildPartsListUI() {
       const container = document.getElementById('parts-list-container');
       container.innerHTML = '';
       Object.values(partsData).forEach(part => {
         const btn = document.createElement('button');
-        btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group";
+        btn.className = "flex items-center gap-1.5 w-full text-left p-1 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group overflow-hidden";
         const badgeColor = part.isMDF ? "bg-amber-500 text-dark-900" : "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
         const textColor = part.isMDF ? "text-amber-400" : "text-silver-300 group-hover:text-gold-300";
-        btn.innerHTML = `<span class="w-5 h-5 shrink-0 rounded flex items-center justify-center text-[10px] font-black transition-colors ${badgeColor}">${part.id}</span><span class="text-[11px] font-bold truncate ${textColor}">${part.name}</span>`;
+        btn.innerHTML = `<span class="w-4 h-4 shrink-0 rounded flex items-center justify-center text-[9px] font-black transition-colors ${badgeColor}">${part.id}</span><span class="text-[9.5px] font-bold truncate ${textColor}">${part.name}</span>`;
         btn.onclick = () => selectPartFromList(part.id);
         container.appendChild(btn);
       });
@@ -1030,7 +1030,6 @@
     }
 
     function createLateralCurvo(w, h, d, x, y, z, mat, partId) {
-        // El radio de la curva escala dinámicamente con la altura actual para no deformarse
         const R = 0.08 * (h / 0.730); 
         const shape = new THREE.Shape();
         shape.moveTo(0, 0); 
@@ -1079,14 +1078,13 @@
       const hTotal = currentH / 1000;
       const dTotal = currentD / 1000;
       
-      // Factores de escala relativos a la medida inicial
       const sw = wTotal / 0.500;
       const sh = hTotal / 1.050;
       const sd = dTotal / 0.400;
 
       const deskH = 0.650 * sh; 
 
-      // 2 - RESPALDO
+      // 2 - RESPALDO (AHORA JUSTO AL RAS DE LA PIEZA 10)
       const respZ = -dTotal/2 + e/2;
       headboardGroup.add(createBox(wTotal, hTotal, e, 0, hTotal/2, respZ, melaminaDarkWood, 2));
 
@@ -1133,7 +1131,7 @@
       const cajonD = runnerLength / 1000;
       
       const cajonBoxY = tapaY; 
-      const latCajonX = (wTotal/2) - e - 0.013 - e/2; // El espacio para rieles (13mm) es absoluto
+      const latCajonX = (wTotal/2) - e - 0.013 - e/2;
       const cajonZCenter = tapaZ - e/2 - cajonD/2;
       
       const cajonLatH = 0.100 * sh;
@@ -1160,7 +1158,6 @@
       const topShelvesDepth = 0.100 * sd;
       const topShelvesZ = respZ + e/2 + topShelvesDepth/2;
       
-      // Vertical (Part 10)
       const vertH = 0.230 * sh;
       
       // CENTRO Y EXACTO DE LA PIEZA 10 PARA QUE AL TOPE SEA IGUAL A hTotal
