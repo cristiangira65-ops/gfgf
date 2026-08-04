@@ -50,9 +50,9 @@
 
     ::-webkit-scrollbar { display: none; }
 
-    /* Barra de desplazamiento personalizada para la Calculadora */
+    /* Barra de desplazamiento personalizada (Para Tabla y Calculadora) */
     .calc-scroll {
-      overflow-y: auto !important;
+      overflow-y: visible !important; 
       -webkit-overflow-scrolling: touch !important;
       touch-action: pan-y !important;
       scrollbar-width: thin;
@@ -66,6 +66,7 @@
     .show-scrollbar::-webkit-scrollbar { display: block !important; height: 8px; width: 6px; }
     .show-scrollbar::-webkit-scrollbar-track { background: rgba(28, 31, 43, 0.7); border-radius: 4px; }
     .show-scrollbar::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.5); border-radius: 4px; }
+    .show-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.8); }
 
     .accordion-content {
       max-height: 0;
@@ -180,7 +181,7 @@
       <div class="header-container" id="main-header">
           
           <div class="top-brand">
-              <div class="brand-left gap-3">
+              <div class="brand-left gap-3 flex items-center">
                   <div class="logo-box">
                       <img src="https://i.ibb.co/SDwC5YCb/IMG-20260305-231115-415.png" alt="Logo La Biblia del Artesano" onerror="this.onerror=null; this.src='https://placehold.co/120x120/141414/fdb813?text=BA';"/>
                   </div>
@@ -189,7 +190,13 @@
                   </div>
               </div>
               <div class="flex flex-col items-center justify-center gap-1 bg-gold-500/15 border border-gold-500/70 py-1.5 px-3 rounded-lg shadow-gold-glow">
-                  <div class="flex gap-0.5 text-gold-500 text-[9px]" id="stars-container"></div>
+                  <div class="flex gap-0.5 text-gold-500 text-[9px]" id="stars-container">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                  </div>
                   <span class="text-[10px] text-gold-300 font-bold tracking-wide" id="rating-text">4.8 / 5</span>
               </div>
           </div>
@@ -234,7 +241,7 @@
 
   <main class="w-full max-w-[1400px] mx-auto px-1 sm:px-2 lg:px-4 flex flex-col lg:flex-row gap-4 relative">
 
-    <!-- COLUMNA IZQUIERDA (Visor 3D) -->
+    <!-- COLUMNA IZQUIERDA (Visor 3D y Calculadora) -->
     <div class="w-full lg:w-3/5 flex-shrink-0 space-y-4">
       
       <!-- ACORDEÓN: PROYECTO 3D -->
@@ -248,7 +255,7 @@
               <h2 class="text-sm font-extrabold text-slate-100 flex items-center gap-1.5 uppercase tracking-wide">
                 Proyecto Completo
               </h2>
-              <span class="text-[11px] text-gold-500 font-medium block">Plano Interactivo</span>
+              <span class="text-[11px] text-gold-500 font-medium block">Plano Interactivo 3D</span>
             </div>
           </div>
           <i id="icon-acc-plano" data-lucide="chevron-down" class="w-5 h-5 text-gold-400 transition-transform duration-300"></i>
@@ -268,33 +275,40 @@
                   <i data-lucide="sliders" class="w-4 h-4"></i> Ajustar
                 </button>
                 
-                <!-- Panel Calculadora (Reducido: Ancho -20% -> 176px, Alto -10% -> 75% max-h, Scroll Activo) -->
+                <!-- Panel Calculadora -->
                 <div id="calc-panel" class="hidden flex-col gap-2 bg-dark-900/95 border border-gold-500/50 p-2.5 rounded-md shadow-2xl backdrop-blur-md w-[176px] max-h-[75%] calc-scroll">
                   <h3 class="text-[10px] font-bold text-gold-400 border-b border-slate-700 pb-1 uppercase tracking-wide shrink-0">Ajustar Medidas</h3>
                   
                   <div class="flex flex-col gap-0.5 shrink-0">
                     <label class="text-[9px] text-silver-300 font-bold">Ancho <span id="lbl-unit-w">(mm)</span>:</label>
-                    <input type="number" id="calc-w" step="any" value="500" min="30" max="1500" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
+                    <input type="number" id="calc-w" step="any" value="500" min="300" max="1500" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
                   </div>
                   
                   <div class="flex flex-col gap-0.5 shrink-0">
                     <label class="text-[9px] text-silver-300 font-bold">Alto <span id="lbl-unit-h">(mm)</span>:</label>
-                    <input type="number" id="calc-h" step="any" value="650" min="35" max="1500" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
+                    <input type="number" id="calc-h" step="any" value="650" min="400" max="1500" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
                   </div>
                   
                   <div class="flex flex-col gap-0.5 shrink-0">
                     <label class="text-[9px] text-silver-300 font-bold">Profundidad <span id="lbl-unit-d">(mm)</span>:</label>
-                    <input type="number" id="calc-d" step="any" value="450" min="25" max="1000" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
+                    <input type="number" id="calc-d" step="any" value="450" min="250" max="1000" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] font-mono text-white outline-none focus:border-gold-500">
                   </div>
                   
-                  <div class="flex flex-col gap-0.5 shrink-0">
+                  <div class="flex flex-col gap-0.5 shrink-0 relative" id="custom-select-container">
                     <label class="text-[9px] text-silver-300 font-bold">Grosor de melamina:</label>
-                    <select id="calc-e" class="bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] text-white outline-none focus:border-gold-500">
-                      <option value="12" data-mm="12">12 mm</option>
-                      <option value="15" data-mm="15">15 mm</option>
-                      <option value="18" data-mm="18" selected>18 mm</option>
-                      <option value="25" data-mm="25">25 mm</option>
-                    </select>
+                    <button type="button" id="custom-select-btn" onclick="toggleCustomSelect(event)" class="flex justify-between items-center w-full bg-dark-800 border border-slate-600 rounded px-1.5 py-1 text-[10px] text-white outline-none focus:border-gold-500 active:bg-dark-700 transition-colors">
+                      <span id="custom-select-text">18 mm</span>
+                      <i data-lucide="chevron-up" class="w-3 h-3 text-silver-400 pointer-events-none transition-transform duration-200" id="custom-select-icon"></i>
+                    </button>
+                    
+                    <div id="custom-select-options" class="hidden absolute bottom-full left-0 w-full mb-1 bg-dark-800 border border-slate-600 rounded shadow-xl z-50 grid grid-cols-3 gap-1 p-1.5">
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="12" onclick="selectCustomOption(12, event)">12 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="15" onclick="selectCustomOption(15, event)">15 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] bg-gold-500/10 text-gold-400 font-bold hover:bg-gold-500/20 cursor-pointer text-center" data-mm="18" onclick="selectCustomOption(18, event)">18 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="21" onclick="selectCustomOption(21, event)">21 mm</div>
+                      <div class="custom-option rounded flex items-center justify-center px-1 py-2 text-[10px] text-white hover:bg-gold-500/20 cursor-pointer text-center" data-mm="25" onclick="selectCustomOption(25, event)">25 mm</div>
+                    </div>
+                    <input type="hidden" id="calc-e" value="18">
                   </div>
                   
                   <span id="calc-error" class="text-[8px] text-red-400 hidden font-bold mt-0.5 shrink-0">¡Medidas muy pequeñas!</span>
@@ -351,7 +365,7 @@
                     <span id="info-qty" class="text-[11px] bg-gold-500/20 text-gold-300 px-2 py-0.5 rounded border border-gold-500/30 font-bold inline-block">x2</span>
                   </div>
                 </div>
-                <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="grid grid-cols-4 gap-2 text-center">
                   <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50">
                     <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Largo</span>
                     <span id="info-l" class="font-mono text-[11px] text-slate-100 font-black">0</span>
@@ -364,6 +378,10 @@
                     <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Grosor</span>
                     <span id="info-e" class="font-mono text-[11px] text-slate-100 font-black">18</span>
                   </div>
+                  <div class="bg-dark-800/80 rounded p-1.5 border border-slate-700/50 flex flex-col justify-center items-center">
+                    <span class="text-[9px] text-silver-400 block uppercase font-bold mb-0.5">Tapa</span>
+                    <strong id="info-tap" class="text-[10px] text-gold-400 truncate w-full">G D D D</strong>
+                  </div>
                 </div>
               </div>
             </div>
@@ -372,7 +390,7 @@
       </div>
     </div>
 
-    <!-- COLUMNA DERECHA (Tabla y Accesorios Estáticos) -->
+    <!-- COLUMNA DERECHA (Tabla, Accesorios y Especificaciones) -->
     <div class="w-full lg:w-2/5 flex flex-col gap-3.5 pb-8">
       
       <!-- ACORDEÓN: TABLA DE DESPIECE -->
@@ -599,6 +617,45 @@
       return raw ? val : val + " mm";
     }
 
+    function toggleCustomSelect(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const options = document.getElementById('custom-select-options');
+      const icon = document.getElementById('custom-select-icon');
+      const isHidden = options.classList.contains('hidden');
+      
+      if(isHidden) {
+          options.classList.remove('hidden');
+          icon.style.transform = 'rotate(180deg)';
+      } else {
+          options.classList.add('hidden');
+          icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function selectCustomOption(val, e) {
+      e.stopPropagation();
+      
+      document.querySelectorAll('.custom-option').forEach(opt => {
+          if (parseFloat(opt.getAttribute('data-mm')) === val) {
+              opt.classList.add('bg-gold-500/10', 'text-gold-400', 'font-bold');
+              opt.classList.remove('text-white');
+          } else {
+              opt.classList.remove('bg-gold-500/10', 'text-gold-400', 'font-bold');
+              opt.classList.add('text-white');
+          }
+      });
+
+      const inputVal = isCM ? val / 10 : val;
+      document.getElementById('calc-e').value = inputVal;
+      document.getElementById('custom-select-text').innerText = isCM ? (val / 10) + " cm" : val + " mm";
+      
+      document.getElementById('custom-select-options').classList.add('hidden');
+      document.getElementById('custom-select-icon').style.transform = 'rotate(0deg)';
+      
+      startRecalculate();
+    }
+
     function updateAllUnitsUI() {
         const u = isCM ? "cm" : "mm";
         const U_UPPER = isCM ? "CM" : "MM";
@@ -617,13 +674,14 @@
         hInput.value = isCM ? currentH / 10 : currentH;
         dInput.value = isCM ? currentD / 10 : currentD;
 
-        const eSelect = document.getElementById('calc-e');
-        Array.from(eSelect.options).forEach(opt => {
+        // Custom Dropdown Update
+        const eInput = document.getElementById('calc-e');
+        document.querySelectorAll('.custom-option').forEach(opt => {
             let baseVal = parseFloat(opt.getAttribute('data-mm'));
-            opt.value = isCM ? baseVal / 10 : baseVal;
-            opt.text = isCM ? (baseVal / 10) + " cm" : baseVal + " mm";
+            opt.innerText = isCM ? (baseVal / 10) + " cm" : baseVal + " mm";
         });
-        eSelect.value = isCM ? currentE / 10 : currentE;
+        eInput.value = isCM ? currentE / 10 : currentE;
+        document.getElementById('custom-select-text').innerText = isCM ? (currentE / 10) + " cm" : currentE + " mm";
 
         document.getElementById('ui-mat-mdf').innerText = f(3);
         document.getElementById('ui-mat-mel').innerText = f(currentE);
@@ -667,6 +725,7 @@
       startRecalculate(true);
     }
 
+    // Adaptación Paramétrica (Velador Contemporáneo)
     function generatePartsData(w, h, d, e) {
        const baseW = w - (2 * e);
        
@@ -676,29 +735,21 @@
 
        return {
          1: { id: 1, name: "LATERAL", l: h, a: d, cant: 2, esp: e,
-              tap: { L1: 'D', L2: 'D', A1: '', A2: '' },
-              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+              tap: { L1: 'D', L2: 'D', A1: '', A2: '' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
          2: { id: 2, name: "RESPALDO", l: h, a: baseW, cant: 1, esp: e,
-              tap: { L1: '', L2: '', A1: 'D', A2: 'D' },
-              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+              tap: { L1: '', L2: '', A1: 'D', A2: 'D' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
          3: { id: 3, name: "BASE / REPISA", l: baseW, a: d - 69, cant: 2, esp: e,
-              tap: { L1: 'D', L2: '', A1: '', A2: '' },
-              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
-         4: { id: 4, name: "REPISA 2", l: baseW, a: 250, cant: 1, esp: e,
-              tap: { L1: 'D', L2: '', A1: '', A2: '' },
-              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+              tap: { L1: 'D', L2: '', A1: '', A2: '' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+         4: { id: 4, name: "REPISA SUPERIOR", l: baseW, a: 250, cant: 1, esp: e,
+              tap: { L1: 'D', L2: '', A1: '', A2: '' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
          5: { id: 5, name: "LATERAL DE CAJON", l: runner, a: 100, cant: 2, esp: e,
-              tap: { L1: '', L2: '', A1: '', A2: '' },
-              ran: { d: formatUnit(e, true), e: formatUnit(4, true), p: formatUnit(8, true), pos: 'L2' }, isMDF: false },
+              tap: { L1: '', L2: '', A1: '', A2: '' }, ran: { d: formatUnit(e, true), e: formatUnit(4, true), p: formatUnit(8, true), pos: 'L2' }, isMDF: false },
          6: { id: 6, name: "FRENTE DE CAJON", l: baseW - 62, a: 100, cant: 2, esp: e,
-              tap: { L1: '', L2: '', A1: '', A2: '' },
-              ran: { d: formatUnit(e, true), e: formatUnit(4, true), p: formatUnit(8, true), pos: 'L2' }, isMDF: false },
+              tap: { L1: '', L2: '', A1: '', A2: '' }, ran: { d: formatUnit(e, true), e: formatUnit(4, true), p: formatUnit(8, true), pos: 'L2' }, isMDF: false },
          7: { id: 7, name: "TAPA DE CAJON", l: w - 6, a: 164, cant: 1, esp: e,
-              tap: { L1: 'G', L2: 'G', A1: 'G', A2: 'G' },
-              ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
+              tap: { L1: 'G', L2: 'G', A1: 'G', A2: 'G' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: false },
          8: { id: 8, name: "FONDO DE CAJON", l: baseW - 48, a: runner - 22, cant: 1, esp: 3,
-              tap: { L1: '', L2: '', A1: '', A2: '' },
-              ran: { d: '', e: '', p: '', pos: '' }, isMDF: true }
+              tap: { L1: '', L2: '', A1: '', A2: '' }, ran: { d: '', e: '', p: '', pos: '' }, isMDF: true }
        };
     }
 
@@ -717,6 +768,17 @@
       buildDespieceTableUI();
       init3D();
       initScrollAnimations();
+
+      document.addEventListener('pointerdown', (e) => {
+        const customSel = document.getElementById('custom-select-container');
+        if (customSel && !customSel.contains(e.target)) {
+            const opts = document.getElementById('custom-select-options');
+            if(opts && !opts.classList.contains('hidden')) {
+                opts.classList.add('hidden');
+                document.getElementById('custom-select-icon').style.transform = 'rotate(0deg)';
+            }
+        }
+      });
     };
 
     function initScrollAnimations() {
@@ -782,7 +844,7 @@
       if(isCM) { w *= 10; h *= 10; d *= 10; e *= 10; }
 
       const errorEl = document.getElementById('calc-error');
-      if(w < 300 || h < 350 || d < 250) {
+      if(w < 300 || h < 400 || d < 250) {
          errorEl.classList.remove('hidden');
          return;
       }
@@ -833,7 +895,7 @@
       container.innerHTML = '';
       Object.values(partsData).forEach(part => {
         const btn = document.createElement('button');
-        btn.className = "flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group";
+        btn.className = "inline-flex items-center gap-1.5 w-full text-left p-1.5 rounded hover:bg-gold-500/20 active:bg-gold-500/40 transition-colors border border-transparent hover:border-gold-500/30 group mb-1.5 break-inside-avoid";
         const badgeColor = part.isMDF ? "bg-amber-500 text-dark-900" : "bg-dark-700 text-gold-400 group-hover:bg-gold-500 group-hover:text-dark-900";
         const textColor = part.isMDF ? "text-amber-400" : "text-silver-300 group-hover:text-gold-300";
         btn.innerHTML = `<span class="w-5 h-5 shrink-0 rounded flex items-center justify-center text-[10px] font-black transition-colors ${badgeColor}">${part.id}</span><span class="text-[11px] font-bold truncate ${textColor}">${part.name}</span>`;
@@ -945,11 +1007,18 @@
     }
 
     function setupMobileInteraction(container) {
-      // Ajuste de propagación de eventos para permitir el scroll natural dentro del panel sin interferir con OrbitControls
       ['calc-panel', 'parts-list-panel', 'part-info-card'].forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-          el.addEventListener('pointerdown', e => e.stopPropagation());
+          el.addEventListener('pointerdown', e => {
+              const customSel = document.getElementById('custom-select-container');
+              if (customSel && !customSel.contains(e.target)) {
+                  document.getElementById('custom-select-options').classList.add('hidden');
+                  const icon = document.getElementById('custom-select-icon');
+                  if(icon) icon.style.transform = 'rotate(0deg)';
+              }
+              e.stopPropagation();
+          });
           el.addEventListener('pointermove', e => e.stopPropagation());
           el.addEventListener('pointerup', e => e.stopPropagation());
           el.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
@@ -992,7 +1061,7 @@
       if (intersects.length > 0) {
         let object = intersects[0].object;
         if(object.userData.partId === 0) {
-            headboardGroup.traverse((c) => { if(c.userData.partId === 7) object = c; });
+            headboardGroup.traverse((c) => { if(c.userData.partId === 7) object = c; }); 
         }
         const partId = object.userData.partId;
         if(partId && partId > 0 && object.visible) selectPart(partId, object);
@@ -1024,6 +1093,10 @@
       const dTotal = currentD / 1000;
       const boxH = currentH / 1000;
 
+      // Escala para mantener proporciones visuales en Y y en algunas piezas fijas de Z
+      const sh = boxH / 0.650;
+      const sd = dTotal / 0.450;
+
       const latX = wTotal/2 - e/2;
       headboardGroup.add(createBox(e, boxH, dTotal, -latX, boxH/2, 0, melaminaDarkWood, 1));
       headboardGroup.add(createBox(e, boxH, dTotal,  latX, boxH/2, 0, melaminaDarkWood, 1));
@@ -1032,23 +1105,26 @@
       const respZ = -dTotal/2 + e/2;
       headboardGroup.add(createBox(baseW, boxH, e, 0, boxH/2, respZ, melaminaDarkWood, 2));
 
-      const baseD = dTotal - 0.069; 
+      // La base y la repisa encima del cajon
+      const baseD = dTotal - 0.069; // 69mm offset
       const baseZ = dTotal/2 - baseD/2; 
       
-      const baseYLower = 0.050; 
+      const baseYLower = 0.050 * sh; 
       headboardGroup.add(createBox(baseW, e, baseD, 0, baseYLower, baseZ, melaminaDarkWood, 3));
       
-      const baseYUpper = baseYLower + 0.164 + e; 
+      const tapaH = 0.164 * sh; 
+      const baseYUpper = baseYLower + tapaH + e; 
       headboardGroup.add(createBox(baseW, e, baseD, 0, baseYUpper, baseZ, melaminaDarkWood, 3));
 
-      const repisaD = 0.250;
-      const repisaY = 0.550 - e/2; 
+      // Repisa superior
+      const repisaD = 0.250 * sd;
+      const repisaY = 0.550 * sh - e/2; 
       const repisaZ = respZ + e/2 + repisaD/2; 
       headboardGroup.add(createBox(baseW, e, repisaD, 0, repisaY, repisaZ, melaminaDarkWood, 4));
 
+      // Cajón
       const cajonGroup = new THREE.Group();
       
-      const tapaH = 0.164; 
       const tapaW = wTotal - 0.006;
       const tapaY = baseYLower + e/2 + tapaH/2 + 0.002;
       const tapaZ = dTotal/2 + e/2; 
@@ -1131,6 +1207,8 @@
         document.getElementById('info-a').innerText = formatUnit(data.a);
         document.getElementById('info-e').innerText = formatUnit(data.esp);
         
+        // Tap sequence formatting
+        document.getElementById('info-tap').innerText = `${data.tap.L1} ${data.tap.L2} ${data.tap.A1} ${data.tap.A2}`;
         document.getElementById('part-info-card').classList.add('info-card-visible');
       }
 
